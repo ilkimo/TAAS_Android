@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">dataHubApp</string>
+    <string name="hello_blank_fragment">Fragment bianco</string>
+    <string name="messages_header">Messaggi</string>
+    <string name="sync_header">Sincronizza</string>
+    <string name="signature_title">La tua firma</string>
+    <string name="reply_title">Azione default di conferma</string>
+    <string name="sync_title">Sincronizza email periodicamente</string>
+    <string name="attachment_title">Scarica allegati in arrivo</string>
+    <string name="attachment_summary_on">Scarica in automatico allegati dalle seguenti email[...]</string>
+    <string name="attachment_summary_off">Scarica allegati solo quando richiesto manualmente</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Accedi o registrati</string>
+    <string name="action_sign_in_short">Accedi</string>
+    <string name="welcome">Benvenuto!</string>
+    <string name="invalid_username">Username non valido</string>
+    <string name="invalid_password">La password deve essere >5 caratteri</string>
+    <string name="login_failed">Login fallito</string>
+    <string name="profile">Profilo</string>
+    <string name="settings">Impostazioni</string>
+</resources>
