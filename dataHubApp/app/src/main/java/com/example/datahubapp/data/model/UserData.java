@@ -8,8 +8,15 @@ package com.example.datahubapp.data.model;
  * e la lista dei topic
  */
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.ArrayList;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
 public class UserData {
     private String id;
 
@@ -17,9 +24,18 @@ public class UserData {
 
     private ArrayList<Topic> topicList;
 
-    public UserData(String Userid){
+    public UserData(String Userid) {
         this.idUser = Userid;
         this.topicList = new ArrayList<>();
+    }
+
+    @JsonCreator
+    public UserData(@JsonProperty("id")String id,
+                    @JsonProperty("idUser")String idUser,
+                    @JsonProperty("topicList")ArrayList<Topic> topic) {
+        this.id = id;
+        this.idUser = idUser;
+        this.topicList = topic;
     }
 
     public void setIdUser(String idUser) {
@@ -51,6 +67,44 @@ public class UserData {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        boolean res = true;
 
+        if((obj != null) && (obj.getClass().equals(this.getClass()))) {
+            UserData castedObj = (UserData) obj;
+
+            //check id
+            if((id != null) && (castedObj.getId() != null)) {
+                if(!id.equals(castedObj.getId())) {
+                    res = false;
+                }
+            } else if(!((id == null) && (castedObj.getId() == null))) {
+                res = false;
+            }
+
+            //check idUser
+            if((idUser != null) && (castedObj.getIdUser() != null)) {
+                if(!idUser.equals((castedObj.getIdUser()))) {
+                    res = false;
+                }
+            } else if(!((idUser == null) && (castedObj.getIdUser() == null))) {
+                res = false;
+            }
+
+            //check topicList
+            if((topicList != null) && (castedObj.getTopicList() != null)) {
+                if(!topicList.equals(castedObj.getTopicList())) {
+                    res = false;
+                }
+            } else if(!((topicList == null) && (castedObj.getTopicList() == null))) {
+                res = false;
+            }
+        } else {
+            res = false;
+        }
+
+        return res;
+    }
 }
 
