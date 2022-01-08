@@ -10,6 +10,7 @@
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_topics.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_topics_list.xml" value="0.5432291666666667" />
+        <entry key="app/src/main/res/layout/item_topic.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/menu/bottom_nav.xml" value="0.5432291666666667" />
       </map>
     </option>
