@@ -1,6 +1,7 @@
 package com.example.datahubapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,17 +31,18 @@ class TopicsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_topics, container, false)
+        Log.d("PROVOLA", "onCreateView: start")
 
         // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = MyItemRecyclerViewAdapter(PlaceholderContent.ITEMS)
+        with(view.findViewById(R.id.list) as RecyclerView) {
+            layoutManager = when {
+                columnCount <= 1 -> LinearLayoutManager(context)
+                else -> GridLayoutManager(context, columnCount)
             }
+            adapter = MyItemRecyclerViewAdapter(PlaceholderContent.ITEMS)
         }
+
+        Log.d("PROVOLA", "onCreateView: end")
         return view
     }
 
