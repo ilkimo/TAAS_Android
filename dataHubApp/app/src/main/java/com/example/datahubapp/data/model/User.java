@@ -62,6 +62,61 @@ public class User {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        boolean res = true;
+
+        if((obj != null) && (obj.getClass().equals(this.getClass()))) {
+            User castedObj = (User) obj;
+
+            //check id
+            if(id != castedObj.getId()) {
+                res = false;
+            }
+
+            //check name
+            if((name != null) && (castedObj.getName() != null)) {
+                if(!name.equals(castedObj.getName())) {
+                    res = false;
+                }
+            } else if(!((name == null) && (castedObj.getName() == null))) {
+                res = false;
+            }
+
+            //check surname
+            if((surname != null) && (castedObj.getSurname() != null)) {
+                if(!surname.equals(castedObj.getSurname())) {
+                    res = false;
+                }
+            } else if(!((surname == null) && (castedObj.getSurname() == null))) {
+                res = false;
+            }
+
+            //check email
+            if((email != null) && (castedObj.getEmail() != null)) {
+                if(!email.equals(castedObj.getEmail())) {
+                    res = false;
+                }
+            } else if(!((email == null) && (castedObj.getEmail() == null))) {
+                res = false;
+            }
+
+            //check password
+            if((password != null) && (castedObj.getPassword() != null)) {
+                if(!password.equals(castedObj.getPassword())) {
+                    res = false;
+                }
+            } else if(!((password == null) && (castedObj.getPassword() == null))) {
+                res = false;
+            }
+
+        } else {
+            res = false;
+        }
+
+        return res;
+    }
+
+    @Override
     public String toString() {
         return "User{" +
                 "id=" + id +

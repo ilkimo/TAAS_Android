@@ -28,6 +28,7 @@ public class UserAndData {
         this.userInformation = userInformation;
     }
 
+    @Override
     public boolean equals(Object obj) {
         boolean res = true;
 
