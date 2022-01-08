@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/topicsFragment"
-        android:title="Topics"
+        android:title="@string/Topics"
         android:icon="@drawable/ic_baseline_folder_24"
         />
     <item

@@ -20,4 +20,5 @@
     <string name="login_failed">Login fallito</string>
     <string name="profile">Profilo</string>
     <string name="settings">Impostazioni</string>
+    <string name="Topics">Argomenti</string>
 </resources>
