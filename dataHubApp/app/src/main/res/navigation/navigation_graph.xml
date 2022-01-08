@@ -23,5 +23,5 @@
         android:id="@+id/topicsFragment"
         android:name="com.example.datahubapp.TopicsFragment"
         android:label="fragment_topics_list"
-        tools:layout="@layout/fragment_topics_list" />
+        tools:layout="@layout/fragment_topics" />
 </navigation>
