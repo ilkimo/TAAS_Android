@@ -1,12 +1,20 @@
 package com.example.datahubapp.viewmodel
 
 import android.content.Context
+import android.os.Build
+import android.util.Log
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.datahubapp.controller.AppController
+import com.example.datahubapp.data.model.User
 import com.example.datahubapp.data.model.UserData
+import java.lang.Exception
 import java.util.ArrayList
 
+@RequiresApi(Build.VERSION_CODES.O)
 class AppViewModel(context: Context) : ViewModel() {
     /*private val courseAvailable: MutableLiveData<List<Course>>
     private val teacherAvailable: MutableLiveData<List<Teacher>>
@@ -20,8 +28,14 @@ class AppViewModel(context: Context) : ViewModel() {
     private var selectedDayOfWeek: String? = null
     private var selectedHourStart: Int? = null*/
 
-    private val context: Context
     private val repository: Repository
+    private val context: Context
+
+    /**
+     * user contains data about the logged user.
+     * If null, no login has been done
+     */
+    private var user: MutableLiveData<User>? = null
 
     private val userData: MutableLiveData<UserData> by lazy {
         MutableLiveData<UserData>().also{
@@ -34,8 +48,24 @@ class AppViewModel(context: Context) : ViewModel() {
         //repository = Repository()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun loadUserData() {
-        //TODO
+        if(userIsLoggedIn()) {
+            // load data from backend, handle no internet exceptions (maybe TOAST message)
+            try {
+                //TODO CHANGE WITH ACTUAL LOGIN
+                userData.postValue(AppController.fakeLogin())
+            } catch(e: Exception) {
+                //TODO
+                Log.d("EXCEPTION", "AppViewModel.loadUserData()")
+            }
+        } else {
+            Toast.makeText(context, "Login needed", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun userIsLoggedIn(): Boolean {
+        return user == null;
     }
 
     public getUserData(): LiveData<UseData> {

@@ -28,8 +28,6 @@ class TopicsFragment : Fragment() {
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
-
-        AppController.fakeLogin()
     }
 
     override fun onCreateView(
