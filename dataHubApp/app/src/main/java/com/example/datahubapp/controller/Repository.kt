@@ -26,7 +26,7 @@ class Repository {
         //gson = Gson()
         this.context = context
         try {
-            url = URL("http://10.0.2.2:8080/TWEBProject_war_exploded/FrontServlet")
+            url = URL("http://localhost:8080/gateway/")
         } catch (e: MalformedURLException) {
             println(e.message)
         }
