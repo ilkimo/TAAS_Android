@@ -35,19 +35,16 @@ class AppViewModel(context: Context) : ViewModel() {
      * user contains data about the logged user.
      * If null, no login has been done
      */
-    private val user: MutableLiveData<User?> by lazy {
-        MutableLiveData<User?>()
-    }
+    private val user: MutableLiveData<User?>
 
-    private val userData: MutableLiveData<UserData?> by lazy {
-        MutableLiveData<UserData?>().also{
-            loadUserData()
-        }
-    }
+    private var userData: MutableLiveData<UserData>
 
     init {
         this.context = context
         repository = Repository()
+        user = MutableLiveData<User?>()
+        userData = MutableLiveData<UserData>()
+        loadUserData()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -57,14 +54,20 @@ class AppViewModel(context: Context) : ViewModel() {
             try {
                 //TODO CHANGE WITH ACTUAL LOGIN
                 //userData.postValue(repository.getUserData(user.value))
-                userData.postValue(AppController.fakeLogin())
             } catch(e: Exception) {
                 //TODO
                 Log.d("EXCEPTION", "AppViewModel.loadUserData()")
             }
         } else {
             Toast.makeText(context, "Login needed", Toast.LENGTH_LONG).show()
+            userData.postValue(AppController.fakeLogin())
         }
+    }
+
+    fun getUserData(): LiveData<UserData> {
+        //loadUserData() //I think that with this, the userData refreshes every time with current backend state
+
+        return userData
     }
 
     private fun userIsLoggedIn(): Boolean {

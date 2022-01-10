@@ -52,18 +52,18 @@ class AppController {
             registrazioni_box.add(registration3)
 
             val topic_box = Topic(
-                1L, nameUser, "Allenamenti box", LocalDate.now(),
+                1L, "Allenamenti box",  "topic description", LocalDate.now(),
                 colors, registrazioni_box, nameType, 3L, false
             )
-            val topic2 = Topic(nameUser, "Peso Corporeo", colors, nameType, false)
-            val topic3 = Topic(nameUser, "Sessioni di Studio", colors, nameType, false)
-            val topic4 = Topic(nameUser, "Spese vacanze", colors, nameType, false)
-            val topic5 = Topic(nameUser, "Spese alimentari", colors, nameType, false)
-            val topic6 = Topic(nameUser, "Entrate economiche", colors, nameType, false)
-            val topic7 = Topic(nameUser, "Investimenti cryptovalute", colors, nameType, false)
-            val topic8 = Topic(nameUser, "Ore di sonno", colors, nameType, false)
-            val topic9 = Topic(nameUser, "Libri letti", colors, nameType, false)
-            val topic10 = Topic(nameUser, "Escursioni", colors, nameType, false)
+            val topic2 = Topic("Peso Corporeo", "topic description", colors, nameType, false)
+            val topic3 = Topic("Sessioni di Studio", "topic description", colors, nameType, false)
+            val topic4 = Topic("Spese vacanze", "topic description", colors, nameType, false)
+            val topic5 = Topic("Spese alimentari", "topic description", colors, nameType, false)
+            val topic6 = Topic("Entrate economiche", "topic description", colors, nameType, false)
+            val topic7 = Topic("Investimenti cryptovalute", "topic description", colors, nameType, false)
+            val topic8 = Topic("Ore di sonno", "topic description", colors, nameType, false)
+            val topic9 = Topic("Libri letti", "topic description", colors, nameType, false)
+            val topic10 = Topic("Escursioni", "topic description", colors, nameType, false)
             topicList.add(topic_box)
             topicList.add(topic2)
             topicList.add(topic3)

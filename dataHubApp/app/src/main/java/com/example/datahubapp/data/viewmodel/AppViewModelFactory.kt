@@ -6,9 +6,10 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class AppViewModelFactory : ViewModelProvider.Factory {
+class AppViewModelFactory: ViewModelProvider.Factory {
     private var context: Context? = null
-    fun AppViewModelFactory(context: Context?) {
+
+    constructor(context: Context?) {
         this.context = context
     }
 

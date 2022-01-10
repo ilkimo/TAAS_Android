@@ -11,25 +11,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import com.example.datahubapp.controller.AppController
-import com.example.datahubapp.placeholder.PlaceholderContent
+import androidx.lifecycle.Observer
+import com.example.datahubapp.data.model.Topic
+import com.example.datahubapp.data.model.UserData
+import com.example.datahubapp.data.viewmodel.AppViewModel
+import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 
 /**
  * A fragment representing a list of Items.
  */
 class TopicsFragment : Fragment() {
-
     private var columnCount = 1
+    lateinit var model: AppViewModel
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
+        model = AppViewModelFactory(context).create(AppViewModel::class.java)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,24 +44,14 @@ class TopicsFragment : Fragment() {
                 columnCount <= 1 -> LinearLayoutManager(context)
                 else -> GridLayoutManager(context, columnCount)
             }
-            adapter = MyItemRecyclerViewAdapter(PlaceholderContent.ITEMS)
+
+            adapter = TopicsRecyclerViewAdapter(model.getUserData())
+            model.getUserData().observe(viewLifecycleOwner, Observer<UserData>{ userData ->
+                // update UI
+                adapter?.let{it.notifyDataSetChanged()} //TODO verificare se funziona!
+            })
         }
 
         return view
-    }
-
-    companion object {
-
-        // TODO: Customize parameter argument names
-        const val ARG_COLUMN_COUNT = "column-count"
-
-        // TODO: Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            TopicsFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
-            }
     }
 }
