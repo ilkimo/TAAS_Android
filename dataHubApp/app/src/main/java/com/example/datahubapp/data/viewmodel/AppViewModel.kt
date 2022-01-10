@@ -1,4 +1,4 @@
-package com.example.datahubapp.viewmodel
+package com.example.datahubapp.data.viewmodel
 
 import android.content.Context
 import android.os.Build
@@ -9,10 +9,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.datahubapp.controller.AppController
+import com.example.datahubapp.controller.Repository
 import com.example.datahubapp.data.model.User
 import com.example.datahubapp.data.model.UserData
 import java.lang.Exception
-import java.util.ArrayList
 
 @RequiresApi(Build.VERSION_CODES.O)
 class AppViewModel(context: Context) : ViewModel() {
@@ -35,17 +35,19 @@ class AppViewModel(context: Context) : ViewModel() {
      * user contains data about the logged user.
      * If null, no login has been done
      */
-    private var user: MutableLiveData<User>? = null
+    private val user: MutableLiveData<User?> by lazy {
+        MutableLiveData<User?>()
+    }
 
-    private val userData: MutableLiveData<UserData> by lazy {
-        MutableLiveData<UserData>().also{
+    private val userData: MutableLiveData<UserData?> by lazy {
+        MutableLiveData<UserData?>().also{
             loadUserData()
         }
     }
 
     init {
         this.context = context
-        //repository = Repository()
+        repository = Repository()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -54,6 +56,7 @@ class AppViewModel(context: Context) : ViewModel() {
             // load data from backend, handle no internet exceptions (maybe TOAST message)
             try {
                 //TODO CHANGE WITH ACTUAL LOGIN
+                //userData.postValue(repository.getUserData(user.value))
                 userData.postValue(AppController.fakeLogin())
             } catch(e: Exception) {
                 //TODO
@@ -68,9 +71,10 @@ class AppViewModel(context: Context) : ViewModel() {
         return user == null;
     }
 
-    public getUserData(): LiveData<UseData> {
-        return userData.postValue(repository.getUserData())
-    }
+    /*public fun getUserData(): LiveData<UserData?> {
+        userData.postValue(repository.getUserData(user?.value))
+        return null as LiveData<UserData?>
+    }*/
 
     /*fun getCourseAvailable(year: Int): LiveData<List<Course>> {
         courseAvailable.postValue(repository.getCourseAvailable(year))
