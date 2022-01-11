@@ -48,10 +48,15 @@ class TopicsFragment : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_topics, container, false)
 
-        setRecyclerViewAdapter(root.findViewById(R.id.list) as RecyclerView)
-        addOnClickListeners(root, context)
-
         return root
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setRecyclerViewAdapter(view.findViewById(R.id.list) as RecyclerView)
+        addOnClickListeners(view, context)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -59,7 +64,6 @@ class TopicsFragment : Fragment() {
         var addTopic: ImageButton = root.findViewById(R.id.imageButton)
 
         addTopic.setOnClickListener { root ->
-            Toast.makeText(context, "Button pressed", Toast.LENGTH_SHORT).show()
             if (context != null) {
                 model.controller.addTopic(Topic("new_topic", "description", null, null, false), context)
             } else {

@@ -34,16 +34,14 @@ class TopicsRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = topics.value!!.topicList[position]
-        holder.idView.text = "${position}: ${item.name}"
-        //holder.contentView.text = item.content
+        val item = topics.value!!.topicList[holder.bindingAdapterPosition]
+        holder.idView.text = "${holder.bindingAdapterPosition}: ${item.name}"
     }
 
     override fun getItemCount(): Int = topics.value?.topicList?.size ?: 0
 
     inner class ViewHolder(binding: ItemTopicBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
-        val idView: TextView = binding.itemNumber
-        //val contentView: TextView = binding.content
+        val idView: TextView = binding.textView
 
         init {
             binding.root.setOnClickListener(this);

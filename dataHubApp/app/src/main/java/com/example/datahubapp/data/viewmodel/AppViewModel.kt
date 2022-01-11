@@ -52,7 +52,7 @@ class AppViewModel(context: Context) : ViewModel() {
                 Log.d("EXCEPTION", "AppViewModel.loadUserData()")
             }
         } else {
-            Toast.makeText(context, "Login needed", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Login needed", Toast.LENGTH_SHORT).show()
             userData.postValue(AppController.fakeLogin()) //TODO REMOVE ME
         }
     }
