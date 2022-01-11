@@ -1,5 +1,6 @@
 package com.example.datahubapp
 
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +21,7 @@ import com.example.datahubapp.databinding.ItemTopicBinding
  * TODO: Replace the implementation with code for your data type.
  */
 class TopicsRecyclerViewAdapter(
-    private val topics: LiveData<UserData>
+    private var topicList: ArrayList<Topic> = ArrayList()
 ) : RecyclerView.Adapter<TopicsRecyclerViewAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -34,11 +35,18 @@ class TopicsRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = topics.value!!.topicList[holder.bindingAdapterPosition]
+        val item = topicList[holder.bindingAdapterPosition]
         holder.idView.text = "${holder.bindingAdapterPosition}: ${item.name}"
     }
 
-    override fun getItemCount(): Int = topics.value?.topicList?.size ?: 0
+    override fun getItemCount(): Int = topicList.size
+
+    fun updateTopicList(topicList: ArrayList<Topic>) {
+        //this.topicList.clear()
+        this.topicList = topicList.clone() as ArrayList<Topic>
+        notifyDataSetChanged()
+        Log.d("testina", "updateTopicList")
+    }
 
     inner class ViewHolder(binding: ItemTopicBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         val idView: TextView = binding.textView

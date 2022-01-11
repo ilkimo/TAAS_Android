@@ -81,10 +81,12 @@ class TopicsFragment : Fragment() {
                 else -> GridLayoutManager(context, columnCount)
             }
 
-            adapter = TopicsRecyclerViewAdapter(model.getUserData())
+            adapter = model.getUserData().value?.topicList?.let{TopicsRecyclerViewAdapter(it)} ?: TopicsRecyclerViewAdapter(ArrayList())
             model.getUserData().observe(viewLifecycleOwner, Observer<UserData>{
                 // update UI
-                adapter?.let{it.notifyDataSetChanged()} //TODO verificare se funziona!
+                with(adapter as TopicsRecyclerViewAdapter) {
+                    updateTopicList(model.getUserData().value?.topicList ?: ArrayList())
+                }
             })
         }
     }
