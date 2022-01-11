@@ -2,8 +2,10 @@ package com.example.datahubapp
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import com.example.datahubapp.data.model.Topic
@@ -33,18 +35,26 @@ class TopicsRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = topics.value!!.topicList[position]
-        holder.idView.text = "Topic ${item.name}"
+        holder.idView.text = "${position}: ${item.name}"
         //holder.contentView.text = item.content
     }
 
     override fun getItemCount(): Int = topics.value?.topicList?.size ?: 0
 
-    inner class ViewHolder(binding: ItemTopicBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(binding: ItemTopicBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         val idView: TextView = binding.itemNumber
         //val contentView: TextView = binding.content
 
+        init {
+            binding.root.setOnClickListener(this);
+        }
+
         override fun toString(): String {
             return super.toString() + " '" + idView.text + "'"
+        }
+
+        override fun onClick(view: View) {
+            Toast.makeText(view.context, "You clicked $layoutPosition", Toast.LENGTH_SHORT).show()
         }
     }
 
