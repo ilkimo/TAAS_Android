@@ -1,6 +1,7 @@
 package com.example.datahubapp.controller
 
 import android.content.Context
+import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.model.User
 import com.example.datahubapp.data.model.UserData
 import java.io.BufferedReader
@@ -41,6 +42,10 @@ class Repository {
         }
 
         return userData
+    }
+
+    fun addTopicSuccessfull(userData: UserData?, topic: Topic): Boolean {
+        return true; //TODO CHANGE ME
     }
 
 

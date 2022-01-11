@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.datahubapp.controller.AppController
 import com.example.datahubapp.controller.Repository
+import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.model.User
 import com.example.datahubapp.data.model.UserData
 import java.lang.Exception
@@ -28,8 +29,8 @@ class AppViewModel(context: Context) : ViewModel() {
     private var selectedDayOfWeek: String? = null
     private var selectedHourStart: Int? = null*/
 
-    private val repository: Repository
-    private val context: Context
+    private val repository: Repository = Repository()
+    val controller: Controller = Controller(this, repository)
 
     /**
      * user contains data about the logged user.
@@ -39,16 +40,8 @@ class AppViewModel(context: Context) : ViewModel() {
 
     private var userData: MutableLiveData<UserData>
 
-    init {
-        this.context = context
-        repository = Repository()
-        user = MutableLiveData<User?>()
-        userData = MutableLiveData<UserData>()
-        loadUserData()
-    }
-
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun loadUserData() {
+    private fun loadUserData(context: Context) {
         if(userIsLoggedIn()) {
             // load data from backend, handle no internet exceptions (maybe TOAST message)
             try {
@@ -60,7 +53,7 @@ class AppViewModel(context: Context) : ViewModel() {
             }
         } else {
             Toast.makeText(context, "Login needed", Toast.LENGTH_LONG).show()
-            userData.postValue(AppController.fakeLogin())
+            userData.postValue(AppController.fakeLogin()) //TODO REMOVE ME
         }
     }
 
@@ -73,6 +66,8 @@ class AppViewModel(context: Context) : ViewModel() {
     private fun userIsLoggedIn(): Boolean {
         return user == null;
     }
+
+
 
     /*public fun getUserData(): LiveData<UserData?> {
         userData.postValue(repository.getUserData(user?.value))
@@ -166,4 +161,27 @@ class AppViewModel(context: Context) : ViewModel() {
         repository = Repository(context)
         this.context = context
     }*/
+
+    inner class Controller(val model: AppViewModel, val repository: Repository) {
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun addTopic(topic: Topic, context: Context) {
+            // try to push new topic to backend
+            //TODO SORROUND AYNKTASK
+            //var userData: UserData? = model.getUserData().value
+
+            if(repository.addTopicSuccessfull(userData.value, topic)) {
+                userData?.value?.topicList?.add(topic)
+                userData.postValue(userData!!.value)
+                Log.d("testino", "aggiunto: numero topic=${userData?.value?.topicList?.size}")
+            } else {
+                Toast.makeText(context, "Error in adding topic", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    init {
+        user = MutableLiveData<User?>()
+        userData = MutableLiveData<UserData>()
+        loadUserData(context)
+    }
 }

@@ -12,8 +12,8 @@ import com.example.datahubapp.data.viewmodel.AppViewModel
 import java.time.LocalDate
 import java.util.ArrayList
 
-class Controller(val model: AppViewModel, val repository: Repository) {
-    @RequiresApi(Build.VERSION_CODES.O)
+class AppController(val model: AppViewModel, val repository: Repository) {
+    /*@RequiresApi(Build.VERSION_CODES.O)
     fun addTopic(topic: Topic, context: Context) {
         // try to push new topic to backend
         //TODO SORROUND AYNKTASK
@@ -26,7 +26,7 @@ class Controller(val model: AppViewModel, val repository: Repository) {
         } else {
             Toast.makeText(context, "Error in adding topic", Toast.LENGTH_LONG).show()
         }
-    }
+    }*/
 
     companion object {
 
