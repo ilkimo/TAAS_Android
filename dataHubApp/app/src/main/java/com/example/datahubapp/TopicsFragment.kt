@@ -28,7 +28,12 @@ class TopicsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        model = AppViewModelFactory(context).create(AppViewModel::class.java)
+        var viewModelFactory = AppViewModelFactory(requireContext())
+        model = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AppViewModel::class.java)
+
+        //model = AppViewModelFactory(context).create(AppViewModel::class.java)
+        //model = ViewModelProviders.of(this).get(AppViewModel::class.java)
+        //model = ViewModelProvider(requireActivity()).get(AppViewModel::class.java)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

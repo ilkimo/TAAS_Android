@@ -1,16 +1,35 @@
 package com.example.datahubapp.controller
 
+import android.content.Context
 import android.os.Build
+import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.datahubapp.data.model.*
 import com.example.datahubapp.data.model.classicData.IntegerData
 import com.example.datahubapp.data.model.classicData.StringData
+import com.example.datahubapp.data.viewmodel.AppViewModel
 import java.time.LocalDate
 import java.util.ArrayList
 
-class AppController {
+class Controller(val model: AppViewModel, val repository: Repository) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun addTopic(topic: Topic, context: Context) {
+        // try to push new topic to backend
+        //TODO SORROUND AYNKTASK
+        var userData: UserData? = model.getUserData().value
+
+        if(repository.addTopicSuccessfull(userData, topic)) {
+            userData?.topicList?.add(topic)
+            model.getUserData().postValue()
+            Log.d("testino", "aggiunto: numero topic=${userData?.topicList?.size}")
+        } else {
+            Toast.makeText(context, "Error in adding topic", Toast.LENGTH_LONG).show()
+        }
+    }
 
     companion object {
+
         @RequiresApi(Build.VERSION_CODES.O)
         fun fakeLogin(): UserData {
             //INIZIALIZZO OGGETTO USERDATA
