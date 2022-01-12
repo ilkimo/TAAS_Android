@@ -19,7 +19,7 @@ import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 
 import com.example.datahubapp.databinding.ItemTopicBinding
-
+import com.example.datahubapp.databinding.TopicItemBinding
 
 
 /**
@@ -33,7 +33,7 @@ class TopicsRecyclerViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return ViewHolder(
-            ItemTopicBinding.inflate(
+            TopicItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -43,7 +43,7 @@ class TopicsRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = topicList[holder.bindingAdapterPosition]
-        holder.idView.text = "${holder.bindingAdapterPosition}: ${item.name}"
+        holder.topicName.text = "${holder.bindingAdapterPosition}: ${item.name}"
     }
 
     override fun getItemCount(): Int = topicList.size
@@ -55,8 +55,8 @@ class TopicsRecyclerViewAdapter(
         Log.d("testina", "updateTopicList")
     }
 
-    inner class ViewHolder(binding: ItemTopicBinding, fragment: TopicsFragment) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
-        val idView: TextView = binding.textView
+    inner class ViewHolder(binding: TopicItemBinding, fragment: TopicsFragment) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+        val topicName: TextView = binding.topicName
         var model: AppViewModel
 
         init {
@@ -67,12 +67,12 @@ class TopicsRecyclerViewAdapter(
         }
 
         override fun toString(): String {
-            return super.toString() + " '" + idView.text + "'"
+            return super.toString() + " '" + topicName.text + "'"
         }
 
         override fun onClick(view: View) {
             //Toast.makeText(view.context, "You clicked $layoutPosition", Toast.LENGTH_SHORT).show()
-            model.controller.setSelectedTopic(idView.text as String)
+            model.controller.setSelectedTopic(topicName.text as String)
 
             NavHostFragment.findNavController(fragment).navigate(R.id.action_topicsFragment_to_selectedTopicFragment)
         }
