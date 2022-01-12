@@ -5,24 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.example.datahubapp.databinding.ActivityMainBinding
 
 import com.example.datahubapp.placeholder.PlaceholderContent.PlaceholderItem
-import com.example.datahubapp.databinding.ItemTopicBinding
-import java.security.AccessController.getContext
+import com.example.datahubapp.databinding.FragmentSelectedTopicBinding
 
 /**
  * [RecyclerView.Adapter] that can display a [PlaceholderItem].
  * TODO: Replace the implementation with code for your data type.
  */
-class MyItemRecyclerViewAdapter(
+class SelectedTopicRecyclerViewAdapter(
     private val values: List<PlaceholderItem>
-) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<SelectedTopicRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return ViewHolder(
-            ItemTopicBinding.inflate(
+            FragmentSelectedTopicBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -33,18 +31,19 @@ class MyItemRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.idView.text = "Topic ${item.id}"
-        //holder.contentView.text = item.content
+        holder.idView.text = item.id
+        holder.contentView.text = item.content
     }
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(binding: ItemTopicBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(binding: FragmentSelectedTopicBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         val idView: TextView = binding.itemNumber
-        //val contentView: TextView = binding.content
+        val contentView: TextView = binding.content
 
         override fun toString(): String {
-            return super.toString() + " '" + idView.text + "'"
+            return super.toString() + " '" + contentView.text + "'"
         }
     }
 
