@@ -28,7 +28,9 @@
         android:name="com.example.datahubapp.SelectedTopicFragment"
         android:label="fragment_selected_topic_list"
         tools:layout="@layout/fragment_selected_topic_list" >
-        <argument android:name="topicName" />
+        <argument
+            android:name="topicName"
+            app:nullable="false"/>
     </fragment>
     <fragment
         android:id="@+id/sharedTopicsFragment"

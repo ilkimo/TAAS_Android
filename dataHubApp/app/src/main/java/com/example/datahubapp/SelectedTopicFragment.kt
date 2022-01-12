@@ -1,5 +1,6 @@
 package com.example.datahubapp
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -8,6 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import androidx.lifecycle.ViewModelProviders
+import com.example.datahubapp.data.model.Topic
+import com.example.datahubapp.data.viewmodel.AppViewModel
+import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import com.example.datahubapp.placeholder.PlaceholderContent
 
 /**
@@ -16,9 +22,27 @@ import com.example.datahubapp.placeholder.PlaceholderContent
 class SelectedTopicFragment : Fragment() {
 
     private var columnCount = 1
+    lateinit var model: AppViewModel
+    val TOPIC_NAME = "topic-name"
+    lateinit var selectedTopic: Topic
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        var viewModelFactory = AppViewModelFactory(requireContext())
+        model = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AppViewModel::class.java)
+
+        var topicList = model.getUserData().value?.topicList?.filter{
+            it.name.equals(arguments?.getString(TOPIC_NAME))
+        } as ArrayList<Topic>?
+
+        if((topicList?.size ?: -1) > 0) {
+            //bind to topic
+            selectedTopic = topicList!![0]
+        } else {
+            throw Error("invalid topic selected")
+        }
 
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
@@ -38,7 +62,7 @@ class SelectedTopicFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = SelectedTopicRecyclerViewAdapter(PlaceholderContent.ITEMS)
+                adapter = SelectedTopicRecyclerViewAdapter(selectedTopic)
             }
         }
         return view

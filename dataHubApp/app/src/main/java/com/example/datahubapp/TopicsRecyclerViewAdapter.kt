@@ -74,7 +74,13 @@ class TopicsRecyclerViewAdapter(
             //Toast.makeText(view.context, "You clicked $layoutPosition", Toast.LENGTH_SHORT).show()
             model.controller.setSelectedTopic(topicName.text as String)
 
+            var navi: NavDirections = TopicsFragmentDirections.actionTopicsFragmentToSelectedTopicFragment("prova");
             NavHostFragment.findNavController(fragment).navigate(R.id.action_topicsFragment_to_selectedTopicFragment)
+
+            /*
+            NavDirections navi = TopicsFragmentDirections.action_topicsFragment_to_selectedTopicFragment("prova");
+            NavHostFragment.findNavController(this).navigate(navi);
+             */
         }
     }
 

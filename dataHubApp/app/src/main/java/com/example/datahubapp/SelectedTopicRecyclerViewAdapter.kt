@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.datahubapp.data.model.Registration
+import com.example.datahubapp.data.model.Topic
 
 import com.example.datahubapp.placeholder.PlaceholderContent.PlaceholderItem
 import com.example.datahubapp.databinding.FragmentSelectedTopicBinding
@@ -14,8 +16,9 @@ import com.example.datahubapp.databinding.FragmentSelectedTopicBinding
  * TODO: Replace the implementation with code for your data type.
  */
 class SelectedTopicRecyclerViewAdapter(
-    private val values: List<PlaceholderItem>
+    private val selectedTopic: Topic
 ) : RecyclerView.Adapter<SelectedTopicRecyclerViewAdapter.ViewHolder>() {
+    var registrations: ArrayList<Registration> = selectedTopic.listRegistrazioni //TODO QUIIIII
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -26,7 +29,6 @@ class SelectedTopicRecyclerViewAdapter(
                 false
             )
         )
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
