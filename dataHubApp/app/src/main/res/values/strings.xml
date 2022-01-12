@@ -26,6 +26,7 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="home" translatable="false">Home</string>
+    <string name="sharedTopics">Shared Topics</string>
     <string name="profile">Profile</string>
     <string name="settings">Settings</string>
     <string name="Topics">Topics</string>
