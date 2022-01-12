@@ -7,7 +7,7 @@
         android:icon="@drawable/ic_baseline_folder_24"
         />
     <item
-        android:id="@+id/homeFragment"
+        android:id="@+id/sharedTopicsFragment"
         android:title="@string/sharedTopics"
         android:icon="@drawable/ic_baseline_topics_shared_24"
     />

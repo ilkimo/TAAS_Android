@@ -6,11 +6,6 @@
     app:startDestination="@id/profileFragment">
 
     <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.datahubapp.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
-    <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.datahubapp.SettingsFragment"
         android:label="SettingsFragment" />
@@ -35,4 +30,9 @@
         tools:layout="@layout/fragment_selected_topic_list" >
         <argument android:name="topicName" />
     </fragment>
+    <fragment
+        android:id="@+id/sharedTopicsFragment"
+        android:name="com.example.datahubapp.SharedTopicsFragment"
+        android:label="fragment_shared_topics_list"
+        tools:layout="@layout/fragment_shared_topics_list" />
 </navigation>
