@@ -9,6 +9,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.NavHostFragment
 import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.model.UserData
 
@@ -21,7 +23,8 @@ import com.example.datahubapp.databinding.ItemTopicBinding
  * TODO: Replace the implementation with code for your data type.
  */
 class TopicsRecyclerViewAdapter(
-    private var topicList: ArrayList<Topic> = ArrayList()
+    private var topicList: ArrayList<Topic> = ArrayList(),
+    var fragment: TopicsFragment
 ) : RecyclerView.Adapter<TopicsRecyclerViewAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -30,7 +33,7 @@ class TopicsRecyclerViewAdapter(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ), fragment
         )
     }
 
@@ -48,7 +51,7 @@ class TopicsRecyclerViewAdapter(
         Log.d("testina", "updateTopicList")
     }
 
-    inner class ViewHolder(binding: ItemTopicBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+    inner class ViewHolder(binding: ItemTopicBinding, fragment: TopicsFragment) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         val idView: TextView = binding.textView
 
         init {
@@ -61,6 +64,8 @@ class TopicsRecyclerViewAdapter(
 
         override fun onClick(view: View) {
             Toast.makeText(view.context, "You clicked $layoutPosition", Toast.LENGTH_SHORT).show()
+
+            NavHostFragment.findNavController(fragment).navigate(R.id.action_topicsFragment_to_selectedTopicFragment)
         }
     }
 
