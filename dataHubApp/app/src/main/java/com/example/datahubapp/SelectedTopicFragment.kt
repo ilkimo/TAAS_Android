@@ -32,7 +32,7 @@ class SelectedTopicFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_selected_topic_list, container, false)
 
         // Set the adapter
-        if (view is RecyclerView) {
+        if(view is RecyclerView) {
             with(view) {
                 layoutManager = when {
                     columnCount <= 1 -> LinearLayoutManager(context)

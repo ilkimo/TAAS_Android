@@ -7,12 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
 import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.model.UserData
+import com.example.datahubapp.data.viewmodel.AppViewModel
+import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 
 import com.example.datahubapp.databinding.ItemTopicBinding
 
@@ -53,8 +57,12 @@ class TopicsRecyclerViewAdapter(
 
     inner class ViewHolder(binding: ItemTopicBinding, fragment: TopicsFragment) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         val idView: TextView = binding.textView
+        var model: AppViewModel
 
         init {
+            var viewModelFactory = AppViewModelFactory(fragment.requireContext())
+            model = ViewModelProviders.of(fragment.requireActivity(), viewModelFactory).get(AppViewModel::class.java)
+
             binding.root.setOnClickListener(this);
         }
 
@@ -63,7 +71,8 @@ class TopicsRecyclerViewAdapter(
         }
 
         override fun onClick(view: View) {
-            Toast.makeText(view.context, "You clicked $layoutPosition", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(view.context, "You clicked $layoutPosition", Toast.LENGTH_SHORT).show()
+            model.controller.setSelectedTopic(idView.text as String)
 
             NavHostFragment.findNavController(fragment).navigate(R.id.action_topicsFragment_to_selectedTopicFragment)
         }

@@ -36,9 +36,9 @@ class TopicsFragment : Fragment() {
         var viewModelFactory = AppViewModelFactory(requireContext())
         model = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AppViewModel::class.java)
 
-        //model = AppViewModelFactory(context).create(AppViewModel::class.java)
-        //model = ViewModelProviders.of(this).get(AppViewModel::class.java)
-        //model = ViewModelProvider(requireActivity()).get(AppViewModel::class.java)
+        arguments?.let {
+            columnCount = it.getInt(SelectedTopicFragment.ARG_COLUMN_COUNT)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

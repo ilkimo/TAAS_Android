@@ -24,13 +24,12 @@
         android:name="com.example.datahubapp.TopicsFragment"
         android:label="fragment_topics_list"
         tools:layout="@layout/fragment_topics" >
-        <action
-            android:id="@+id/action_topicsFragment_to_selectedTopicFragment"
-            app:destination="@id/selectedTopicFragment" />
     </fragment>
     <fragment
         android:id="@+id/selectedTopicFragment"
         android:name="com.example.datahubapp.SelectedTopicFragment"
         android:label="fragment_selected_topic_list"
-        tools:layout="@layout/fragment_selected_topic_list" />
+        tools:layout="@layout/fragment_selected_topic_list" >
+        <argument android:name="topicName" />
+    </fragment>
 </navigation>

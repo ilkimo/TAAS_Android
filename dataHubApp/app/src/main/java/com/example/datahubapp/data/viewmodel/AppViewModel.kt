@@ -40,6 +40,12 @@ class AppViewModel(context: Context) : ViewModel() {
 
     private var userData: MutableLiveData<UserData>
 
+    init {
+        user = MutableLiveData<User?>()
+        userData = MutableLiveData<UserData>()
+        loadUserData(context)
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun loadUserData(context: Context) {
         if(userIsLoggedIn()) {
@@ -177,11 +183,9 @@ class AppViewModel(context: Context) : ViewModel() {
                 Toast.makeText(context, "Error in adding topic", Toast.LENGTH_LONG).show()
             }
         }
-    }
 
-    init {
-        user = MutableLiveData<User?>()
-        userData = MutableLiveData<UserData>()
-        loadUserData(context)
+        fun setSelectedTopic(topicName: String) {
+            //TODO
+        }
     }
 }
