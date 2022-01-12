@@ -34,5 +34,14 @@
         android:id="@+id/sharedTopicsFragment"
         android:name="com.example.datahubapp.SharedTopicsFragment"
         android:label="fragment_shared_topics_list"
-        tools:layout="@layout/fragment_shared_topics_list" />
+        tools:layout="@layout/fragment_shared_topics_list" >
+        <action
+            android:id="@+id/action_sharedTopicsFragment_to_selectedSharedTopicFragment"
+            app:destination="@id/selectedSharedTopicFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectedSharedTopicFragment"
+        android:name="com.example.datahubapp.SelectedSharedTopicFragment"
+        android:label="fragment_selected_shared_topic_list"
+        tools:layout="@layout/fragment_selected_shared_topic_list" />
 </navigation>

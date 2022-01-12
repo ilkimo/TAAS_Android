@@ -40,10 +40,14 @@ class AppViewModel(context: Context) : ViewModel() {
 
     private var userData: MutableLiveData<UserData>
 
+    private var sharedTopics: MutableLiveData<ArrayList<Topic>>
+
     init {
         user = MutableLiveData<User?>()
         userData = MutableLiveData<UserData>()
+        sharedTopics = MutableLiveData<ArrayList<Topic>>()
         loadUserData(context)
+        loadSharedTopics(context)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -63,10 +67,34 @@ class AppViewModel(context: Context) : ViewModel() {
         }
     }
 
+    //Funzione per caricare i topic condivisi
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun loadSharedTopics(context: Context) {
+        if(userIsLoggedIn()) {
+            // load data from backend, handle no internet exceptions (maybe TOAST message)
+            try {
+                //TODO CHANGE WITH ACTUAL LOGIN
+                //userData.postValue(repository.getUserData(user.value))
+            } catch(e: Exception) {
+                //TODO
+                Log.d("EXCEPTION", "AppViewModel.loadUserData()")
+            }
+        } else {
+            Toast.makeText(context, "Login needed", Toast.LENGTH_SHORT).show()
+            sharedTopics.postValue(AppController.fakeSharedTopics()) //TODO REMOVE ME
+        }
+    }
+
     fun getUserData(): LiveData<UserData> {
         //loadUserData() //I think that with this, the userData refreshes every time with current backend state
 
         return userData
+    }
+
+    fun getSharedTopics(): LiveData<ArrayList<Topic>> {
+        //loadUserData() //I think that with this, the userData refreshes every time with current backend state
+
+        return sharedTopics
     }
 
     private fun userIsLoggedIn(): Boolean {
@@ -184,7 +212,27 @@ class AppViewModel(context: Context) : ViewModel() {
             }
         }
 
+        //TODO: remove me -> serve per testare che vada
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun addSharedTopic(topic: Topic, context: Context) {
+            // try to push new topic to backend
+            //TODO SORROUND AYNKTASK
+            //var userData: UserData? = model.getUserData().value
+
+            if(repository.addTopicSuccessfull(userData.value, topic)) {
+                sharedTopics.value?.add(topic)
+                sharedTopics.postValue(sharedTopics!!.value)
+                Log.d("testino", "aggiunto: numero topic=${sharedTopics?.value?.size}")
+            } else {
+                Toast.makeText(context, "Error in adding topic", Toast.LENGTH_LONG).show()
+            }
+        }
+
         fun setSelectedTopic(topicName: String) {
+            //TODO
+        }
+
+        fun setSelectedSharedTopic(topicName: String) {
             //TODO
         }
     }
