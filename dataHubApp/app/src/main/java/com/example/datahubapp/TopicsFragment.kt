@@ -61,7 +61,7 @@ class TopicsFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun addOnClickListeners(root: View, context: Context?) {
-        var addTopic: ImageButton = root.findViewById(R.id.imageButton)
+        var addTopic: ImageButton = root.findViewById(R.id.addTopicButton)
 
         addTopic.setOnClickListener { root ->
             if (context != null) {
