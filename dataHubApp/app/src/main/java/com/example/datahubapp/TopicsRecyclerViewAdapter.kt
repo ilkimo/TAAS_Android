@@ -43,7 +43,7 @@ class TopicsRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = topicList[holder.bindingAdapterPosition]
-        holder.topicName.text = "${holder.bindingAdapterPosition}: ${item.name}"
+        holder.topicName.text = item.name
     }
 
     override fun getItemCount(): Int = topicList.size
@@ -72,9 +72,14 @@ class TopicsRecyclerViewAdapter(
 
         override fun onClick(view: View) {
             //Toast.makeText(view.context, "You clicked $layoutPosition", Toast.LENGTH_SHORT).show()
-            model.controller.setSelectedTopic(topicName.text as String)
 
-            NavHostFragment.findNavController(fragment).navigate(R.id.action_topicsFragment_to_selectedTopicFragment)
+            var navigationDirection: NavDirections = TopicsFragmentDirections.actionTopicsFragmentToSelectedTopicFragment(topicName.text as String);
+            NavHostFragment.findNavController(fragment).navigate(navigationDirection)
+
+            /*
+            NavDirections navi = TopicsFragmentDirections.action_topicsFragment_to_selectedTopicFragment("prova");
+            NavHostFragment.findNavController(this).navigate(navi);
+             */
         }
     }
 
