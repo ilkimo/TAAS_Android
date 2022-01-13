@@ -62,6 +62,7 @@ class SelectedTopicFragment : Fragment() {
 
         root.findViewById<TextView>(R.id.textView2).text = selectedTopic.name
 
+
         // Set the adapter
         if(view is RecyclerView) {
             with(view) {
