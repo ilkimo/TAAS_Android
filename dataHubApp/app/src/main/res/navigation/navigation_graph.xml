@@ -13,7 +13,11 @@
         android:id="@+id/profileFragment"
         android:name="com.example.datahubapp.ui.login.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_profileFragment_to_createAccountFragment"
+            app:destination="@id/createAccountFragment" />
+    </fragment>
     <fragment
         android:id="@+id/topicsFragment"
         android:name="com.example.datahubapp.TopicsFragment"
@@ -23,6 +27,7 @@
             android:id="@+id/action_topicsFragment_to_selectedTopicFragment"
             app:destination="@id/selectedTopicFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/selectedTopicFragment"
         android:name="com.example.datahubapp.SelectedTopicFragment"
@@ -35,6 +40,8 @@
             android:id="@+id/action_selectedTopicFragment_to_selectedRegistrationFragment"
             app:destination="@id/selectedRegistrationFragment" />
     </fragment>
+
+
     <fragment
         android:id="@+id/sharedTopicsFragment"
         android:name="com.example.datahubapp.SharedTopicsFragment"
@@ -44,11 +51,13 @@
             android:id="@+id/action_sharedTopicsFragment_to_selectedSharedTopicFragment"
             app:destination="@id/selectedSharedTopicFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/selectedSharedTopicFragment"
         android:name="com.example.datahubapp.SelectedSharedTopicFragment"
         android:label="fragment_selected_shared_topic_list"
         tools:layout="@layout/fragment_selected_shared_topic_list" />
+
     <fragment
         android:id="@+id/selectedRegistrationFragment"
         android:name="com.example.datahubapp.SelectedRegistrationFragment"
@@ -58,4 +67,15 @@
             android:name="id"
             app:argType="long" />
     </fragment>
+
+    <fragment
+        android:id="@+id/createAccountFragment"
+        android:name="com.example.datahubapp.CreateAccountFragment"
+        android:label="fragment_create_account"
+        tools:layout="@layout/fragment_create_account" >
+        <action
+            android:id="@+id/action_createAccountFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+
 </navigation>
