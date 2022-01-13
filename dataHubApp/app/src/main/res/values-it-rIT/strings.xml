@@ -24,4 +24,8 @@
     <string name="sharedTopics">Argomenti condivisi</string>
     <string name="no_account_yet_create_one">Non hai un account? Creane uno!</string>
 
+    <string name="confirm_password">Conferma Password</string>
+    <string name="create_account">Crea un nuovo account</string>
+    <string name="already_have_an_account_login">Hai già un account? Esegui il log in!</string>
+
 </resources>

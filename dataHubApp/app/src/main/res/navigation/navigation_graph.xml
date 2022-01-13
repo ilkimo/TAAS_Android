@@ -13,7 +13,11 @@
         android:id="@+id/profileFragment"
         android:name="com.example.datahubapp.ui.login.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_profileFragment_to_createAccountFragment"
+            app:destination="@id/createAccountFragment" />
+    </fragment>
     <fragment
         android:id="@+id/topicsFragment"
         android:name="com.example.datahubapp.TopicsFragment"
@@ -46,4 +50,9 @@
         android:name="com.example.datahubapp.SelectedSharedTopicFragment"
         android:label="fragment_selected_shared_topic_list"
         tools:layout="@layout/fragment_selected_shared_topic_list" />
+    <fragment
+        android:id="@+id/createAccountFragment"
+        android:name="com.example.datahubapp.CreateAccountFragment"
+        android:label="fragment_create_account"
+        tools:layout="@layout/fragment_create_account" />
 </navigation>

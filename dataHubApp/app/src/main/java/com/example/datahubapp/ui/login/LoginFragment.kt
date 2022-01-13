@@ -17,9 +17,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.NavHostFragment
 import com.example.datahubapp.databinding.FragmentLoginBinding
 
 import com.example.datahubapp.R
+import com.example.datahubapp.TopicsFragmentDirections
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -139,6 +142,13 @@ class LoginFragment : Fragment() {
         googleLoginBtn.setOnClickListener {
             Log.d("Google Login", "Login con google cliccato!")
             signIn()
+        }
+
+        val createAccount = binding.linkSignup
+
+        createAccount.setOnClickListener {
+            var navigationDirection: NavDirections = LoginFragmentDirections.actionProfileFragmentToCreateAccountFragment();
+            NavHostFragment.findNavController(this).navigate(navigationDirection)
         }
 
     }
