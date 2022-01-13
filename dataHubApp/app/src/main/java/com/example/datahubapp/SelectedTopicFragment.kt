@@ -2,6 +2,7 @@ package com.example.datahubapp
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,7 +24,7 @@ class SelectedTopicFragment : Fragment() {
 
     private var columnCount = 1
     lateinit var model: AppViewModel
-    val TOPIC_NAME = "topic-name"
+    private val TOPIC_NAME: String = "topicName"
     lateinit var selectedTopic: Topic
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -32,7 +33,9 @@ class SelectedTopicFragment : Fragment() {
 
         var viewModelFactory = AppViewModelFactory(requireContext())
         model = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AppViewModel::class.java)
+        Log.d("TEST_TOPIC", "${arguments?.getString(TOPIC_NAME)}")
 
+        //TODO assert business rule topic.name unique for each user
         var topicList = model.getUserData().value?.topicList?.filter{
             it.name.equals(arguments?.getString(TOPIC_NAME))
         } as ArrayList<Topic>?

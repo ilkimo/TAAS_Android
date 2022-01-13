@@ -18,7 +18,7 @@ import com.example.datahubapp.databinding.FragmentSelectedTopicBinding
 class SelectedTopicRecyclerViewAdapter(
     private val selectedTopic: Topic
 ) : RecyclerView.Adapter<SelectedTopicRecyclerViewAdapter.ViewHolder>() {
-    var registrations: ArrayList<Registration> = selectedTopic.listRegistrazioni //TODO QUIIIII
+    var registrationsList: ArrayList<Registration> = selectedTopic.listRegistrazioni
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -32,12 +32,12 @@ class SelectedTopicRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = values[position]
-        holder.idView.text = item.id
-        holder.contentView.text = item.content
+        val item = registrationsList[position]
+        holder.idView.text = item.id.toString()
+        holder.contentView.text = item.creationDate.toString()
     }
 
-    override fun getItemCount(): Int = values.size
+    override fun getItemCount(): Int = registrationsList.size
 
     inner class ViewHolder(binding: FragmentSelectedTopicBinding) :
         RecyclerView.ViewHolder(binding.root) {

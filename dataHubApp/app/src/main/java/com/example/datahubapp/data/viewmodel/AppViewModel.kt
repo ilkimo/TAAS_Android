@@ -183,9 +183,5 @@ class AppViewModel(context: Context) : ViewModel() {
                 Toast.makeText(context, "Error in adding topic", Toast.LENGTH_LONG).show()
             }
         }
-
-        fun setSelectedTopic(topicName: String) {
-            //TODO
-        }
     }
 }

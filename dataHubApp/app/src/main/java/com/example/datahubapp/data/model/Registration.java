@@ -41,6 +41,7 @@ public class Registration {
         this.typeNameRegistration = typeNameRegistration;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public Registration(ArrayList<SourceDataInterface> val){
         this.creationDate = LocalDate.now();
         this.typeNameRegistration = val;
