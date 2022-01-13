@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -57,6 +58,11 @@ class TopicsFragment : Fragment() {
 
         setRecyclerViewAdapter(view.findViewById(R.id.list) as RecyclerView)
         addOnClickListeners(view, context)
+
+        //Set back arrow visible and enabled
+        (activity as AppCompatActivity?)?.getSupportActionBar()?.setDisplayHomeAsUpEnabled(false)
+        (activity as AppCompatActivity?)?.getSupportActionBar()?.setDisplayShowHomeEnabled(false)
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

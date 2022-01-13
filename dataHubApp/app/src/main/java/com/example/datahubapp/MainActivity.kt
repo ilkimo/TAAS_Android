@@ -2,6 +2,7 @@ package com.example.datahubapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
@@ -23,5 +24,12 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar?.title = "Toolbar"
         //toolbar?.navigationIcon = ContextCompat.getDrawable(this,R.drawable.ic_menu_black_24dp)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        Log.d("Toolbar", "Back button pressed");
+        //this.getSupportFragmentManager().popBackStack();
+        //onBackPressed()
+        return true
     }
 }
