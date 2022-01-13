@@ -12,6 +12,7 @@ import com.example.datahubapp.data.model.Topic
 
 import com.example.datahubapp.placeholder.PlaceholderContent.PlaceholderItem
 import com.example.datahubapp.databinding.FragmentSelectedTopicBinding
+import com.example.datahubapp.databinding.RegistrationTopicItemBinding
 
 /**
  * [RecyclerView.Adapter] that can display a [PlaceholderItem].
@@ -26,7 +27,7 @@ class SelectedTopicRecyclerViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return ViewHolder(
-            FragmentSelectedTopicBinding.inflate(
+            RegistrationTopicItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -42,10 +43,10 @@ class SelectedTopicRecyclerViewAdapter(
 
     override fun getItemCount(): Int = registrationsList.size
 
-    inner class ViewHolder(binding: FragmentSelectedTopicBinding) :
+    inner class ViewHolder(binding: RegistrationTopicItemBinding) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
-        val idView: TextView = binding.itemNumber
-        val contentView: TextView = binding.date
+        val idView: TextView = binding.registrationName
+        val contentView: TextView = binding.registrationDate
 
         init {
             binding.root.setOnClickListener(this)
