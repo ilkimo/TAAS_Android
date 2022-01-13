@@ -37,8 +37,7 @@ class TopicsRecyclerViewAdapter(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), fragment
-        )
+            ))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -55,7 +54,7 @@ class TopicsRecyclerViewAdapter(
         Log.d("testina", "updateTopicList")
     }
 
-    inner class ViewHolder(binding: TopicItemBinding, fragment: TopicsFragment) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+    inner class ViewHolder(binding: TopicItemBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         val topicName: TextView = binding.topicName
         var model: AppViewModel
 
@@ -63,7 +62,7 @@ class TopicsRecyclerViewAdapter(
             var viewModelFactory = AppViewModelFactory(fragment.requireContext())
             model = ViewModelProviders.of(fragment.requireActivity(), viewModelFactory).get(AppViewModel::class.java)
 
-            binding.root.setOnClickListener(this);
+            binding.root.setOnClickListener(this)
         }
 
         override fun toString(): String {

@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.NavHostFragment
 import com.example.datahubapp.data.model.Registration
 import com.example.datahubapp.data.model.Topic
 
@@ -16,7 +18,8 @@ import com.example.datahubapp.databinding.FragmentSelectedTopicBinding
  * TODO: Replace the implementation with code for your data type.
  */
 class SelectedTopicRecyclerViewAdapter(
-    private val selectedTopic: Topic
+    selectedTopic: Topic,
+    var fragment: SelectedTopicFragment
 ) : RecyclerView.Adapter<SelectedTopicRecyclerViewAdapter.ViewHolder>() {
     var registrationsList: ArrayList<Registration> = selectedTopic.listRegistrazioni
 
@@ -40,12 +43,28 @@ class SelectedTopicRecyclerViewAdapter(
     override fun getItemCount(): Int = registrationsList.size
 
     inner class ViewHolder(binding: FragmentSelectedTopicBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         val idView: TextView = binding.itemNumber
         val contentView: TextView = binding.date
 
+        init {
+            binding.root.setOnClickListener(this)
+        }
+
         override fun toString(): String {
             return super.toString() + " '" + contentView.text + "'"
+        }
+
+        override fun onClick(view: View) {
+            //Toast.makeText(view.context, "You clicked $layoutPosition", Toast.LENGTH_SHORT).show()
+
+            var navigationDirection: NavDirections = SelectedTopicFragmentDirections.actionSelectedTopicFragmentToSelectedRegistrationFragment(idView.text.toString().toLong())
+            NavHostFragment.findNavController(fragment).navigate(navigationDirection)
+
+            /*
+            NavDirections navi = TopicsFragmentDirections.action_topicsFragment_to_selectedTopicFragment("prova");
+            NavHostFragment.findNavController(this).navigate(navi);
+             */
         }
     }
 

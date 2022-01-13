@@ -31,6 +31,9 @@
         <argument
             android:name="topicName"
             app:nullable="false"/>
+        <action
+            android:id="@+id/action_selectedTopicFragment_to_selectedRegistrationFragment"
+            app:destination="@id/selectedRegistrationFragment" />
     </fragment>
     <fragment
         android:id="@+id/sharedTopicsFragment"
@@ -46,4 +49,13 @@
         android:name="com.example.datahubapp.SelectedSharedTopicFragment"
         android:label="fragment_selected_shared_topic_list"
         tools:layout="@layout/fragment_selected_shared_topic_list" />
+    <fragment
+        android:id="@+id/selectedRegistrationFragment"
+        android:name="com.example.datahubapp.SelectedRegistrationFragment"
+        android:label="fragment_selected_registration_list"
+        tools:layout="@layout/fragment_selected_registration_list" >
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
 </navigation>
