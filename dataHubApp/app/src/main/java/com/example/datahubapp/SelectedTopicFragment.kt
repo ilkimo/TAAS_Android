@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProviders
 import com.example.datahubapp.data.model.Topic
@@ -56,7 +57,10 @@ class SelectedTopicFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_selected_topic_list, container, false)
+        val root = inflater.inflate(R.layout.fragment_selected_topic_list, container, false)
+        val view: RecyclerView = root.findViewById(R.id.list)
+
+        root.findViewById<TextView>(R.id.textView2).text = selectedTopic.name
 
         // Set the adapter
         if(view is RecyclerView) {
@@ -68,7 +72,7 @@ class SelectedTopicFragment : Fragment() {
                 adapter = SelectedTopicRecyclerViewAdapter(selectedTopic)
             }
         }
-        return view
+        return root
     }
 
     companion object {
