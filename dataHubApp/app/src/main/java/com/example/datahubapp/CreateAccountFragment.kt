@@ -28,9 +28,12 @@ import android.app.ProgressDialog
 import android.widget.Button
 
 import android.widget.EditText
-
-
-
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -49,6 +52,9 @@ class CreateAccountFragment : Fragment() {
     private var _binding: FragmentCreateAccountBinding? = null
     private val googleToken: String = "282646887193-mj946se9m6a7qgmkl2npmrjfksbcht6r.apps.googleusercontent.com"
 
+    //Google Login
+    lateinit var mGoogleSignInClient: GoogleSignInClient
+    private val RC_SIGN_IN = 9001
 
     private val TAG = "CreateAccountFragment"
     private var emailText: EditText? = null
@@ -169,6 +175,72 @@ class CreateAccountFragment : Fragment() {
                 confirmPasswordTIL!!.error = null
             }
         })
+
+        //Google Login
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(googleToken)
+            .requestEmail()
+            .build()
+
+        mGoogleSignInClient = activity?.let { GoogleSignIn.getClient(it, gso) }!!
+
+        val googleLoginBtn = binding.signUpButton
+
+        googleLoginBtn.setOnClickListener {
+            Log.d("Google Create Account", "Create account con google cliccato!")
+            signUp()
+        }
+    }
+
+    private fun signUp() {
+        val signInIntent = mGoogleSignInClient.signInIntent
+        startActivityForResult(
+            signInIntent, RC_SIGN_IN
+        )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_SIGN_IN) {
+            val task =
+                GoogleSignIn.getSignedInAccountFromIntent(data)
+            handleSignUpResult(task)
+        }
+    }
+
+    private fun handleSignUpResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            val account = completedTask.getResult(
+                ApiException::class.java
+            )
+            // Signed in successfully
+            val googleId = account?.id ?: ""
+            Log.i("Google ID",googleId)
+
+            val googleFirstName = account?.givenName ?: ""
+            Log.i("Google First Name", googleFirstName)
+
+            val googleLastName = account?.familyName ?: ""
+            Log.i("Google Last Name", googleLastName)
+
+            val googleEmail = account?.email ?: ""
+            Log.i("Google Email", googleEmail)
+
+            val googleProfilePicURL = account?.photoUrl.toString()
+            Log.i("Google Profile Pic URL", googleProfilePicURL)
+
+            val googleIdToken = account?.idToken ?: ""
+            Log.i("Google ID Token", googleIdToken)
+
+            //TODO: loggare nell'app
+
+        } catch (e: ApiException) {
+            // Sign in was unsuccessful
+            Log.e(
+                "failed code=", e.statusCode.toString()
+            )
+            Log.d("Google token", googleToken)
+        }
     }
 
     fun createAccount() {
