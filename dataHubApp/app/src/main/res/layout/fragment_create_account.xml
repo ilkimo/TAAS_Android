@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fitsSystemWindows="true">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
+    tools:context=".CreateAccountFragment"
+    android:name="com.example.datahubapp.CreateAccountFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -96,7 +99,7 @@
             android:text="@string/create_account" />
 
         <TextView
-            android:id="@+id/link_login"
+            android:id="@+id/go_to_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
