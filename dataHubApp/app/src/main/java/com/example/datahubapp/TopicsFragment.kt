@@ -63,7 +63,7 @@ class TopicsFragment : Fragment() {
     fun addOnClickListeners(root: View, context: Context?) {
         var addTopic: ImageButton = root.findViewById(R.id.addTopicButton)
 
-        addTopic.setOnClickListener { root ->
+        addTopic.setOnClickListener {
             if (context != null) {
                 model.controller.addTopic(Topic("new_topic", "description", null, null, false), context)
             } else {

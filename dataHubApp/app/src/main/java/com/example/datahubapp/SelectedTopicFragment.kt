@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProviders
 import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.viewmodel.AppViewModel
@@ -73,6 +75,22 @@ class SelectedTopicFragment : Fragment() {
             }
         }
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        var backButton: ImageButton = view.findViewById(R.id.imageButton2)
+
+        backButton.setOnClickListener {
+            if(context != null) {
+                //go back in stack
+                val fm: FragmentManager = requireActivity().supportFragmentManager
+                fm.popBackStack()
+            } else {
+                Log.d("ERROR", "SelectedTopicFragment.onViewCreated")
+                throw Error("Error: No context for this event")
+            }
+        }
     }
 
     companion object {
