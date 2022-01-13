@@ -18,17 +18,28 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.NavHostFragment
 import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.model.UserData
 import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
+import com.example.datahubapp.databinding.FragmentLoginBinding
+import com.example.datahubapp.databinding.FragmentTopicsBinding
+import com.example.datahubapp.ui.login.LoginFragmentDirections
 
 /**
  * A fragment representing a list of Items.
  */
 class TopicsFragment : Fragment() {
     private var columnCount = 1
+    private var _binding: FragmentTopicsBinding? = null
+
     lateinit var model: AppViewModel
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,9 +58,8 @@ class TopicsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_topics, container, false)
-
-        return root
+        _binding = FragmentTopicsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -63,6 +73,12 @@ class TopicsFragment : Fragment() {
         (activity as AppCompatActivity?)?.getSupportActionBar()?.setDisplayHomeAsUpEnabled(false)
         (activity as AppCompatActivity?)?.getSupportActionBar()?.setDisplayShowHomeEnabled(false)
 
+        val addTopicButton = binding.addTopicButton
+
+        addTopicButton.setOnClickListener {
+            var navigationDirection: NavDirections = TopicsFragmentDirections.actionTopicsFragmentToAddTopicFragment();
+            NavHostFragment.findNavController(this).navigate(navigationDirection)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

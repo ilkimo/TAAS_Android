@@ -21,7 +21,7 @@
         <entry key="app/src/main/res/layout/fragment_selected_topic.xml" value="0.14766970618034447" />
         <entry key="app/src/main/res/layout/fragment_selected_topic_list.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_shared_topics_list.xml" value="0.266304347826087" />
-        <entry key="app/src/main/res/layout/fragment_topics.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/fragment_topics.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_topics_list.xml" value="0.5432291666666667" />
         <entry key="app/src/main/res/layout/item_topic.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/layout/registration_topic_item.xml" value="0.5208333333333334" />
