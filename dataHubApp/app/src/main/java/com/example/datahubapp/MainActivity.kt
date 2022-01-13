@@ -28,8 +28,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         Log.d("Toolbar", "Back button pressed");
-        //this.getSupportFragmentManager().popBackStack();
-        //onBackPressed()
+        onBackPressed()
         return true
     }
 }
