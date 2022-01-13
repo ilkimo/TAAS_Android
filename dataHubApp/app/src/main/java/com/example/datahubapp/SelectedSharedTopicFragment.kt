@@ -1,5 +1,6 @@
 package com.example.datahubapp
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -8,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import com.example.datahubapp.placeholder.PlaceholderContent
 
 /**
@@ -40,6 +43,16 @@ class SelectedSharedTopicFragment : Fragment() {
             }
         }
         return view
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //Set back arrow visible and enabled
+        (activity as AppCompatActivity?)?.getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity?)?.getSupportActionBar()?.setDisplayShowHomeEnabled(true)
+
     }
 
     companion object {

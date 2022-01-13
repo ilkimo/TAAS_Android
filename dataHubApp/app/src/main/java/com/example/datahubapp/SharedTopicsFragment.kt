@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.datahubapp.data.model.Topic
@@ -69,6 +70,11 @@ class SharedTopicsFragment : Fragment() {
 
         setRecyclerViewAdapter(view.findViewById(R.id.list) as RecyclerView)
         addOnClickListeners(view, context)
+
+        //Set back arrow visible and enabled
+        (activity as AppCompatActivity?)?.getSupportActionBar()?.setDisplayHomeAsUpEnabled(false)
+        (activity as AppCompatActivity?)?.getSupportActionBar()?.setDisplayShowHomeEnabled(false)
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
