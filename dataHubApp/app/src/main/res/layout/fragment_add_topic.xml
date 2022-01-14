@@ -1,14 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".AddTopicFragment">
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+xmlns:android="http://schemas.android.com/apk/res/android"
+tools:context=".AddTopicFragment"
+android:name="com.example.datahubapp.TopicsFragment"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Topic"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginVertical="5sp"/>
+
+        <LinearLayout
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:orientation="horizontal"
+            android:id="@+id/firstRow"
+            android:paddingHorizontal="20dp">
+
+            <EditText
+                android:id="@+id/fieldName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:autofillHints=""
+                android:freezesText="true"
+                android:hint="Field Name"
+                android:text="Name"
+                android:enabled="false"
+                android:inputType="textEmailAddress" />
+
+            <Spinner
+                android:id="@+id/firstFieldDataType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="false"
+
+                android:entries="@array/data_types" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            app:layout_constraintTop_toBottomOf="@+id/firstRow"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:orientation="horizontal"
+            android:id="@+id/secondRow"
+            android:paddingHorizontal="20dp">
+
+            <EditText
+                android:id="@+id/secondFieldName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:autofillHints=""
+                android:freezesText="true"
+                android:hint="Field Name"
+                android:text="Date"
+                android:enabled="false"
+                android:inputType="textEmailAddress" />
+
+            <Spinner
+                android:id="@+id/secondFieldDataType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:entries="@array/data_types" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            app:layout_constraintTop_toBottomOf="@+id/secondRow"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        tools:ignore="UselessParent">
 
-</FrameLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/doneButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:backgroundTint="@color/carriedOutReservation"
+            app:borderWidth="0dp"
+            android:src="@drawable/ic_baseline_done_24" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addDataField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_marginBottom="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:src="@drawable/ic_baseline_add_24"
+            app:layout_anchor="@id/doneButton"
+            android:backgroundTint="@color/carriedOutReservation"
+            app:borderWidth="0dp"
+            app:layout_anchorGravity="top" />
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+</RelativeLayout>

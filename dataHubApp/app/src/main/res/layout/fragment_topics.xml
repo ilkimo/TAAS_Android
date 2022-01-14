@@ -46,7 +46,7 @@
         app:layout_anchorGravity="bottom|right|end"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:backgroundTint="@color/purple_200"
+        android:backgroundTint="@color/carriedOutReservation"
         app:borderWidth="0dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
