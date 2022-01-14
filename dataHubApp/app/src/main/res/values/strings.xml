@@ -41,5 +41,6 @@
     <string name="add_a_new_registration">add a new registration</string>
     <string name="ID" translatable="false">ID</string>
     <string name="Date">Date</string>
+    <string name="topic_name">Topic_name</string>
 
 </resources>

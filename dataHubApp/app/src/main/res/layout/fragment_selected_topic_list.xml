@@ -11,7 +11,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Topic_name"
+        android:text="@string/topic_name"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/searchView"
@@ -38,10 +38,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchView"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/fragment_selected_topic" />
+        tools:listitem="@layout/fragment_selected_registration_list" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addTopicButton"
+        android:id="@+id/addRegistrationButton"
         android:contentDescription="@string/add_a_new_registration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

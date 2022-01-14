@@ -30,5 +30,6 @@
     <string name="selected_registration">Registrazione selezionata</string>
     <string name="add_a_new_registration">aggiungi una nuova registrazione</string>
     <string name="Date">Data</string>
+    <string name="topic_name">Nome_argomento</string>
 
 </resources>
