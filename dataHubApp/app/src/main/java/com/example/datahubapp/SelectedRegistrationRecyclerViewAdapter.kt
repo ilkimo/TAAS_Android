@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import com.example.datahubapp.data.model.DataInfoPair
 import com.example.datahubapp.data.model.SourceDataInterface
 import com.example.datahubapp.data.model.classicData.*
@@ -124,42 +125,42 @@ class SelectedRegistrationRecyclerViewAdapter(
         val item: RegistrationViewData<*> = registration_rows[position]
 
         when(item.viewType) {
-            DATA_TYPES.BOOLEANDATA.value -> {
+            DATA_TYPES.BOOLEANDATA.value -> { //TODO HANDLE NULL OR EMMPTY
                 var data: BooleanData = item.registrationData as BooleanData
                 (holder as BooleanViewHolder).name.text = nameTypes[position].name
                 holder.contentView.isChecked = data.data as Boolean
             }
-            DATA_TYPES.BYTEDATA.value -> {
+            DATA_TYPES.BYTEDATA.value -> { //TODO HANDLE NULL OR EMMPTY
                 var data: ByteData = item.registrationData as ByteData
                 (holder as ByteViewHolder).name.text = nameTypes[position].name
                 holder.contentView.text = (data.data as Byte).toString()
             }
-            DATA_TYPES.CHARDATA.value -> {
+            DATA_TYPES.CHARDATA.value -> { //TODO HANDLE NULL OR EMMPTY
                 var data: CharData = item.registrationData as CharData
                 (holder as CharViewHolder).name.text = nameTypes[position].name
                 holder.contentView.text = (data.data as Char).toString()
             }
-            DATA_TYPES.DOUBLEDATA.value -> {
+            DATA_TYPES.DOUBLEDATA.value -> { //TODO HANDLE NULL OR EMMPTY
                 var data: DoubleData = item.registrationData as DoubleData
                 (holder as DoubleViewHolder).name.text = nameTypes[position].name
                 holder.contentView.text = (data.data as Double).toString()
             }
-            DATA_TYPES.FLOATDATA.value -> {
+            DATA_TYPES.FLOATDATA.value -> { //TODO HANDLE NULL OR EMMPTY
                 var data: FloatData = item.registrationData as FloatData
                 (holder as FloatViewHolder).name.text = nameTypes[position].name
                 holder.contentView.text = (data.data as Float).toString()
             }
-            DATA_TYPES.INTEGERDATA.value -> {
+            DATA_TYPES.INTEGERDATA.value -> { //TODO HANDLE NULL OR EMMPTY
                 var data: IntegerData = item.registrationData as IntegerData
                 (holder as IntegerViewHolder).name.text = nameTypes[position].name
                 holder.contentView.text = (data.data as Integer).toString()
             }
-            DATA_TYPES.LONGDATA.value -> {
+            DATA_TYPES.LONGDATA.value -> { //TODO HANDLE NULL OR EMMPTY
                 var data: LongData = item.registrationData as LongData
                 (holder as LongViewHolder).name.text = nameTypes[position].name
                 holder.contentView.text = (data.data as Long).toString()
             }
-            DATA_TYPES.SHORTDATA.value -> {
+            DATA_TYPES.SHORTDATA.value -> { //TODO HANDLE NULL OR EMMPTY
                 var data: ShortData = item.registrationData as ShortData
                 (holder as ShortViewHolder).name.text = nameTypes[position].name
                 holder.contentView.text = (data.data as Short).toString()
@@ -172,17 +173,23 @@ class SelectedRegistrationRecyclerViewAdapter(
             DATA_TYPES.DATEDATA.value -> {
                 var data: StringData = item.registrationData as StringData
                 (holder as DateViewHolder).name.text = nameTypes[position].name
-                Log.d("TAST", "PRIMA DELLA CONVERSIONE IN LOCALDATE") //TODO CANCELLAMI
-                var date: LocalDate = LocalDate.parse(data.data as CharSequence?)
-                Log.d("TAST", "DOPO LA CONVERSIONE IN LOCALDATE $date") //TODO CANCELLAMI
-                holder.contentView.updateDate(date.year, date.monthValue, date.dayOfMonth)//data.data as String
+                if((data.data as String).length > 0) {
+                    var date: LocalDate = LocalDate.parse(data.data as CharSequence?)
+                    holder.contentView.updateDate(date.year, date.monthValue, date.dayOfMonth)//data.data as String
+                } else {
+                    holder.contentView.isVisible = false
+                }
             }
             DATA_TYPES.HOURDATA.value -> {
                 var data: StringData = item.registrationData as StringData
                 (holder as HourViewHolder).name.text = nameTypes[position].name
                 var time = (data.data as String).split(":")
-                holder.contentView.hour = time[0].toInt()
-                holder.contentView.minute = time[1].toInt()
+                if(time?.size >= 2) {
+                    holder.contentView.hour = time[0].toInt()
+                    holder.contentView.minute = time[1].toInt()
+                } else {
+                    holder.contentView.isVisible = false
+                }
             }
             else -> throw Error("ViewType not correctly implemented: ${item.viewType}")
         }
