@@ -42,7 +42,6 @@ class SelectedRegistrationRecyclerViewAdapter(
 
     init {
         var itemViewType: Int
-        Log.d("TESTERINO", "nameTypes.size()=${nameTypes.size}, registration_inputs.size()=${registration_inputs.size}")
 
         for(i in nameTypes.indices) {
             itemViewType = when(nameTypes[i].data) {

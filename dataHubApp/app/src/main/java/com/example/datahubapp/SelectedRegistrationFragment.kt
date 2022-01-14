@@ -78,7 +78,6 @@ class SelectedRegistrationFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                Log.d("TESTERINO", "selectedRegistration.typeNameRegistration.size()=${selectedRegistration.typeNameRegistration.size}, selectedTopic.nameType()=${selectedTopic.nameType.size}")
                 adapter = SelectedRegistrationRecyclerViewAdapter(selectedRegistration.typeNameRegistration, selectedTopic.nameType)
             }
         }
