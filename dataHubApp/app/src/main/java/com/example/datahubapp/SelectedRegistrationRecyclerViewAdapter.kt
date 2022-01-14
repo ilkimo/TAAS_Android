@@ -1,20 +1,19 @@
 package com.example.datahubapp
 
+import android.os.Build
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
+import androidx.annotation.RequiresApi
 import com.example.datahubapp.data.model.DataInfoPair
 import com.example.datahubapp.data.model.SourceDataInterface
 import com.example.datahubapp.data.model.classicData.*
-import com.example.datahubapp.databinding.RegistrationitemBooleanBinding
+import com.example.datahubapp.databinding.*
 
 import com.example.datahubapp.placeholder.PlaceholderContent.PlaceholderItem
-import com.example.datahubapp.databinding.RegistrationitemIntBinding
-import com.example.datahubapp.databinding.RegistrationitemTextBinding
+import java.time.LocalDate
 
 /**
  * [RecyclerView.Adapter] that can display a [PlaceholderItem].
@@ -57,23 +56,6 @@ class SelectedRegistrationRecyclerViewAdapter(
 
             registration_rows.add(RegistrationViewData(itemViewType, registration_inputs[i]))
         }
-
-        /*for(items in registration_inputs ) {
-            itemViewType = when(items::class) {
-                BooleanData::class -> DATA_TYPES.BOOLEANDATA.value
-                ByteData::class -> DATA_TYPES.BYTEDATA.value
-                CharData::class -> DATA_TYPES.CHARDATA.value
-                DoubleData::class -> DATA_TYPES.DOUBLEDATA.value
-                FloatData::class -> DATA_TYPES.FLOATDATA.value
-                IntegerData::class -> DATA_TYPES.INTEGERDATA.value
-                LongData::class -> DATA_TYPES.LONGDATA.value
-                ShortData::class -> DATA_TYPES.SHORTDATA.value
-                StringData::class -> DATA_TYPES.STRINGDATA.value
-                else -> throw Error("Given class has not been matched to a ViewType in the Android application")
-            }
-
-            registration_rows.add(RegistrationViewData(itemViewType, items))
-        }*/
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -123,10 +105,21 @@ class SelectedRegistrationRecyclerViewAdapter(
                     LayoutInflater.from(parent.context),
                     parent,
                     false))
+            DATA_TYPES.DATEDATA.value -> DateViewHolder(
+                RegistrationitemDateBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false))
+            DATA_TYPES.HOURDATA.value -> HourViewHolder(
+                RegistrationitemHourBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false))
             else -> throw Error("Given class has not been matched to a ViewType in the Android application")
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item: RegistrationViewData<*> = registration_rows[position]
 
@@ -175,6 +168,21 @@ class SelectedRegistrationRecyclerViewAdapter(
                 var data: StringData = item.registrationData as StringData
                 (holder as TextViewHolder).name.text = nameTypes[position].name
                 holder.contentView.text = data.data as String
+            }
+            DATA_TYPES.DATEDATA.value -> {
+                var data: StringData = item.registrationData as StringData
+                (holder as DateViewHolder).name.text = nameTypes[position].name
+                Log.d("TAST", "PRIMA DELLA CONVERSIONE IN LOCALDATE") //TODO CANCELLAMI
+                var date: LocalDate = LocalDate.parse(data.data as CharSequence?)
+                Log.d("TAST", "DOPO LA CONVERSIONE IN LOCALDATE $date") //TODO CANCELLAMI
+                holder.contentView.updateDate(date.year, date.monthValue, date.dayOfMonth)//data.data as String
+            }
+            DATA_TYPES.HOURDATA.value -> {
+                var data: StringData = item.registrationData as StringData
+                (holder as HourViewHolder).name.text = nameTypes[position].name
+                var time = (data.data as String).split(":")
+                holder.contentView.hour = time[0].toInt()
+                holder.contentView.minute = time[1].toInt()
             }
             else -> throw Error("ViewType not correctly implemented: ${item.viewType}")
         }
@@ -322,6 +330,37 @@ class SelectedRegistrationRecyclerViewAdapter(
 
         override fun toString(): String {
             return super.toString() + " '" + contentView.text + "'"
+        }
+    }
+
+    inner class DateViewHolder(binding: RegistrationitemDateBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        val name: TextView = binding.name
+        val contentView: DatePicker = binding.content
+
+        init {
+            //disable editing from GUI
+            //contentView.keyListener = null //TODO
+        }
+
+        override fun toString(): String {
+            return super.toString() + " '${contentView.year}-${contentView.month}-${contentView.dayOfMonth}'"
+        }
+    }
+    //TODO MODIFICA
+    inner class HourViewHolder(binding: RegistrationitemHourBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        val name: TextView = binding.name
+        val contentView: TimePicker = binding.content
+
+        init {
+            //disable editing from GUI
+            //contentView.keyListener = null //TODO
+        }
+
+        @RequiresApi(Build.VERSION_CODES.M)
+        override fun toString(): String {
+            return super.toString() + " '${contentView.hour}:${contentView.minute}'"
         }
     }
 

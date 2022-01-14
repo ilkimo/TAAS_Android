@@ -1,9 +1,6 @@
 package com.example.datahubapp.controller
 
-import android.content.Context
 import android.os.Build
-import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.datahubapp.data.model.*
 import com.example.datahubapp.data.model.classicData.DoubleData
@@ -45,44 +42,92 @@ class AppController(val model: AppViewModel, val repository: Repository) {
 
             val nameType = ArrayList<DataInfoPair>()
             val parameter1 = DataInfoPair("descrizione", "Text")
-            val parameter2 = DataInfoPair("valore", "Integer Number")
-            val parameter3 = DataInfoPair("luogo", "Text")
+            val parameter2 = DataInfoPair("luogo", "Text")
+            val parameter3 = DataInfoPair("avversario", "Text")
+            val parameter4 = DataInfoPair("numero rounds", "Integer Number")
+            val parameter5 = DataInfoPair("data ultimo incontro", "Date")
+            val parameter6 = DataInfoPair("orario inizio incontro", "Hour")
+            val parameter7 = DataInfoPair("orario fine incontro", "Hour")
+            val parameter8 = DataInfoPair("peso mio", "Floating Point Number")
+            val parameter9 = DataInfoPair("peso avversario", "Floating Point Number")
             nameType.add(parameter1)
             nameType.add(parameter2)
             nameType.add(parameter3)
+            nameType.add(parameter4)
+            nameType.add(parameter5)
+            nameType.add(parameter6)
+            nameType.add(parameter7)
+            nameType.add(parameter8)
+            nameType.add(parameter9)
 
             val descrizioni = arrayOf("descrizione uno", "descrizione due", "descrizione tre", "descrizione quattro", "descrizione cinque")
-            val misurazioni_valori = intArrayOf(10, 20, 30, 40, 50)
             val luoghi = arrayOf("sacco", "ring", "sacco leggero", "sacco pesante", "ring")
+            val avversari = arrayOf("Federico Verdi", "Alessandro Macchi", "Diego Taricco", "", "")
+            val numero_round = intArrayOf(6, 9, 12, 0, 0)
+            val date_ultimi_incontri = arrayOf("2018-10-10", "", "2021-12-08", "", "")
+            val orari_inizio = arrayOf("15:20", "9:30", "12:00", "", "")
+            val orari_fine = arrayOf("16:00", "10:25", "13:30", "", "")
+            val miei_pesi = arrayOf(70.0f, 71.1f, 69.9f, 71.5f, 71.0f)
+            val pesi_avversario = arrayOf(71.0f, 72.6f, 66.4f, 74.8f, 72.3f)
 
             val listaCampiRegistrati1 = ArrayList<SourceDataInterface<*>>()
             listaCampiRegistrati1.add(StringData(descrizioni[0]))
-            listaCampiRegistrati1.add(IntegerData(misurazioni_valori[0]))
             listaCampiRegistrati1.add(StringData(luoghi[0]))
+            listaCampiRegistrati1.add(StringData(avversari[0]))
+            listaCampiRegistrati1.add(IntegerData(numero_round[0]))
+            listaCampiRegistrati1.add(StringData(date_ultimi_incontri[0]))
+            listaCampiRegistrati1.add(StringData(orari_inizio[0]))
+            listaCampiRegistrati1.add(StringData(orari_fine[0]))
+            listaCampiRegistrati1.add(FloatData(miei_pesi[0]))
+            listaCampiRegistrati1.add(FloatData(pesi_avversario[0]))
             val registration1 = Registration(1L, LocalDate.ofYearDay(2022, 1), listaCampiRegistrati1)
 
             val listaCampiRegistrati2 = ArrayList<SourceDataInterface<*>>()
-            listaCampiRegistrati2.add(StringData(descrizioni[1]))
-            listaCampiRegistrati2.add(IntegerData(misurazioni_valori[1]))
-            listaCampiRegistrati2.add(StringData(luoghi[1]))
+            listaCampiRegistrati1.add(StringData(descrizioni[1]))
+            listaCampiRegistrati1.add(StringData(luoghi[1]))
+            listaCampiRegistrati1.add(StringData(avversari[1]))
+            listaCampiRegistrati1.add(IntegerData(numero_round[1]))
+            listaCampiRegistrati1.add(StringData(date_ultimi_incontri[1]))
+            listaCampiRegistrati1.add(StringData(orari_inizio[1]))
+            listaCampiRegistrati1.add(StringData(orari_fine[1]))
+            listaCampiRegistrati1.add(FloatData(miei_pesi[1]))
+            listaCampiRegistrati1.add(FloatData(pesi_avversario[1]))
             val registration2 = Registration(2L, LocalDate.ofYearDay(2022, 2), listaCampiRegistrati2)
 
             val listaCampiRegistrati3 = ArrayList<SourceDataInterface<*>>()
-            listaCampiRegistrati3.add(StringData(descrizioni[2]))
-            listaCampiRegistrati3.add(IntegerData(misurazioni_valori[2]))
-            listaCampiRegistrati3.add(StringData(luoghi[2]))
+            listaCampiRegistrati1.add(StringData(descrizioni[2]))
+            listaCampiRegistrati1.add(StringData(luoghi[2]))
+            listaCampiRegistrati1.add(StringData(avversari[2]))
+            listaCampiRegistrati1.add(IntegerData(numero_round[2]))
+            listaCampiRegistrati1.add(StringData(date_ultimi_incontri[2]))
+            listaCampiRegistrati1.add(StringData(orari_inizio[2]))
+            listaCampiRegistrati1.add(StringData(orari_fine[2]))
+            listaCampiRegistrati1.add(FloatData(miei_pesi[2]))
+            listaCampiRegistrati1.add(FloatData(pesi_avversario[2]))
             val registration3 = Registration(3L, LocalDate.ofYearDay(2022, 3), listaCampiRegistrati3)
 
             val listaCampiRegistrati4 = ArrayList<SourceDataInterface<*>>()
-            listaCampiRegistrati4.add(StringData(descrizioni[3]))
-            listaCampiRegistrati4.add(IntegerData(misurazioni_valori[3]))
-            listaCampiRegistrati4.add(StringData(luoghi[3]))
+            listaCampiRegistrati1.add(StringData(descrizioni[3]))
+            listaCampiRegistrati1.add(StringData(luoghi[3]))
+            listaCampiRegistrati1.add(StringData(avversari[3]))
+            listaCampiRegistrati1.add(IntegerData(numero_round[3]))
+            listaCampiRegistrati1.add(StringData(date_ultimi_incontri[3]))
+            listaCampiRegistrati1.add(StringData(orari_inizio[3]))
+            listaCampiRegistrati1.add(StringData(orari_fine[3]))
+            listaCampiRegistrati1.add(FloatData(miei_pesi[3]))
+            listaCampiRegistrati1.add(FloatData(pesi_avversario[3]))
             val registration4 = Registration(4L, LocalDate.ofYearDay(2022, 4), listaCampiRegistrati4)
 
             val listaCampiRegistrati5 = ArrayList<SourceDataInterface<*>>()
-            listaCampiRegistrati5.add(StringData(descrizioni[4]))
-            listaCampiRegistrati5.add(IntegerData(misurazioni_valori[4]))
-            listaCampiRegistrati5.add(StringData(luoghi[4]))
+            listaCampiRegistrati1.add(StringData(descrizioni[4]))
+            listaCampiRegistrati1.add(StringData(luoghi[4]))
+            listaCampiRegistrati1.add(StringData(avversari[4]))
+            listaCampiRegistrati1.add(IntegerData(numero_round[4]))
+            listaCampiRegistrati1.add(StringData(date_ultimi_incontri[4]))
+            listaCampiRegistrati1.add(StringData(orari_inizio[4]))
+            listaCampiRegistrati1.add(StringData(orari_fine[4]))
+            listaCampiRegistrati1.add(FloatData(miei_pesi[4]))
+            listaCampiRegistrati1.add(FloatData(pesi_avversario[4]))
             val registration5 = Registration(5L, LocalDate.ofYearDay(2022, 5), listaCampiRegistrati5)
 
             val registrazioni_box = ArrayList<Registration>()
@@ -143,7 +188,7 @@ class AppController(val model: AppViewModel, val repository: Repository) {
 
             val topic_box = Topic(
                 1L, "Allenamenti box",  "topic description", LocalDate.now(),
-                colors, registrazioni_box, nameType, 8L, false
+                colors, registrazioni_box, nameType, 6L, false
             )
             val topic2 = Topic(2L, "Peso Corporeo", "topic description", LocalDate.now(), colors, registrazioni_peso, nameType_peso, 9L, false)
             val topic3 = Topic("Sessioni di Studio", "topic description", colors, nameType, false)
