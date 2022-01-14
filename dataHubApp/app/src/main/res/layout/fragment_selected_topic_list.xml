@@ -40,8 +40,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/fragment_selected_topic" />
 
-
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addTopicButton"
         android:contentDescription="add a new registration"

@@ -29,7 +29,8 @@ class SelectedRegistrationFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_selected_registration_list, container, false)
+        val root = inflater.inflate(R.layout.fragment_selected_registration_list, container, false)
+        val view = root.findViewById<RecyclerView>(R.id.list)
 
         // Set the adapter
         if (view is RecyclerView) {
@@ -41,7 +42,7 @@ class SelectedRegistrationFragment : Fragment() {
                 adapter = SelectedRegistrationRecyclerViewAdapter(PlaceholderContent.ITEMS)
             }
         }
-        return view
+        return root
     }
 
     companion object {
