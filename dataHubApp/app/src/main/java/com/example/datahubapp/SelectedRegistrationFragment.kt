@@ -29,6 +29,7 @@ class SelectedRegistrationFragment : Fragment() {
     private val REGISTRATION_ID_ARGUMENT: String = "id"
     private val TOPIC_NAME_ARGUMENT: String = "topic-name"
     private lateinit var selectedRegistration: Registration
+    lateinit var selectedTopic: Topic
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +37,6 @@ class SelectedRegistrationFragment : Fragment() {
 
         var viewModelFactory = AppViewModelFactory(requireContext())
         model = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AppViewModel::class.java)
-        var selectedTopic: Topic
 
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
@@ -78,7 +78,7 @@ class SelectedRegistrationFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = SelectedRegistrationRecyclerViewAdapter(PlaceholderContent.ITEMS)
+                adapter = SelectedRegistrationRecyclerViewAdapter(selectedRegistration.typeNameRegistration, selectedTopic.nameType)
             }
         }
         return root
