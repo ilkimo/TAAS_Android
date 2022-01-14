@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_selectedTopicFragment_to_selectedRegistrationFragment"
             app:destination="@id/selectedRegistrationFragment" />
+        <action
+            android:id="@+id/action_selectedTopicFragment_to_addRegistrationFragment"
+            app:destination="@id/addRegistrationFragment" />
     </fragment>
 
 
@@ -88,5 +91,14 @@
         android:name="com.example.datahubapp.AddTopicFragment"
         android:label="fragment_add_topic"
         tools:layout="@layout/fragment_add_topic" />
+    <fragment
+        android:id="@+id/addRegistrationFragment"
+        android:name="com.example.datahubapp.AddRegistrationFragment"
+        android:label="fragment_add_registration_list"
+        tools:layout="@layout/fragment_add_registration_list" >
+        <argument
+            android:name="topic-name"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

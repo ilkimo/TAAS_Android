@@ -14,10 +14,13 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.NavHostFragment
 import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import com.example.datahubapp.placeholder.PlaceholderContent
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
  * A fragment representing a list of Items.
@@ -78,6 +81,21 @@ class SelectedTopicFragment : Fragment() {
             }
         }
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        var floatingButton: FloatingActionButton = view.findViewById(R.id.addRegistrationButton)
+        floatingButton.setOnClickListener {
+            if(context != null) {
+                var navigationDirection: NavDirections = SelectedTopicFragmentDirections.actionSelectedTopicFragmentToAddRegistrationFragment(selectedTopic.name);
+                NavHostFragment.findNavController(requireParentFragment()).navigate(navigationDirection)
+            } else {
+                Log.d("ERROR", "TopicsFragment.addClickListeners")
+                throw Error("Error: No context for this event")
+            }
+        }
     }
 
     companion object {
