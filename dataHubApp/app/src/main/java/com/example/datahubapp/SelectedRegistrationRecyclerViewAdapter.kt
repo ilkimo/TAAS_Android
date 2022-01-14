@@ -1,5 +1,6 @@
 package com.example.datahubapp
 
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -33,12 +34,30 @@ class SelectedRegistrationRecyclerViewAdapter(
         INTEGERDATA(5),
         LONGDATA(6),
         SHORTDATA(7),
-        STRINGDATA(8)
+        STRINGDATA(8),
+        DATEDATA(9),
+        HOURDATA(10)
     }
 
     init {
         var itemViewType: Int
-        for(items in registration_inputs ) {
+        Log.d("TESTERINO", "nameTypes.size()=${nameTypes.size}, registration_inputs.size()=${registration_inputs.size}")
+
+        for(i in nameTypes.indices) {
+            itemViewType = when(nameTypes[i].data) {
+                "Text" -> DATA_TYPES.STRINGDATA.value
+                "Integer Number" -> DATA_TYPES.INTEGERDATA.value
+                "Floating Point Number" -> DATA_TYPES.FLOATDATA.value
+                "Date" -> DATA_TYPES.DATEDATA.value
+                "Hour" -> DATA_TYPES.HOURDATA.value
+                //TODO ADD NEW TYPE MAPPING HERE
+                else -> throw Error("Given class has not been matched to a ViewType in the Android application")
+            }
+
+            registration_rows.add(RegistrationViewData(itemViewType, registration_inputs[i]))
+        }
+
+        /*for(items in registration_inputs ) {
             itemViewType = when(items::class) {
                 BooleanData::class -> DATA_TYPES.BOOLEANDATA.value
                 ByteData::class -> DATA_TYPES.BYTEDATA.value
@@ -53,7 +72,7 @@ class SelectedRegistrationRecyclerViewAdapter(
             }
 
             registration_rows.add(RegistrationViewData(itemViewType, items))
-        }
+        }*/
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
