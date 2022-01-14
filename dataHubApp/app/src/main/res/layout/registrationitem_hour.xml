@@ -28,6 +28,6 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:timePickerMode="clock"/>
+            android:timePickerMode="spinner"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
