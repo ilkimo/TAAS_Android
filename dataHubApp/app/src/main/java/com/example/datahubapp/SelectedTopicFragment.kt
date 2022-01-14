@@ -64,8 +64,8 @@ class SelectedTopicFragment : Fragment() {
         root.findViewById<TextView>(R.id.textView2).text = selectedTopic.name
 
         //Set back arrow visible and enabled
-        (activity as AppCompatActivity?)?.getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity?)?.getSupportActionBar()?.setDisplayShowHomeEnabled(true)
+        (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity?)?.supportActionBar?.setDisplayShowHomeEnabled(true)
 
         // Set the adapter
         if(view is RecyclerView) {

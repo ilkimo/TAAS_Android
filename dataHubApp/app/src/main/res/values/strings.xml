@@ -37,5 +37,9 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="create_account">Create account</string>
     <string name="already_have_an_account_login">Already have an account? Log in!</string>
+    <string name="selected_registration">Selected registration</string>
+    <string name="add_a_new_registration">add a new registration</string>
+    <string name="ID" translatable="false">ID</string>
+    <string name="Date">Date</string>
 
 </resources>

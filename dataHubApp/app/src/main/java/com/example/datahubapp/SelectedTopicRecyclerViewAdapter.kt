@@ -1,5 +1,6 @@
 package com.example.datahubapp
 
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +20,7 @@ import com.example.datahubapp.databinding.RegistrationTopicItemBinding
  * TODO: Replace the implementation with code for your data type.
  */
 class SelectedTopicRecyclerViewAdapter(
-    selectedTopic: Topic,
+    var selectedTopic: Topic,
     var fragment: SelectedTopicFragment
 ) : RecyclerView.Adapter<SelectedTopicRecyclerViewAdapter.ViewHolder>() {
     var registrationsList: ArrayList<Registration> = selectedTopic.listRegistrazioni
@@ -31,7 +32,7 @@ class SelectedTopicRecyclerViewAdapter(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ), selectedTopic
         )
     }
 
@@ -43,13 +44,15 @@ class SelectedTopicRecyclerViewAdapter(
 
     override fun getItemCount(): Int = registrationsList.size
 
-    inner class ViewHolder(binding: RegistrationTopicItemBinding) :
+    inner class ViewHolder(binding: RegistrationTopicItemBinding, selectedTopic: Topic) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         val idView: TextView = binding.registrationName
         val contentView: TextView = binding.registrationDate
+        private lateinit var selectedTopic: Topic
 
         init {
             binding.root.setOnClickListener(this)
+            this.selectedTopic = selectedTopic
         }
 
         override fun toString(): String {
@@ -57,9 +60,12 @@ class SelectedTopicRecyclerViewAdapter(
         }
 
         override fun onClick(view: View) {
-            //Toast.makeText(view.context, "You clicked $layoutPosition", Toast.LENGTH_SHORT).show()
+            Log.d("MY_TEST", "${view.findViewById<TextView>(R.id.registrationName).text.toString().toLong()}")
 
-            var navigationDirection: NavDirections = SelectedTopicFragmentDirections.actionSelectedTopicFragmentToSelectedRegistrationFragment(idView.text.toString().toLong())
+            var navigationDirection: NavDirections =
+                SelectedTopicFragmentDirections.actionSelectedTopicFragmentToSelectedRegistrationFragment(
+                    view.findViewById<TextView>(R.id.registrationName).text.toString().toLong(),
+                    selectedTopic.name)
             NavHostFragment.findNavController(fragment).navigate(navigationDirection)
 
             /*

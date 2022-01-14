@@ -69,6 +69,9 @@
         <argument
             android:name="id"
             app:argType="long" />
+        <argument
+            android:name="topic-name"
+            app:argType="string" />
     </fragment>
 
     <fragment
