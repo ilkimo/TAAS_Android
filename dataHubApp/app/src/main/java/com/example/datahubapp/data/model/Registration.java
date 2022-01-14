@@ -26,7 +26,7 @@ public class Registration {
     private LocalDate creationDate;
 
     @JsonProperty("typeNameRegistration")
-    private ArrayList<SourceDataInterface> typeNameRegistration;
+    public ArrayList<SourceDataInterface> typeNameRegistration;
 
     public Registration(){
         super();

@@ -52,7 +52,7 @@
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:context=".SelectedRegistrationFragment"
-        tools:listitem="@layout/fragment_selected_registration"
+        tools:listitem="@layout/registrationitem_int"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
