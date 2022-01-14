@@ -9,4 +9,12 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+
+    <string-array name="data_types">
+        <item>Text</item>
+        <item>Integer</item>
+        <item>Floating Point Number</item>
+        <item>Date</item>
+        <item>Hour</item>
+    </string-array>
 </resources>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <com.google.android.material.button.MaterialButton
+        app:cornerRadius="28dp"
+        android:layout_width="34dp"
+        android:layout_height="36dp"
+        android:id="@+id/remove"
+        android:layout_alignParentRight="true"
+        android:backgroundTint="@color/dismissedReservation"
+        app:icon="@drawable/ic_baseline_close_24"
+        app:iconGravity="textStart"
+        app:iconPadding="10dp"
+        app:iconTint="@color/white"
+        app:borderWidth="0dp"/>
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/remove"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/fieldName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:autofillHints=""
+            android:freezesText="true"
+            android:hint="Field Name"
+            android:inputType="textEmailAddress" />
+
+        <Spinner
+            android:id="@+id/fieldDataType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/data_types" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

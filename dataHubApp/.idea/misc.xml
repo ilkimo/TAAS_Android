@@ -6,10 +6,14 @@
         <entry key="../../../../../../../../../../../../layout/custom_preview.xml" value="0.5018518518518519" />
         <entry key="../../../../../layout/custom_preview.xml" value="0.32592592592592595" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.559375" />
+        <entry key="app/src/main/res/drawable/button_states.xml" value="0.17685185185185184" />
+        <entry key="app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.10833333333333334" />
         <entry key="app/src/main/res/drawable/ic_profile_image_background.xml" value="0.22916666666666666" />
         <entry key="app/src/main/res/drawable/ic_profile_image_foreground.xml" value="0.559375" />
         <entry key="app/src/main/res/drawable/shared_topics.xml" value="0.32592592592592595" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/add_topic_row.xml" value="0.19701086956521738" />
+        <entry key="app/src/main/res/layout/fragment_add_topic.xml" value="0.2617283950617284" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.5432291666666667" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_selected_registration.xml" value="0.4505208333333333" />
