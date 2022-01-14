@@ -60,8 +60,6 @@ class SelectedTopicRecyclerViewAdapter(
         }
 
         override fun onClick(view: View) {
-            Log.d("MY_TEST", "${view.findViewById<TextView>(R.id.registrationName).text.toString().toLong()}")
-
             var navigationDirection: NavDirections =
                 SelectedTopicFragmentDirections.actionSelectedTopicFragmentToSelectedRegistrationFragment(
                     view.findViewById<TextView>(R.id.registrationName).text.toString().toLong(),

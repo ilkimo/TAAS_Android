@@ -53,8 +53,6 @@ class SelectedRegistrationFragment : Fragment() {
             throw Error("invalid topic selected")
         }
 
-        Log.d("MY_TEST", "ecco --> ${arguments?.getLong(REGISTRATION_ID_ARGUMENT)}")
-
         var listRegistrations = selectedTopic.listRegistrazioni.filter{
             it.id == (arguments?.getLong(REGISTRATION_ID_ARGUMENT) ?: -1L)
         }
