@@ -8,6 +8,13 @@ tools:context=".AddTopicFragment"
 android:name="com.example.datahubapp.TopicsFragment"
     android:orientation="vertical">
 
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fitsSystemWindows="true"
+        tools:ignore="MissingConstraints">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -24,14 +31,91 @@ android:name="com.example.datahubapp.TopicsFragment"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginVertical="5sp"/>
 
-        <LinearLayout
+        <!--Topic Name-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/topicNameLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
             app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingHorizontal="10sp">
+
+            <EditText
+                android:id="@+id/topicName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:hint="Topic Name"
+                android:inputType="text"
+                android:freezesText="true"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/topicDescriptionLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topicNameLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingHorizontal="6sp">
+
+            <EditText
+                android:id="@+id/topicDescription"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:gravity="top"
+                android:hint="Topic Description"
+                android:inputType="textMultiLine"
+                android:overScrollMode="always"
+                android:padding="15dp"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/topicFieldsEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Topic Fields"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topicDescriptionLayout"
+            android:layout_marginVertical="5sp"/>
+
+        <TextView
+            android:id="@+id/topicFieldsGuide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Press the 'Plus' button to add a field and when you have done press the done button to add the topic!"
+            android:textSize="13sp"
+            android:textStyle="italic"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topicFieldsEditText"
+            android:padding="15sp"/>
+
+        <LinearLayout
+            app:layout_constraintTop_toBottomOf="@+id/topicFieldsGuide"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:orientation="horizontal"
             android:id="@+id/firstRow"
+            android:layout_marginTop="10sp"
             android:paddingHorizontal="20dp">
 
             <EditText
@@ -101,7 +185,9 @@ android:name="com.example.datahubapp.TopicsFragment"
 
         </LinearLayout>
 
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 
 
