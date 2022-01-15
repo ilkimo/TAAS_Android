@@ -21,6 +21,7 @@ import com.example.datahubapp.databinding.*
 import com.example.datahubapp.placeholder.PlaceholderContent.PlaceholderItem
 import com.example.datahubapp.util.BindableViewHolder
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.xml.transform.Source
 
 /**
@@ -169,7 +170,7 @@ class AddRegistrationRecyclerViewAdapter(
 
         return reg
     }
-
+    //TODO!!!!
     inner class BooleanViewHolder(binding: RegistrationitemBooleanBinding) :
         BindableViewHolder(binding.root) {
         val name: TextView = binding.name
@@ -187,7 +188,7 @@ class AddRegistrationRecyclerViewAdapter(
             return super.toString() + " '" + contentView.text + "'"
         }
     }
-
+    //TODO!!!!
     //TODO CUSTOM
     inner class ByteViewHolder(binding: RegistrationitemTextBinding) :
         BindableViewHolder(binding.root) {
@@ -206,7 +207,7 @@ class AddRegistrationRecyclerViewAdapter(
             return super.toString() + " '" + contentView.text + "'"
         }
     }
-
+    //TODO!!!!
     //TODO CUSTOM
     inner class CharViewHolder(binding: RegistrationitemTextBinding) :
         BindableViewHolder(binding.root) {
@@ -228,15 +229,44 @@ class AddRegistrationRecyclerViewAdapter(
 
     inner class DoubleViewHolder(binding: RegistrationitemIntBinding) :
         BindableViewHolder(binding.root) {
-        val name: TextView = binding.name
-        val contentView: TextView = binding.content
+        private val name: TextView = binding.name
+        private val contentView = binding.content
+        var listeners: ArrayList<TextWatcher> = ArrayList()
 
         override fun bind(item: RegistrationViewData<*>, name: String) {
-            TODO("Not yet implemented")
+            super.bind(item, name)
+
+            this.name.text = name
+            if((item.registrationData as DoubleData).data != null) {
+                (contentView as TextView).text = item.registrationData.data.toString()
+            } else {
+                (contentView as TextView).text = ""
+            }
+
+            var watcher = object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {}
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    Log.d("LISTENER", s.toString())
+
+                    try {
+                        item.registrationData.data = s.toString().toDouble()
+                        Log.d("LISTENER", "updated data to ${item.registrationData.data}")
+                    } catch(e: Exception) {
+                        Log.d("EXCEPTION", "${e.message}")
+                    }
+                }
+            }
+
+            listeners.add(watcher)
+            contentView.addTextChangedListener(watcher)
         }
 
         override fun removeListeners() {
-            TODO("Not yet implemented")
+            for(l in listeners) {
+                Log.d("LISTENER", "REMOVING OLD LISTENER!!!")
+                contentView.removeTextChangedListener(l)
+            }
         }
 
         override fun toString(): String {
@@ -268,7 +298,7 @@ class AddRegistrationRecyclerViewAdapter(
 
                     try {
                         item.registrationData.data = s.toString().toFloat()
-                        Log.d("LISTENER", "updated float data to ${item.registrationData.data}")
+                        Log.d("LISTENER", "updated data to ${item.registrationData.data}")
                     } catch(e: Exception) {
                         Log.d("EXCEPTION", "${e.message}")
                     }
@@ -293,15 +323,44 @@ class AddRegistrationRecyclerViewAdapter(
 
     inner class IntegerViewHolder(binding: RegistrationitemIntBinding) :
         BindableViewHolder(binding.root) {
-        val name: TextView = binding.name
-        val contentView: TextView = binding.content
+        private val name: TextView = binding.name
+        private val contentView = binding.content
+        var listeners: ArrayList<TextWatcher> = ArrayList()
 
         override fun bind(item: RegistrationViewData<*>, name: String) {
-            TODO("Not yet implemented")
+            super.bind(item, name)
+
+            this.name.text = name
+            if((item.registrationData as IntegerData).data != null) {
+                (contentView as TextView).text = item.registrationData.data.toString()
+            } else {
+                (contentView as TextView).text = ""
+            }
+
+            var watcher = object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {}
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    Log.d("LISTENER", s.toString())
+
+                    try {
+                        item.registrationData.data = s.toString().toInt()
+                        Log.d("LISTENER", "updated data to ${item.registrationData.data}")
+                    } catch(e: Exception) {
+                        Log.d("EXCEPTION", "${e.message}")
+                    }
+                }
+            }
+
+            listeners.add(watcher)
+            contentView.addTextChangedListener(watcher)
         }
 
         override fun removeListeners() {
-            TODO("Not yet implemented")
+            for(l in listeners) {
+                Log.d("LISTENER", "REMOVING OLD LISTENER!!!")
+                contentView.removeTextChangedListener(l)
+            }
         }
 
         override fun toString(): String {
@@ -311,15 +370,44 @@ class AddRegistrationRecyclerViewAdapter(
 
     inner class LongViewHolder(binding: RegistrationitemIntBinding) :
         BindableViewHolder(binding.root) {
-        val name: TextView = binding.name
-        val contentView: TextView = binding.content
+        private val name: TextView = binding.name
+        private val contentView = binding.content
+        var listeners: ArrayList<TextWatcher> = ArrayList()
 
         override fun bind(item: RegistrationViewData<*>, name: String) {
-            TODO("Not yet implemented")
+            super.bind(item, name)
+
+            this.name.text = name
+            if((item.registrationData as LongData).data != null) {
+                (contentView as TextView).text = item.registrationData.data.toString()
+            } else {
+                (contentView as TextView).text = ""
+            }
+
+            var watcher = object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {}
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    Log.d("LISTENER", s.toString())
+
+                    try {
+                        item.registrationData.data = s.toString().toLong()
+                        Log.d("LISTENER", "updated data to ${item.registrationData.data}")
+                    } catch(e: Exception) {
+                        Log.d("EXCEPTION", "${e.message}")
+                    }
+                }
+            }
+
+            listeners.add(watcher)
+            contentView.addTextChangedListener(watcher)
         }
 
         override fun removeListeners() {
-            TODO("Not yet implemented")
+            for(l in listeners) {
+                Log.d("LISTENER", "REMOVING OLD LISTENER!!!")
+                contentView.removeTextChangedListener(l)
+            }
         }
 
         override fun toString(): String {
@@ -329,15 +417,44 @@ class AddRegistrationRecyclerViewAdapter(
 
     inner class ShortViewHolder(binding: RegistrationitemIntBinding) :
         BindableViewHolder(binding.root) {
-        val name: TextView = binding.name
-        val contentView: TextView = binding.content
+        private val name: TextView = binding.name
+        private val contentView = binding.content
+        var listeners: ArrayList<TextWatcher> = ArrayList()
 
         override fun bind(item: RegistrationViewData<*>, name: String) {
-            TODO("Not yet implemented")
+            super.bind(item, name)
+
+            this.name.text = name
+            if((item.registrationData as ShortData).data != null) {
+                (contentView as TextView).text = item.registrationData.data.toString()
+            } else {
+                (contentView as TextView).text = ""
+            }
+
+            var watcher = object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {}
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    Log.d("LISTENER", s.toString())
+
+                    try {
+                        item.registrationData.data = s.toString().toShort()
+                        Log.d("LISTENER", "updated data to ${item.registrationData.data}")
+                    } catch(e: Exception) {
+                        Log.d("EXCEPTION", "${e.message}")
+                    }
+                }
+            }
+
+            listeners.add(watcher)
+            contentView.addTextChangedListener(watcher)
         }
 
         override fun removeListeners() {
-            TODO("Not yet implemented")
+            for(l in listeners) {
+                Log.d("LISTENER", "REMOVING OLD LISTENER!!!")
+                contentView.removeTextChangedListener(l)
+            }
         }
 
         override fun toString(): String {
@@ -347,15 +464,44 @@ class AddRegistrationRecyclerViewAdapter(
 
     inner class TextViewHolder(binding: RegistrationitemTextBinding) :
         BindableViewHolder(binding.root) {
-        val name: TextView = binding.name
-        val contentView: TextView = binding.content
+        private val name: TextView = binding.name
+        private val contentView = binding.content
+        var listeners: ArrayList<TextWatcher> = ArrayList()
 
         override fun bind(item: RegistrationViewData<*>, name: String) {
-            TODO("Not yet implemented")
+            super.bind(item, name)
+
+            this.name.text = name
+            if((item.registrationData as StringData).data != null) {
+                (contentView as TextView).text = item.registrationData.data.toString()
+            } else {
+                (contentView as TextView).text = ""
+            }
+
+            var watcher = object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {}
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    Log.d("LISTENER", s.toString())
+
+                    try {
+                        item.registrationData.data = s.toString()
+                        Log.d("LISTENER", "updated data to ${item.registrationData.data}")
+                    } catch(e: Exception) {
+                        Log.d("EXCEPTION", "${e.message}")
+                    }
+                }
+            }
+
+            listeners.add(watcher)
+            contentView.addTextChangedListener(watcher)
         }
 
         override fun removeListeners() {
-            TODO("Not yet implemented")
+            for(l in listeners) {
+                Log.d("LISTENER", "REMOVING OLD LISTENER!!!")
+                contentView.removeTextChangedListener(l)
+            }
         }
 
         override fun toString(): String {
@@ -365,15 +511,54 @@ class AddRegistrationRecyclerViewAdapter(
 
     inner class DateViewHolder(binding: RegistrationitemDateBinding) :
         BindableViewHolder(binding.root) {
-        val name: TextView = binding.name
-        val contentView: DatePicker = binding.content
+        private val name: TextView = binding.name
+        private val contentView = binding.content
+        var listeners: ArrayList<DatePicker.OnDateChangedListener> = ArrayList()
 
+        @RequiresApi(Build.VERSION_CODES.O)
         override fun bind(item: RegistrationViewData<*>, name: String) {
-            TODO("Not yet implemented")
+            super.bind(item, name)
+
+            lateinit var date: LocalDate
+
+            if(!(item.registrationData as StringData).data.equals("")) {
+                var dateArr = ((item.registrationData).data.toString()).split("-")
+
+                try {
+                    //add 1 to month because of different indexing system of DatePicker
+                    date = LocalDate.of(dateArr[0].toInt(), dateArr[1].toInt()+1, dateArr[2].toInt())
+                } catch(e: Exception) {
+                    throw Error("${e.message}: parsed data=${dateArr[0]}-${dateArr[1].toInt()+1}-${dateArr[2]}")
+                }
+            } else {
+                date = LocalDate.now().apply {  }
+            }
+
+            this.name.text = name
+            contentView.updateDate(date.year, date.monthValue-1, date.dayOfMonth)
+
+            var watcher = DatePicker.OnDateChangedListener {
+                    _, year: Int, month: Int, day: Int ->
+                Log.d("LISTENER", "")
+
+                try {
+                    item.registrationData.data = "$year-$month-$day"
+                    Log.d("LISTENER", "updated data to ${item.registrationData.data}")
+                } catch(e: Exception) {
+                    Log.d("EXCEPTION", "${e.message}")
+                }
+            }
+
+            listeners.add(watcher)
+            contentView.setOnDateChangedListener(watcher)
         }
 
         override fun removeListeners() {
-            TODO("Not yet implemented")
+            for(l in listeners) {
+                Log.d("LISTENER", "REMOVING OLD LISTENER!!!")
+                //contentView.removeTextChangedListener(l)
+                //TODO check if it is not needed to remove listeners because setOnDateChangedListener already makes the substitution(?)
+            }
         }
 
         override fun toString(): String {
@@ -381,18 +566,58 @@ class AddRegistrationRecyclerViewAdapter(
         }
     }
 
-    //TODO MODIFICA
     inner class HourViewHolder(binding: RegistrationitemHourBinding) :
         BindableViewHolder(binding.root) {
-        val name: TextView = binding.name
-        val contentView: TimePicker = binding.content
+        private val name: TextView = binding.name
+        private val contentView = binding.content
+        var listeners: ArrayList<TimePicker.OnTimeChangedListener> = ArrayList()
 
+        @RequiresApi(Build.VERSION_CODES.M)
         override fun bind(item: RegistrationViewData<*>, name: String) {
-            TODO("Not yet implemented")
+            super.bind(item, name)
+
+            if((item.registrationData.data as String).length > 0) {
+                var time = (item.registrationData as StringData).data.toString().split(":")
+                contentView.hour = time[0].toInt()
+                contentView.minute = time[1].toInt()
+            } else {
+                contentView.hour = 0
+                contentView.minute = 0
+            }
+
+            this.name.text = name
+
+            var gwatcher = object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {}
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    Log.d("LISTENER", s.toString())
+
+                    try {
+                        item.registrationData.data = s.toString()
+                        Log.d("LISTENER", "updated data to ${item.registrationData.data}")
+                    } catch(e: Exception) {
+                        Log.d("EXCEPTION", "${e.message}")
+                    }
+
+                }
+            }
+
+            var watcher = TimePicker.OnTimeChangedListener { _, hour, minute ->
+                item.registrationData.data = "$hour:$minute"
+                Log.d("LISTENER", "updated data to ${item.registrationData.data}")
+            }
+
+            listeners.add(watcher)
+            contentView.setOnTimeChangedListener(watcher)
         }
 
         override fun removeListeners() {
-            TODO("Not yet implemented")
+            for(l in listeners) {
+                Log.d("LISTENER", "REMOVING OLD LISTENER!!!")
+                //contentView.removeTextChangedListener(l)
+                // TODO check if it is not needed to remove listeners because setOnDateChangedListener already makes the substitution(?)
+            }
         }
 
         @RequiresApi(Build.VERSION_CODES.M)
