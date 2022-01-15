@@ -100,5 +100,10 @@
             android:name="topic-name"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/profileFragment2"
+        android:name="com.example.datahubapp.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 
 </navigation>

@@ -42,5 +42,8 @@
     <string name="ID" translatable="false">ID</string>
     <string name="Date">Date</string>
     <string name="topic_name">Topic_name</string>
+    <string name="logout" translatable="false">Logout</string>
+    <string name="username" translatable="false">Username</string>
+    <string name="change_password">Chane Password</string>
 
 </resources>
