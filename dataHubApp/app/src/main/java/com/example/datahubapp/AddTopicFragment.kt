@@ -19,6 +19,7 @@ import android.widget.TextView
 import android.app.Activity
 import android.graphics.Color
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.text.toLowerCase
 import androidx.core.view.marginBottom
 import com.example.datahubapp.data.model.DataInfoPair
@@ -92,6 +93,10 @@ class AddTopicFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
+        //Set back arrow visible and enabled
+        (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity?)?.supportActionBar?.setDisplayShowHomeEnabled(true)
 
         _binding = FragmentAddTopicBinding.inflate(inflater, container, false)
         return binding.root
