@@ -137,7 +137,44 @@ class AppController(val model: AppViewModel, val repository: Repository) {
             registrazioni_box.add(registration4)
             registrazioni_box.add(registration5)
 
-            val nameType_peso = ArrayList<DataInfoPair>().apply { add(DataInfoPair("peso", "Floating Point Number")) }
+            var dataInfoPairList_spese = ArrayList<DataInfoPair>().apply {
+                add(DataInfoPair("peso1", "Floating Point Number"))
+                add(DataInfoPair("peso2", "Floating Point Number"))
+                add(DataInfoPair("peso3", "Floating Point Number"))
+                add(DataInfoPair("peso4", "Floating Point Number"))
+                add(DataInfoPair("peso5", "Floating Point Number"))
+                add(DataInfoPair("peso6", "Floating Point Number"))
+                add(DataInfoPair("peso7", "Floating Point Number"))
+                add(DataInfoPair("peso8", "Floating Point Number"))
+                add(DataInfoPair("peso9", "Floating Point Number"))
+                add(DataInfoPair("peso10", "Floating Point Number"))
+                add(DataInfoPair("peso11", "Floating Point Number"))
+                add(DataInfoPair("peso12", "Floating Point Number"))
+                add(DataInfoPair("peso13", "Floating Point Number"))
+                add(DataInfoPair("peso14", "Floating Point Number"))
+                add(DataInfoPair("peso15", "Floating Point Number"))
+                add(DataInfoPair("peso16", "Floating Point Number"))
+            }
+            val registrazioni_spese = ArrayList<Registration>().apply{
+                add(Registration(1L, LocalDate.ofYearDay(2022, 6), ArrayList<SourceDataInterface<*>>(). apply {
+                    add(FloatData(1f))
+                    add(FloatData(2f))
+                    add(FloatData(3f))
+                    add(FloatData(4f))
+                    add(FloatData(5f))
+                    add(FloatData(6f))
+                    add(FloatData(7f))
+                    add(FloatData(8f))
+                    add(FloatData(9f))
+                    add(FloatData(10f))
+                    add(FloatData(11f))
+                    add(FloatData(12f))
+                    add(FloatData(13f))
+                    add(FloatData(14f))
+                    add(FloatData(15f))
+                    add(FloatData(16f))
+                }))
+            }
 
             val listaCampiRegistrati_peso1 = ArrayList<SourceDataInterface<*>>()
             listaCampiRegistrati_peso1.add(FloatData(70.0f))
@@ -190,9 +227,9 @@ class AppController(val model: AppViewModel, val repository: Repository) {
                 1L, "Allenamenti box",  "topic description", LocalDate.now(),
                 colors, registrazioni_box, nameType, 5L, false
             )
-            val topic2 = Topic(2L, "Peso Corporeo", "topic description", LocalDate.now(), colors, registrazioni_peso, nameType_peso, 9L, false)
-            val topic3 = Topic("Sessioni di Studio", "topic description", colors, nameType, false)
-            val topic4 = Topic("Spese vacanze", "topic description", colors, nameType, false)
+            val topic2 = Topic(2L, "Peso Corporeo", "topic description", LocalDate.now(), colors, registrazioni_peso, nameType, 9L, false)
+            val topic3 = Topic(3L, "Spese vacanze", "topic description", LocalDate.now(), colors, registrazioni_spese, dataInfoPairList_spese, 1L, false)
+            val topic4 = Topic("Sessioni di Studio", "topic description", colors, nameType, false)
             val topic5 = Topic("Spese alimentari", "topic description", colors, nameType, false)
             val topic6 = Topic("Entrate economiche", "topic description", colors, nameType, false)
             val topic7 = Topic("Investimenti cryptovalute", "topic description", colors, nameType, false)
@@ -212,7 +249,6 @@ class AppController(val model: AppViewModel, val repository: Repository) {
 
             return UserData("1", idUser, topicList)
         }
-
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun fakeSharedTopics(): ArrayList<Topic> {
