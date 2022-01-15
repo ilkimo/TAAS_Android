@@ -2,6 +2,7 @@ package com.example.datahubapp
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +13,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.datahubapp.placeholder.PlaceholderContent
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
  * A fragment representing a list of Items.
@@ -50,9 +52,8 @@ class SelectedSharedTopicFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //Set back arrow visible and enabled
-        (activity as AppCompatActivity?)?.getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity?)?.getSupportActionBar()?.setDisplayShowHomeEnabled(true)
-
+        (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity?)?.supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
     companion object {

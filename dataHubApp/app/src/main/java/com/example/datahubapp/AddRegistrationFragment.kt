@@ -2,7 +2,6 @@ package com.example.datahubapp
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,25 +11,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavDirections
-import androidx.navigation.fragment.NavHostFragment
+import com.example.datahubapp.data.model.Registration
 import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import com.example.datahubapp.placeholder.PlaceholderContent
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.time.LocalDate
 
 /**
  * A fragment representing a list of Items.
  */
-class SelectedTopicFragment : Fragment() {
+class AddRegistrationFragment : Fragment() {
 
     private var columnCount = 1
     lateinit var model: AppViewModel
-    private val TOPIC_NAME: String = "topicName"
+    private val REGISTRATION_ID_ARGUMENT: String = "id"
+    private val TOPIC_NAME_ARGUMENT: String = "topic-name"
+    private lateinit var selectedRegistration: Registration
     lateinit var selectedTopic: Topic
+    @RequiresApi(Build.VERSION_CODES.O)
+    private val creationDate = LocalDate.now()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,11 +39,13 @@ class SelectedTopicFragment : Fragment() {
 
         var viewModelFactory = AppViewModelFactory(requireContext())
         model = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AppViewModel::class.java)
-        Log.d("TEST_TOPIC", "${arguments?.getString(TOPIC_NAME)}")
 
-        //TODO assert business rule topic.name unique for each user
-        var topicList = model.getUserData().value?.topicList?.filter{
-            it.name.equals(arguments?.getString(TOPIC_NAME))
+        arguments?.let {
+            columnCount = it.getInt(ARG_COLUMN_COUNT)
+        }
+
+        val topicList = model.getUserData().value?.topicList?.filter{
+            it.name.equals(arguments?.getString(TOPIC_NAME_ARGUMENT))
         } as ArrayList<Topic>?
 
         if((topicList?.size ?: -1) > 0) {
@@ -51,51 +54,34 @@ class SelectedTopicFragment : Fragment() {
         } else {
             throw Error("invalid topic selected")
         }
-
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_selected_topic_list, container, false)
-        val view: RecyclerView = root.findViewById(R.id.list)
-
-        root.findViewById<TextView>(R.id.textView2).text = selectedTopic.name
-
-        //Set back arrow visible and enabled
-        (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity?)?.supportActionBar?.setDisplayShowHomeEnabled(true)
+        val root = inflater.inflate(R.layout.fragment_selected_registration_list, container, false)
+        val view = root.findViewById<RecyclerView>(R.id.list)
 
         // Set the adapter
-        if(view is RecyclerView) {
+        if (view is RecyclerView) {
             with(view) {
                 layoutManager = when {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = SelectedTopicRecyclerViewAdapter(selectedTopic, this@SelectedTopicFragment)
+                adapter = AddRegistrationRecyclerViewAdapter(selectedTopic)
             }
         }
         return root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var floatingButton: FloatingActionButton = view.findViewById(R.id.addRegistrationButton)
-        floatingButton.setOnClickListener {
-            if(context != null) {
-                var navigationDirection: NavDirections = SelectedTopicFragmentDirections.actionSelectedTopicFragmentToAddRegistrationFragment(selectedTopic.name);
-                NavHostFragment.findNavController(requireParentFragment()).navigate(navigationDirection)
-            } else {
-                Log.d("ERROR", "TopicsFragment.addClickListeners")
-                throw Error("Error: No context for this event")
-            }
-        }
+        view.findViewById<TextView>(R.id.textViewID).text = "${getString(R.string.ID)}: ${selectedTopic.numberRecords+1}"
+        view.findViewById<TextView>(R.id.textViewDate).text = "${getString(R.string.Date)}: ${creationDate}"
     }
 
     companion object {
@@ -106,7 +92,7 @@ class SelectedTopicFragment : Fragment() {
         // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
-            SelectedTopicFragment().apply {
+            SelectedRegistrationFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }
