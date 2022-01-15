@@ -106,12 +106,12 @@ class SelectedRegistrationRecyclerViewAdapter(
                     parent,
                     false))
             DATA_TYPES.DATEDATA.value -> DateViewHolder(
-                RegistrationitemDateBinding.inflate(
+                RegistrationitemTextBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false))
             DATA_TYPES.HOURDATA.value -> HourViewHolder(
-                RegistrationitemHourBinding.inflate(
+                RegistrationitemTextBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false))
@@ -174,7 +174,7 @@ class SelectedRegistrationRecyclerViewAdapter(
                 (holder as DateViewHolder).name.text = nameTypes[position].name
                 if((data.data as String).length > 0) {
                     var date: LocalDate = LocalDate.parse(data.data as CharSequence?)
-                    holder.contentView.updateDate(date.year, date.monthValue, date.dayOfMonth)//data.data as String
+                    holder.contentView.text = "${date.year}-${date.monthValue}-${date.dayOfMonth}"//data.data as String
                 } else {
                     holder.contentView.isVisible = false
                 }
@@ -183,9 +183,8 @@ class SelectedRegistrationRecyclerViewAdapter(
                 var data: StringData = item.registrationData as StringData
                 (holder as HourViewHolder).name.text = nameTypes[position].name
                 var time = (data.data as String).split(":")
-                if(time?.size >= 2) {
-                    holder.contentView.hour = time[0].toInt()
-                    holder.contentView.minute = time[1].toInt()
+                if(time.size >= 2) {
+                    holder.contentView.text = "${time[0]}:${time[1]}"
                 } else {
                     holder.contentView.isVisible = false
                 }
@@ -339,34 +338,34 @@ class SelectedRegistrationRecyclerViewAdapter(
         }
     }
 
-    inner class DateViewHolder(binding: RegistrationitemDateBinding) :
+    inner class DateViewHolder(binding: RegistrationitemTextBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val name: TextView = binding.name
-        val contentView: DatePicker = binding.content
+        val contentView: TextView = binding.content
 
         init {
             //disable editing from GUI
-            //contentView.keyListener = null //TODO
+            contentView.keyListener = null
         }
 
         override fun toString(): String {
-            return super.toString() + " '${contentView.year}-${contentView.month}-${contentView.dayOfMonth}'"
+            return super.toString() + " '${contentView.text}'"
         }
     }
     //TODO MODIFICA
-    inner class HourViewHolder(binding: RegistrationitemHourBinding) :
+    inner class HourViewHolder(binding: RegistrationitemTextBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val name: TextView = binding.name
-        val contentView: TimePicker = binding.content
+        val contentView: TextView = binding.content
 
         init {
             //disable editing from GUI
-            //contentView.keyListener = null //TODO
+            contentView.keyListener = null
         }
 
         @RequiresApi(Build.VERSION_CODES.M)
         override fun toString(): String {
-            return super.toString() + " '${contentView.hour}:${contentView.minute}'"
+            return super.toString() + " '$contentView.text'"
         }
     }
 
