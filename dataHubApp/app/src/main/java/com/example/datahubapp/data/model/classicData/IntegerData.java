@@ -14,6 +14,12 @@ public class IntegerData implements SourceDataInterface {
         val = x;
     }
 
+    public static IntegerData createEmptyInstance() {
+        return new IntegerData();
+    }
+
+    private IntegerData() {}
+
     @Override
     public Object getData() {
         return val;

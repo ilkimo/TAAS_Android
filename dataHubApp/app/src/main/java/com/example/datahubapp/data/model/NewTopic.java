@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class NewTopic {
 
-    private String id;
+    private String id; //TODO this is user_id, change variable name (and correct backend and website because the JSON will change... damn)
 
     private String name;
 

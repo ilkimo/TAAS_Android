@@ -188,7 +188,7 @@ class AppController(val model: AppViewModel, val repository: Repository) {
 
             val topic_box = Topic(
                 1L, "Allenamenti box",  "topic description", LocalDate.now(),
-                colors, registrazioni_box, nameType, 6L, false
+                colors, registrazioni_box, nameType, 5L, false
             )
             val topic2 = Topic(2L, "Peso Corporeo", "topic description", LocalDate.now(), colors, registrazioni_peso, nameType_peso, 9L, false)
             val topic3 = Topic("Sessioni di Studio", "topic description", colors, nameType, false)

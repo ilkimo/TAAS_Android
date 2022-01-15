@@ -14,6 +14,14 @@ public class StringData implements SourceDataInterface {
         this.val = x;
     }
 
+    public static StringData createEmptyInstance() {
+        return new StringData();
+    }
+
+    private StringData() {
+        val = "";
+    }
+
     @Override
     public Object getData(){
         return val;

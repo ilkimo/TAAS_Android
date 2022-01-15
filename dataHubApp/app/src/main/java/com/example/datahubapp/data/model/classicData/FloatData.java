@@ -12,6 +12,12 @@ public class FloatData implements SourceDataInterface {
         this.val = x;
     }
 
+    public static FloatData createEmptyInstance() {
+        return new FloatData();
+    }
+
+    private FloatData() {}
+
     @Override
     public Object getData() {
         return val;
