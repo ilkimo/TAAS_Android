@@ -89,4 +89,7 @@ dependencies {
 
     //Appbar
     implementation 'androidx.appcompat:appcompat:1.0.0'
+
+    //Color picker
+    implementation 'dev.sasikanth:colorsheet:1.0.1'
 }

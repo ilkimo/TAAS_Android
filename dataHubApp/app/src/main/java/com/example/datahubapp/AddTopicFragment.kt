@@ -19,8 +19,16 @@ import android.widget.TextView
 import android.app.Activity
 import android.graphics.Color
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.ui.text.toLowerCase
+import androidx.core.view.marginBottom
+import com.example.datahubapp.data.model.DataInfoPair
+import com.example.datahubapp.data.model.NewTopic
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.google.android.material.snackbar.Snackbar
-
+import dev.sasikanth.colorsheet.ColorSheet
+import java.util.*
+import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,13 +47,37 @@ class AddTopicFragment : Fragment() {
 
     private var _binding: FragmentAddTopicBinding? = null
 
-    private var spinnerArray = mutableListOf<String>("Text", "Integer", "Floating Point Number", "Date", "Hour")
+    private var spinnerArray = mutableListOf<String>("Text", "Integer Number", "Floating Point Number", "Date", "Hour")
 
     private var pairList = ArrayList<Pair<String, String>>()
+    private var colorSelected = "#f44336"
+    private var topicNameString = ""
+    private var topicDescriptionString = ""
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private val colors: IntArray = intArrayOf(
+        Color.parseColor("#f44336"),
+        Color.parseColor("#e91e63"),
+        Color.parseColor("#9c27b0"),
+        Color.parseColor("#673ab7"),
+        Color.parseColor("#3f51b5"),
+        Color.parseColor("#2196f3"),
+        Color.parseColor("#03a9f4"),
+        Color.parseColor("#00bcd4"),
+        Color.parseColor("#009688"),
+        Color.parseColor("#4caf50"),
+        Color.parseColor("#8bc34a"),
+        Color.parseColor("#cddc39"),
+        Color.parseColor("#ffeb3b"),
+        Color.parseColor("#ffc107"),
+        Color.parseColor("#ff9800"),
+        Color.parseColor("#ff5722"),
+        Color.parseColor("#795548"),
+        Color.parseColor("#607d8b"),
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -137,7 +169,6 @@ class AddTopicFragment : Fragment() {
 
             }
 
-
             container.addView(addView)
 
             index++
@@ -163,9 +194,20 @@ class AddTopicFragment : Fragment() {
                 }
             }
 
+            if(topicNameString.trim().isEmpty() || topicDescriptionString.trim().isEmpty()) {
+                formOk = false
+            }
 
             if(formOk) {
+                //TODO: costruire oggetto da mandare al server
                 Log.d("Form ok!", "OK")
+
+                val arrayDataInfoPair = arrayListOf<DataInfoPair>()
+                val arrayColor = arrayListOf<String>()
+
+
+                arrayDataInfoPair.add(DataInfoPair("Name", "Text"))
+                arrayDataInfoPair.add(DataInfoPair("Date", "Date"))
 
                 count = container.childCount
                 for (i in 0 until count) {
@@ -174,24 +216,47 @@ class AddTopicFragment : Fragment() {
                     val fieldName = row.findViewById<View>(R.id.fieldName) as EditText
                     val fieldDataType = row.findViewById<View>(R.id.fieldDataType) as Spinner
 
+                    val dataInfoPair = DataInfoPair(fieldName.text.toString(), fieldDataType.selectedItem.toString())
+                    arrayDataInfoPair.add(dataInfoPair)
+
                     Log.d(
                         "TEST",
                         fieldName.text.toString() + "; " + fieldDataType.selectedItem.toString()
                     )
-
-                    //TODO: make query to server
-
-
-                    //If ok
-                    val toast = Toast.makeText(context, "Topic Added", Toast.LENGTH_LONG)
-                    toast.show()
-
-                    //If there is an error
-                    /*
-                    val toast = Toast.makeText(context, "Error", Toast.LENGTH_LONG)
-                    toast.show()
-                     */
                 }
+
+                val colors = getColors(colorSelected)
+                val secondColor = colors.first
+                val thirdColor = colors.second
+
+                arrayColor.add(colorSelected)
+                arrayColor.add(secondColor)
+                arrayColor.add(thirdColor)
+
+                val mapper = ObjectMapper()
+                mapper.configure(SerializationFeature.INDENT_OUTPUT, true)
+
+
+                //TODO: change id with the correct userID
+                val topic = NewTopic("2", topicNameString, topicDescriptionString, arrayDataInfoPair, arrayColor, false)
+
+                val jsonString = mapper.writeValueAsString(topic)
+
+                Log.d("New Topic", jsonString)
+
+
+                //TODO: make query to server
+
+
+                //If ok
+                val toast = Toast.makeText(context, "Topic Added", Toast.LENGTH_LONG)
+                toast.show()
+
+                //If there is an error
+                /*
+                val toast = Toast.makeText(context, "Error", Toast.LENGTH_LONG)
+                toast.show()
+                 */
             } else {
                 val builder = context?.let { it1 -> AlertDialog.Builder(it1) }
                 builder?.setTitle("Ouchhhh!")
@@ -207,6 +272,151 @@ class AddTopicFragment : Fragment() {
             }
         }
 
+        val colorSelectedDiv = binding.colorSelectedDiv
+
+        val colorButton = binding.colorButton
+
+        colorButton.setOnClickListener {
+            ColorSheet().colorPicker(
+                colors = colors,
+                listener = { color ->
+                    // Handle color
+                    val hexColor = java.lang.String.format("#%06X", 0xFFFFFF and color)
+                    colorSelected = hexColor.lowercase(Locale.getDefault())
+                    colorSelectedDiv.setBackgroundColor(color)
+                    Log.d("Color", "Hex Color selected:${hexColor}")
+                })
+                .show(parentFragmentManager)
+        }
+
+
+        //Topic Name
+        val topicName = binding.topicName
+
+        topicName.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int,
+                count: Int, after: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+                topicNameString = s.toString()
+            }
+        })
+
+
+        //Topic Name
+        val topicDescription = binding.topicDescription
+
+        topicDescription.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int,
+                count: Int, after: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+                topicDescriptionString = s.toString()
+            }
+        })
+
+    }
+
+    fun getColors(firstColor: String): Pair<String, String> {
+        var secondColor: String = ""
+        var thirdColor: String = ""
+
+        when (firstColor.lowercase(Locale.getDefault())) {
+            "#f44336" -> {
+                secondColor = "#ff6154"
+                thirdColor = "#ff574a"
+            }
+            "#e91e63" -> {
+                secondColor = "#ff3c81"
+                thirdColor = "#fd3277"
+            }
+            "#9c27b0" -> {
+                secondColor = "#ba45ce"
+                thirdColor = "#b03bc4"
+            }
+            "#673ab7" -> {
+                secondColor = "#8558d5"
+                thirdColor = "#7b4ecb"
+            }
+            "#3f51b5" -> {
+                secondColor = "#5d6fd3"
+                thirdColor = "#5365c9"
+            }
+            "#2196f3" -> {
+                secondColor = "#3fb4ff"
+                thirdColor = "#35aaff"
+            }
+            "#03a9f4" -> {
+                secondColor = "#21c7ff"
+                thirdColor = "#17bdff"
+            }
+            "#00bcd4" -> {
+                secondColor = "#1edaf2"
+                thirdColor = "#14d0e8"
+            }
+            "#009688" -> {
+                secondColor = "#1eb4a6"
+                thirdColor = "#14aa9c"
+            }
+            "#4caf50" -> {
+                secondColor = "#6acd6e"
+                thirdColor = "#60c364"
+            }
+            "#8bc34a" -> {
+                secondColor = "#a9e168"
+                thirdColor = "#9fd75e"
+            }
+            "#cddc39" -> {
+                secondColor = "#ebfa57"
+                thirdColor = "#e1f04d"
+            }
+            "#ffeb3b" -> {
+                secondColor = "#ffff59"
+                thirdColor = "#ffff4f"
+            }
+            "#ffc107" -> {
+                secondColor = "#ffdf25"
+                thirdColor = "#ffd51b"
+            }
+            "#ff9800" -> {
+                secondColor = "#ffb61e"
+                thirdColor = "#ffac14"
+            }
+            "#ff5722" -> {
+                secondColor = "#ff7540"
+                thirdColor = "#ff6b36"
+            }
+            "#795548" -> {
+                secondColor = "#977366"
+                thirdColor = "#8d695c"
+            }
+            "#607d8b" -> {
+                secondColor = "#7e9ba9"
+                thirdColor = "#74919f"
+            }
+            else -> { // Note the block
+                Log.e("COLOR", "Color not available")
+            }
+        }
+
+        Log.d("Second color", secondColor)
+
+        val returnColor = Pair(secondColor, thirdColor)
+        return returnColor
     }
 
     companion object {

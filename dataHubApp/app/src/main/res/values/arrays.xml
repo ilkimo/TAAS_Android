@@ -12,7 +12,7 @@
 
     <string-array name="data_types">
         <item>Text</item>
-        <item>Integer</item>
+        <item>Integer Number</item>
         <item>Floating Point Number</item>
         <item>Date</item>
         <item>Hour</item>

@@ -40,4 +40,13 @@ public class NewTopic {
     public String getName() {
         return name;
     }
+
+    public NewTopic(String id, String name, String description, ArrayList<DataInfoPair> nameType, ArrayList<String> color, Boolean shared) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.nameType = nameType;
+        this.color = color;
+        this.shared = shared;
+    }
 }
