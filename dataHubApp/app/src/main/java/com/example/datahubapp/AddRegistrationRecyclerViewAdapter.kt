@@ -585,6 +585,14 @@ class AddRegistrationRecyclerViewAdapter(
         override fun bind(item: RegistrationViewData<*>, name: String) {
             super.bind(item, name)
 
+            var watcher = TimePicker.OnTimeChangedListener { _, hour, minute ->
+                item.registrationData.data = "$hour:$minute"
+                Log.d("LISTENER", "updated data to ${item.registrationData.data}")
+            }
+
+            listeners.add(watcher)
+            contentView.setOnTimeChangedListener(watcher)
+
             if((item.registrationData.data as String).length > 0) {
                 var time = (item.registrationData as StringData).data.toString().split(":")
                 contentView.hour = time[0].toInt()
@@ -595,30 +603,6 @@ class AddRegistrationRecyclerViewAdapter(
             }
 
             this.name.text = name
-
-            var gwatcher = object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                    Log.d("LISTENER", s.toString())
-
-                    try {
-                        item.registrationData.data = s.toString()
-                        Log.d("LISTENER", "updated data to ${item.registrationData.data}")
-                    } catch(e: Exception) {
-                        Log.d("EXCEPTION", "${e.message}")
-                    }
-
-                }
-            }
-
-            var watcher = TimePicker.OnTimeChangedListener { _, hour, minute ->
-                item.registrationData.data = "$hour:$minute"
-                Log.d("LISTENER", "updated data to ${item.registrationData.data}")
-            }
-
-            listeners.add(watcher)
-            contentView.setOnTimeChangedListener(watcher)
         }
 
         override fun removeListeners() {
