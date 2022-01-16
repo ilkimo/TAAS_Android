@@ -138,22 +138,22 @@ class AppController(val model: AppViewModel, val repository: Repository) {
             registrazioni_box.add(registration5)
 
             var dataInfoPairList_spese = ArrayList<DataInfoPair>().apply {
-                add(DataInfoPair("peso1", "Floating Point Number"))
-                add(DataInfoPair("peso2", "Floating Point Number"))
-                add(DataInfoPair("peso3", "Floating Point Number"))
-                add(DataInfoPair("peso4", "Floating Point Number"))
-                add(DataInfoPair("peso5", "Floating Point Number"))
-                add(DataInfoPair("peso6", "Floating Point Number"))
-                add(DataInfoPair("peso7", "Floating Point Number"))
-                add(DataInfoPair("peso8", "Floating Point Number"))
-                add(DataInfoPair("peso9", "Floating Point Number"))
-                add(DataInfoPair("peso10", "Floating Point Number"))
-                add(DataInfoPair("peso11", "Floating Point Number"))
-                add(DataInfoPair("peso12", "Floating Point Number"))
-                add(DataInfoPair("peso13", "Floating Point Number"))
-                add(DataInfoPair("peso14", "Floating Point Number"))
-                add(DataInfoPair("peso15", "Floating Point Number"))
-                add(DataInfoPair("peso16", "Floating Point Number"))
+                add(DataInfoPair("spesa1", "Floating Point Number"))
+                add(DataInfoPair("spesa2", "Floating Point Number"))
+                add(DataInfoPair("spesa3", "Floating Point Number"))
+                add(DataInfoPair("spesa4", "Floating Point Number"))
+                add(DataInfoPair("spesa5", "Floating Point Number"))
+                add(DataInfoPair("spesa6", "Floating Point Number"))
+                add(DataInfoPair("spesa7", "Floating Point Number"))
+                add(DataInfoPair("spesa8", "Floating Point Number"))
+                add(DataInfoPair("spesa9", "Floating Point Number"))
+                add(DataInfoPair("spesa10", "Floating Point Number"))
+                add(DataInfoPair("spesa11", "Floating Point Number"))
+                add(DataInfoPair("spesa12", "Floating Point Number"))
+                add(DataInfoPair("spesa13", "Floating Point Number"))
+                add(DataInfoPair("spesa14", "Floating Point Number"))
+                add(DataInfoPair("spesa15", "Floating Point Number"))
+                add(DataInfoPair("spesa16", "Floating Point Number"))
             }
             val registrazioni_spese = ArrayList<Registration>().apply{
                 add(Registration(1L, LocalDate.ofYearDay(2022, 6), ArrayList<SourceDataInterface<*>>(). apply {
@@ -175,6 +175,10 @@ class AppController(val model: AppViewModel, val repository: Repository) {
                     add(FloatData(16f))
                 }))
             }
+
+            val nameType_peso = ArrayList<DataInfoPair>()
+            val parameter_peso1 = DataInfoPair("peso", "Floating Point Number")
+            nameType_peso.add(parameter_peso1)
 
             val listaCampiRegistrati_peso1 = ArrayList<SourceDataInterface<*>>()
             listaCampiRegistrati_peso1.add(FloatData(70.0f))
@@ -227,7 +231,7 @@ class AppController(val model: AppViewModel, val repository: Repository) {
                 1L, "Allenamenti box",  "topic description", LocalDate.now(),
                 colors, registrazioni_box, nameType, 5L, false
             )
-            val topic2 = Topic(2L, "Peso Corporeo", "topic description", LocalDate.now(), colors, registrazioni_peso, nameType, 9L, false)
+            val topic2 = Topic(2L, "Peso Corporeo", "topic description", LocalDate.now(), colors, registrazioni_peso, nameType_peso, 9L, false)
             val topic3 = Topic(3L, "Spese vacanze", "topic description", LocalDate.now(), colors, registrazioni_spese, dataInfoPairList_spese, 1L, false)
             val topic4 = Topic("Sessioni di Studio", "topic description", colors, nameType, false)
             val topic5 = Topic("Spese alimentari", "topic description", colors, nameType, false)
