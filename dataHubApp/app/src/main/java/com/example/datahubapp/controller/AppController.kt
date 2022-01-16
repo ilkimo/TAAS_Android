@@ -279,7 +279,47 @@ class AppController(val model: AppViewModel, val repository: Repository) {
             registrazioni_date.add(registration_date)
 
             val topic11 = Topic(4L, "prova date", "prova di un topic con tante date per vedere se funzionano le rimozioni dei listeners", LocalDate.now(), colors, registrazioni_date, nameType_date, 1L, false)
-            //val topic12 = Topic(4L, "prova orari", "prova di un topic con tanti orari per vedere se funzionano le rimozioni dei listeners", LocalDate.now(), colors, registrazioni_ore, nameType_ore, 1L, false)
+
+            //--------------------------------------------------------------------------------------
+            var nameType_ore = ArrayList<DataInfoPair>()
+            val parameter_ora1 = DataInfoPair("ora", "Hour") //Hour
+            val parameter_ora2 = DataInfoPair("ora", "Hour")
+            val parameter_ora3 = DataInfoPair("ora", "Hour")
+            val parameter_ora4 = DataInfoPair("ora", "Hour")
+            val parameter_ora5 = DataInfoPair("ora", "Hour")
+            val parameter_ora6 = DataInfoPair("ora", "Hour")
+            val parameter_ora7 = DataInfoPair("ora", "Hour")
+            val parameter_ora8 = DataInfoPair("ora", "Hour")
+            val parameter_ora9 = DataInfoPair("ora", "Hour")
+            val parameter_ora10 = DataInfoPair("ora", "Hour")
+            nameType_ore.add(parameter_ora1)
+            nameType_ore.add(parameter_ora2)
+            nameType_ore.add(parameter_ora3)
+            nameType_ore.add(parameter_ora4)
+            nameType_ore.add(parameter_ora5)
+            nameType_ore.add(parameter_ora6)
+            nameType_ore.add(parameter_ora7)
+            nameType_ore.add(parameter_ora8)
+            nameType_ore.add(parameter_ora9)
+            nameType_ore.add(parameter_ora10)
+
+            var registrazioni_ore: ArrayList<Registration> = ArrayList()
+            val listaCampiRegistrati_ore = ArrayList<SourceDataInterface<*>>()
+            listaCampiRegistrati_ore.add(StringData("1:1"))
+            listaCampiRegistrati_ore.add(StringData("2:2"))
+            listaCampiRegistrati_ore.add(StringData("3:3"))
+            listaCampiRegistrati_ore.add(StringData("4:4"))
+            listaCampiRegistrati_ore.add(StringData("5:5"))
+            listaCampiRegistrati_ore.add(StringData("6:6"))
+            listaCampiRegistrati_ore.add(StringData("7:7"))
+            listaCampiRegistrati_ore.add(StringData("8:8"))
+            listaCampiRegistrati_ore.add(StringData("9:9"))
+            listaCampiRegistrati_ore.add(StringData("10:10"))
+            val registrazione_ore = Registration(1L, LocalDate.ofYearDay(2022, 20), listaCampiRegistrati_ore)
+            registrazioni_ore.add(registrazione_ore)
+            //--------------------------------------------------------------------------------------
+
+            val topic12 = Topic(4L, "prova orari", "prova di un topic con tanti orari per vedere se funzionano le rimozioni dei listeners", LocalDate.now(), colors, registrazioni_ore, nameType_ore, 1L, false)
             topicList.add(topic_box)
             topicList.add(topic2)
             topicList.add(topic3)
@@ -291,7 +331,7 @@ class AppController(val model: AppViewModel, val repository: Repository) {
             topicList.add(topic9)
             topicList.add(topic10)
             topicList.add(topic11)
-            //topicList.add(topic12)
+            topicList.add(topic12)
 
             return UserData("1", idUser, topicList)
         }
