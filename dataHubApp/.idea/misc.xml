@@ -13,6 +13,7 @@
         <entry key="app/src/main/res/drawable/shared_topics.xml" value="0.32592592592592595" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout/add_topic_row.xml" value="0.19701086956521738" />
+        <entry key="app/src/main/res/layout/fragment_add_registration_list.xml" value="0.30932971014492755" />
         <entry key="app/src/main/res/layout/fragment_add_topic.xml" value="0.2617283950617284" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.5432291666666667" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.25" />

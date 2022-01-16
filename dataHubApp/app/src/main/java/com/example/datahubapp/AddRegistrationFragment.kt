@@ -17,6 +17,7 @@ import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import com.example.datahubapp.placeholder.PlaceholderContent
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.LocalDate
 
 /**
@@ -82,6 +83,8 @@ class AddRegistrationFragment : Fragment() {
 
         view.findViewById<TextView>(R.id.textViewID).text = "${getString(R.string.ID)}: ${selectedTopic.numberRecords+1}"
         view.findViewById<TextView>(R.id.textViewDate).text = "${getString(R.string.Date)}: ${creationDate}"
+
+        view.findViewById<FloatingActionButton>(R.id.addTopicButton).setOnClickListener { ((view.findViewById<RecyclerView>(R.id.list)).adapter as AddRegistrationRecyclerViewAdapter).printAll() }
     }
 
     companion object {

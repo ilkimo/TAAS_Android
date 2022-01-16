@@ -144,6 +144,14 @@ class AddRegistrationRecyclerViewAdapter(
         }
     }
 
+    fun printAll() {
+        println("---------------------------------------------------")
+        println("Printing all the stuff:")
+        for(reg in registration_rows) {
+            println(reg)
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item: RegistrationViewData<*> = registration_rows[position]
@@ -521,29 +529,11 @@ class AddRegistrationRecyclerViewAdapter(
 
             lateinit var date: LocalDate
 
-            if(!(item.registrationData as StringData).data.equals("")) {
-                var dateArr = ((item.registrationData).data.toString()).split("-")
-
-                try {
-                    //add 1 to month because of different indexing system of DatePicker
-                    date = LocalDate.of(dateArr[0].toInt(), dateArr[1].toInt()+1, dateArr[2].toInt())
-                } catch(e: Exception) {
-                    throw Error("${e.message}: parsed data=${dateArr[0]}-${dateArr[1].toInt()+1}-${dateArr[2]}")
-                }
-            } else {
-                date = LocalDate.now().apply {  }
-            }
-
-            this.name.text = name
-            contentView.updateDate(date.year, date.monthValue-1, date.dayOfMonth)
-
             var watcher = DatePicker.OnDateChangedListener {
                     _, year: Int, month: Int, day: Int ->
-                Log.d("LISTENER", "")
-
                 try {
-                    item.registrationData.data = "$year-$month-$day"
-                    Log.d("LISTENER", "updated data to ${item.registrationData.data}")
+                    (item.registrationData).data = "$year-$month-$day"
+                    Log.d("loggino", "updated data to ${item.registrationData.data}")
                 } catch(e: Exception) {
                     Log.d("EXCEPTION", "${e.message}")
                 }
@@ -551,6 +541,25 @@ class AddRegistrationRecyclerViewAdapter(
 
             listeners.add(watcher)
             contentView.setOnDateChangedListener(watcher)
+
+            if((item.registrationData.data as String) == "") {
+                Log.d("Loggino", "nessun valore, metto data odierna")
+                date = LocalDate.now().apply {  }
+            } else {
+                var dateArr = ((item.registrationData as StringData).data.toString()).split("-")
+
+                try {
+                    //add 1 to month because of different indexing system of DatePicker
+                    date = LocalDate.of(dateArr[0].toInt(), dateArr[1].toInt()+1, dateArr[2].toInt())
+                    Log.d("Loggino", "valore precedente trovato=${dateArr[0]}-${dateArr[1]}-${dateArr[2]}")
+                } catch(e: Exception) {
+                    throw Error("${e.message}: parsed data=${dateArr[0]}-${dateArr[1].toInt()+1}-${dateArr[2]}")
+                }
+            }
+
+            this.name.text = name
+            Log.d("Loggino", "aggiorno vista con ${date.year}-${date.monthValue-1}-${date.dayOfMonth}")
+            contentView.updateDate(date.year, date.monthValue-1, date.dayOfMonth)
         }
 
         override fun removeListeners() {
