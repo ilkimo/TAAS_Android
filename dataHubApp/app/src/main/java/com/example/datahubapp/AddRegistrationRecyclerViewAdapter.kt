@@ -1,24 +1,28 @@
 package com.example.datahubapp
 
+import android.os.AsyncTask
 import android.os.Build
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.DatePicker
-import android.widget.TextView
-import android.widget.TimePicker
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
-import com.example.datahubapp.data.model.DataInfoPair
-import com.example.datahubapp.data.model.SourceDataInterface
-import com.example.datahubapp.data.model.Topic
+import androidx.core.widget.addTextChangedListener
+import androidx.loader.content.AsyncTaskLoader
+import com.example.datahubapp.data.model.*
 import com.example.datahubapp.data.model.classicData.*
 import com.example.datahubapp.databinding.*
 
 import com.example.datahubapp.placeholder.PlaceholderContent.PlaceholderItem
+import com.example.datahubapp.util.BindableViewHolder
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import javax.xml.transform.Source
 
 /**
  * [RecyclerView.Adapter] that can display a [PlaceholderItem].
@@ -48,27 +52,34 @@ class AddRegistrationRecyclerViewAdapter(
         var emptyRegistration: SourceDataInterface<*>
 
         for(i in topic.nameType.indices) {
-            itemViewType = when(topic.nameType[i].data) {
-                "Text" -> DATA_TYPES.STRINGDATA.value
-                "Integer Number" -> DATA_TYPES.INTEGERDATA.value
-                "Floating Point Number" -> DATA_TYPES.FLOATDATA.value
-                "Date" -> DATA_TYPES.DATEDATA.value
-                "Hour" -> DATA_TYPES.HOURDATA.value
-                //TODO ADD NEW TYPE MAPPING HERE
-                else -> throw Error("Given class has not been matched to a ViewType in the Android application")
-            }
-
-            emptyRegistration = when(topic.nameType[i].data) {
-                "Text" -> StringData.createEmptyInstance()
-                "Integer Number" -> IntegerData.createEmptyInstance()
-                "Floating Point Number" -> FloatData.createEmptyInstance()
-                "Date" -> StringData.createEmptyInstance()
-                "Hour" -> StringData.createEmptyInstance()
-                //TODO ADD NEW TYPE MAPPING HERE
-                else -> throw Error("Given class has not been matched to a ViewType in the Android application")
-            }
+            itemViewType = getItemViewType(topic.nameType[i].data)
+            emptyRegistration = getEmptyRegistration(topic.nameType[i].data)
 
             registration_rows.add(RegistrationViewData(itemViewType, emptyRegistration))
+        }
+    }
+
+    private fun getItemViewType(dataType: String): Int {
+        return when(dataType) {
+            "Text" -> DATA_TYPES.STRINGDATA.value
+            "Integer Number" -> DATA_TYPES.INTEGERDATA.value
+            "Floating Point Number" -> DATA_TYPES.FLOATDATA.value
+            "Date" -> DATA_TYPES.DATEDATA.value
+            "Hour" -> DATA_TYPES.HOURDATA.value
+            //TODO ADD NEW TYPE MAPPING HERE
+            else -> throw Error("Given class has not been matched to a ViewType in the Android application")
+        }
+    }
+
+    private fun getEmptyRegistration(dataType: String): SourceDataInterface<*> {
+        return when(dataType) {
+            "Text" -> StringData.createEmptyInstance()
+            "Integer Number" -> IntegerData.createEmptyInstance()
+            "Floating Point Number" -> FloatData.createEmptyInstance()
+            "Date" -> StringData.createEmptyInstance()
+            "Hour" -> StringData.createEmptyInstance()
+            //TODO ADD NEW TYPE MAPPING HERE
+            else -> throw Error("Given class has not been matched to a ViewType in the Android application")
         }
     }
 
@@ -137,84 +148,7 @@ class AddRegistrationRecyclerViewAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item: RegistrationViewData<*> = registration_rows[position]
 
-        when(item.viewType) {
-            DATA_TYPES.BOOLEANDATA.value -> { //TODO HANDLE NULL OR EMMPTY
-                var data: BooleanData = item.registrationData as BooleanData
-                (holder as BooleanViewHolder).name.text = topic.nameType[position].name
-                holder.contentView.isChecked = data.data as Boolean
-            }
-            DATA_TYPES.BYTEDATA.value -> { //TODO HANDLE NULL OR EMMPTY
-                var data: ByteData = item.registrationData as ByteData
-                (holder as ByteViewHolder).name.text = topic.nameType[position].name
-                holder.contentView.text = (data.data as Byte).toString()
-            }
-            DATA_TYPES.CHARDATA.value -> { //TODO HANDLE NULL OR EMMPTY
-                var data: CharData = item.registrationData as CharData
-                (holder as CharViewHolder).name.text = topic.nameType[position].name
-                holder.contentView.text = (data.data as Char).toString()
-            }
-            DATA_TYPES.DOUBLEDATA.value -> { //TODO HANDLE NULL OR EMMPTY
-                var data: DoubleData = item.registrationData as DoubleData
-                (holder as DoubleViewHolder).name.text = topic.nameType[position].name
-                holder.contentView.text = (data.data as Double).toString()
-            }
-            DATA_TYPES.FLOATDATA.value -> {
-                var data: FloatData = item.registrationData as FloatData
-                (holder as FloatViewHolder).name.text = topic.nameType[position].name
-                if(data.data != null) {
-                    holder.contentView.text = (data.data as Float).toString()
-                } else {
-                    holder.contentView.text = ""
-                }
-            }
-            DATA_TYPES.INTEGERDATA.value -> {
-                var data: IntegerData = item.registrationData as IntegerData
-                (holder as IntegerViewHolder).name.text = topic.nameType[position].name
-
-                if(data.data != null) {
-                    holder.contentView.text = (data.data as Integer).toString()
-                } else {
-                    holder.contentView.text = ""
-                }
-            }
-            DATA_TYPES.LONGDATA.value -> { //TODO HANDLE NULL OR EMMPTY
-                var data: LongData = item.registrationData as LongData
-                (holder as LongViewHolder).name.text = topic.nameType[position].name
-                holder.contentView.text = (data.data as Long).toString()
-            }
-            DATA_TYPES.SHORTDATA.value -> { //TODO HANDLE NULL OR EMMPTY
-                var data: ShortData = item.registrationData as ShortData
-                (holder as ShortViewHolder).name.text = topic.nameType[position].name
-                holder.contentView.text = (data.data as Short).toString()
-            }
-            DATA_TYPES.STRINGDATA.value -> {
-                var data: StringData = item.registrationData as StringData
-                (holder as TextViewHolder).name.text = topic.nameType[position].name
-                if(data.data != null) {
-                    holder.contentView.text = data.data as String
-                } else {
-                    holder.contentView.text = ""
-                }
-            }
-            DATA_TYPES.DATEDATA.value -> {
-                var data: StringData = item.registrationData as StringData
-                (holder as DateViewHolder).name.text = topic.nameType[position].name
-                if((data.data as String).length > 0) {
-                    var date: LocalDate = LocalDate.parse(data.data as CharSequence?)
-                    holder.contentView.updateDate(date.year, date.monthValue, date.dayOfMonth)//data.data as String
-                }
-            }
-            DATA_TYPES.HOURDATA.value -> {
-                var data: StringData = item.registrationData as StringData
-                (holder as HourViewHolder).name.text = topic.nameType[position].name
-                var time = (data.data as String).split(":")
-                if(time?.size >= 2) {
-                    holder.contentView.hour = time[0].toInt()
-                    holder.contentView.minute = time[1].toInt()
-                }
-            }
-            else -> throw Error("ViewType not correctly implemented: ${item.viewType}")
-        }
+        (holder as BindableViewHolder).bind(item, topic.nameType[position].name)
     }
 
     override fun getItemCount(): Int = registration_rows.size
@@ -223,54 +157,164 @@ class AddRegistrationRecyclerViewAdapter(
         return registration_rows[position].viewType
     }
 
+    fun getNewRegistration(): NewRegistration {
+        val newRegistration = createNewRegistration()
+
+        return newRegistration
+    }
+
+    private fun createNewRegistration(): NewRegistration {
+        val reg = NewRegistration()
+
+        TODO() //loop registration_rows for data
+
+        return reg
+    }
+    //TODO!!!!
     inner class BooleanViewHolder(binding: RegistrationitemBooleanBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+        BindableViewHolder(binding.root) {
         val name: TextView = binding.name
         val contentView: CheckBox = binding.content
 
+        override fun bind(item: RegistrationViewData<*>, name: String) {
+            TODO("Not yet implemented")
+        }
+
+        override fun removeListeners() {
+            TODO("Not yet implemented")
+        }
+
         override fun toString(): String {
             return super.toString() + " '" + contentView.text + "'"
         }
     }
-
+    //TODO!!!!
     //TODO CUSTOM
     inner class ByteViewHolder(binding: RegistrationitemTextBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+        BindableViewHolder(binding.root) {
         val name: TextView = binding.name
         val contentView: TextView = binding.content
+
+        override fun bind(item: RegistrationViewData<*>, name: String) {
+            TODO("Not yet implemented")
+        }
+
+        override fun removeListeners() {
+            TODO("Not yet implemented")
+        }
 
         override fun toString(): String {
             return super.toString() + " '" + contentView.text + "'"
         }
     }
-
+    //TODO!!!!
     //TODO CUSTOM
     inner class CharViewHolder(binding: RegistrationitemTextBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+        BindableViewHolder(binding.root) {
         val name: TextView = binding.name
         val contentView: TextView = binding.content
+
+        override fun bind(item: RegistrationViewData<*>, name: String) {
+            TODO("Not yet implemented")
+        }
+
+        override fun removeListeners() {
+            TODO("Not yet implemented")
+        }
 
         override fun toString(): String {
             return super.toString() + " '" + contentView.text + "'"
         }
     }
-
 
     inner class DoubleViewHolder(binding: RegistrationitemIntBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        val name: TextView = binding.name
-        val contentView: TextView = binding.content
+        BindableViewHolder(binding.root) {
+        private val name: TextView = binding.name
+        private val contentView = binding.content
+        var listeners: ArrayList<TextWatcher> = ArrayList()
+
+        override fun bind(item: RegistrationViewData<*>, name: String) {
+            super.bind(item, name)
+
+            this.name.text = name
+            if((item.registrationData as DoubleData).data != null) {
+                (contentView as TextView).text = item.registrationData.data.toString()
+            } else {
+                (contentView as TextView).text = ""
+            }
+
+            var watcher = object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {}
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    Log.d("LISTENER", s.toString())
+
+                    try {
+                        item.registrationData.data = s.toString().toDouble()
+                        Log.d("LISTENER", "updated data to ${item.registrationData.data}")
+                    } catch(e: Exception) {
+                        Log.d("EXCEPTION", "${e.message}")
+                    }
+                }
+            }
+
+            listeners.add(watcher)
+            contentView.addTextChangedListener(watcher)
+        }
+
+        override fun removeListeners() {
+            for(l in listeners) {
+                Log.d("LISTENER", "REMOVING OLD LISTENER!!!")
+                contentView.removeTextChangedListener(l)
+            }
+        }
 
         override fun toString(): String {
             return super.toString() + " '" + contentView.text + "'"
         }
     }
 
-
     inner class FloatViewHolder(binding: RegistrationitemIntBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        val name: TextView = binding.name
-        val contentView: TextView = binding.content
+        BindableViewHolder(binding.root) {
+        private val name: TextView = binding.name
+        private val contentView = binding.content
+        var listeners: ArrayList<TextWatcher> = ArrayList()
+
+        override fun bind(item: RegistrationViewData<*>, name: String) {
+            super.bind(item, name)
+
+            this.name.text = name
+            if((item.registrationData as FloatData).data != null) {
+                (contentView as TextView).text = item.registrationData.data.toString()
+            } else {
+                (contentView as TextView).text = ""
+            }
+
+            var watcher = object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {}
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    Log.d("LISTENER", s.toString())
+
+                    try {
+                        item.registrationData.data = s.toString().toFloat()
+                        Log.d("LISTENER", "updated data to ${item.registrationData.data}")
+                    } catch(e: Exception) {
+                        Log.d("EXCEPTION", "${e.message}")
+                    }
+                }
+            }
+
+            listeners.add(watcher)
+            contentView.addTextChangedListener(watcher)
+        }
+
+        override fun removeListeners() {
+            for(l in listeners) {
+                Log.d("LISTENER", "REMOVING OLD LISTENER!!!")
+                contentView.removeTextChangedListener(l)
+            }
+        }
 
         override fun toString(): String {
             return super.toString() + " '" + contentView.text + "'"
@@ -278,9 +322,46 @@ class AddRegistrationRecyclerViewAdapter(
     }
 
     inner class IntegerViewHolder(binding: RegistrationitemIntBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        val name: TextView = binding.name
-        val contentView: TextView = binding.content
+        BindableViewHolder(binding.root) {
+        private val name: TextView = binding.name
+        private val contentView = binding.content
+        var listeners: ArrayList<TextWatcher> = ArrayList()
+
+        override fun bind(item: RegistrationViewData<*>, name: String) {
+            super.bind(item, name)
+
+            this.name.text = name
+            if((item.registrationData as IntegerData).data != null) {
+                (contentView as TextView).text = item.registrationData.data.toString()
+            } else {
+                (contentView as TextView).text = ""
+            }
+
+            var watcher = object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {}
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    Log.d("LISTENER", s.toString())
+
+                    try {
+                        item.registrationData.data = s.toString().toInt()
+                        Log.d("LISTENER", "updated data to ${item.registrationData.data}")
+                    } catch(e: Exception) {
+                        Log.d("EXCEPTION", "${e.message}")
+                    }
+                }
+            }
+
+            listeners.add(watcher)
+            contentView.addTextChangedListener(watcher)
+        }
+
+        override fun removeListeners() {
+            for(l in listeners) {
+                Log.d("LISTENER", "REMOVING OLD LISTENER!!!")
+                contentView.removeTextChangedListener(l)
+            }
+        }
 
         override fun toString(): String {
             return super.toString() + " '" + contentView.text + "'"
@@ -288,9 +369,46 @@ class AddRegistrationRecyclerViewAdapter(
     }
 
     inner class LongViewHolder(binding: RegistrationitemIntBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        val name: TextView = binding.name
-        val contentView: TextView = binding.content
+        BindableViewHolder(binding.root) {
+        private val name: TextView = binding.name
+        private val contentView = binding.content
+        var listeners: ArrayList<TextWatcher> = ArrayList()
+
+        override fun bind(item: RegistrationViewData<*>, name: String) {
+            super.bind(item, name)
+
+            this.name.text = name
+            if((item.registrationData as LongData).data != null) {
+                (contentView as TextView).text = item.registrationData.data.toString()
+            } else {
+                (contentView as TextView).text = ""
+            }
+
+            var watcher = object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {}
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    Log.d("LISTENER", s.toString())
+
+                    try {
+                        item.registrationData.data = s.toString().toLong()
+                        Log.d("LISTENER", "updated data to ${item.registrationData.data}")
+                    } catch(e: Exception) {
+                        Log.d("EXCEPTION", "${e.message}")
+                    }
+                }
+            }
+
+            listeners.add(watcher)
+            contentView.addTextChangedListener(watcher)
+        }
+
+        override fun removeListeners() {
+            for(l in listeners) {
+                Log.d("LISTENER", "REMOVING OLD LISTENER!!!")
+                contentView.removeTextChangedListener(l)
+            }
+        }
 
         override fun toString(): String {
             return super.toString() + " '" + contentView.text + "'"
@@ -298,9 +416,46 @@ class AddRegistrationRecyclerViewAdapter(
     }
 
     inner class ShortViewHolder(binding: RegistrationitemIntBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        val name: TextView = binding.name
-        val contentView: TextView = binding.content
+        BindableViewHolder(binding.root) {
+        private val name: TextView = binding.name
+        private val contentView = binding.content
+        var listeners: ArrayList<TextWatcher> = ArrayList()
+
+        override fun bind(item: RegistrationViewData<*>, name: String) {
+            super.bind(item, name)
+
+            this.name.text = name
+            if((item.registrationData as ShortData).data != null) {
+                (contentView as TextView).text = item.registrationData.data.toString()
+            } else {
+                (contentView as TextView).text = ""
+            }
+
+            var watcher = object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {}
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    Log.d("LISTENER", s.toString())
+
+                    try {
+                        item.registrationData.data = s.toString().toShort()
+                        Log.d("LISTENER", "updated data to ${item.registrationData.data}")
+                    } catch(e: Exception) {
+                        Log.d("EXCEPTION", "${e.message}")
+                    }
+                }
+            }
+
+            listeners.add(watcher)
+            contentView.addTextChangedListener(watcher)
+        }
+
+        override fun removeListeners() {
+            for(l in listeners) {
+                Log.d("LISTENER", "REMOVING OLD LISTENER!!!")
+                contentView.removeTextChangedListener(l)
+            }
+        }
 
         override fun toString(): String {
             return super.toString() + " '" + contentView.text + "'"
@@ -308,9 +463,46 @@ class AddRegistrationRecyclerViewAdapter(
     }
 
     inner class TextViewHolder(binding: RegistrationitemTextBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        val name: TextView = binding.name
-        val contentView: TextView = binding.content
+        BindableViewHolder(binding.root) {
+        private val name: TextView = binding.name
+        private val contentView = binding.content
+        var listeners: ArrayList<TextWatcher> = ArrayList()
+
+        override fun bind(item: RegistrationViewData<*>, name: String) {
+            super.bind(item, name)
+
+            this.name.text = name
+            if((item.registrationData as StringData).data != null) {
+                (contentView as TextView).text = item.registrationData.data.toString()
+            } else {
+                (contentView as TextView).text = ""
+            }
+
+            var watcher = object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {}
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    Log.d("LISTENER", s.toString())
+
+                    try {
+                        item.registrationData.data = s.toString()
+                        Log.d("LISTENER", "updated data to ${item.registrationData.data}")
+                    } catch(e: Exception) {
+                        Log.d("EXCEPTION", "${e.message}")
+                    }
+                }
+            }
+
+            listeners.add(watcher)
+            contentView.addTextChangedListener(watcher)
+        }
+
+        override fun removeListeners() {
+            for(l in listeners) {
+                Log.d("LISTENER", "REMOVING OLD LISTENER!!!")
+                contentView.removeTextChangedListener(l)
+            }
+        }
 
         override fun toString(): String {
             return super.toString() + " '" + contentView.text + "'"
@@ -318,19 +510,115 @@ class AddRegistrationRecyclerViewAdapter(
     }
 
     inner class DateViewHolder(binding: RegistrationitemDateBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        val name: TextView = binding.name
-        val contentView: DatePicker = binding.content
+        BindableViewHolder(binding.root) {
+        private val name: TextView = binding.name
+        private val contentView = binding.content
+        var listeners: ArrayList<DatePicker.OnDateChangedListener> = ArrayList()
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        override fun bind(item: RegistrationViewData<*>, name: String) {
+            super.bind(item, name)
+
+            lateinit var date: LocalDate
+
+            if(!(item.registrationData as StringData).data.equals("")) {
+                var dateArr = ((item.registrationData).data.toString()).split("-")
+
+                try {
+                    //add 1 to month because of different indexing system of DatePicker
+                    date = LocalDate.of(dateArr[0].toInt(), dateArr[1].toInt()+1, dateArr[2].toInt())
+                } catch(e: Exception) {
+                    throw Error("${e.message}: parsed data=${dateArr[0]}-${dateArr[1].toInt()+1}-${dateArr[2]}")
+                }
+            } else {
+                date = LocalDate.now().apply {  }
+            }
+
+            this.name.text = name
+            contentView.updateDate(date.year, date.monthValue-1, date.dayOfMonth)
+
+            var watcher = DatePicker.OnDateChangedListener {
+                    _, year: Int, month: Int, day: Int ->
+                Log.d("LISTENER", "")
+
+                try {
+                    item.registrationData.data = "$year-$month-$day"
+                    Log.d("LISTENER", "updated data to ${item.registrationData.data}")
+                } catch(e: Exception) {
+                    Log.d("EXCEPTION", "${e.message}")
+                }
+            }
+
+            listeners.add(watcher)
+            contentView.setOnDateChangedListener(watcher)
+        }
+
+        override fun removeListeners() {
+            for(l in listeners) {
+                Log.d("LISTENER", "REMOVING OLD LISTENER!!!")
+                //contentView.removeTextChangedListener(l)
+                //TODO check if it is not needed to remove listeners because setOnDateChangedListener already makes the substitution(?)
+            }
+        }
 
         override fun toString(): String {
             return super.toString() + " '${contentView.year}-${contentView.month}-${contentView.dayOfMonth}'"
         }
     }
-    //TODO MODIFICA
+
     inner class HourViewHolder(binding: RegistrationitemHourBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        val name: TextView = binding.name
-        val contentView: TimePicker = binding.content
+        BindableViewHolder(binding.root) {
+        private val name: TextView = binding.name
+        private val contentView = binding.content
+        var listeners: ArrayList<TimePicker.OnTimeChangedListener> = ArrayList()
+
+        @RequiresApi(Build.VERSION_CODES.M)
+        override fun bind(item: RegistrationViewData<*>, name: String) {
+            super.bind(item, name)
+
+            if((item.registrationData.data as String).length > 0) {
+                var time = (item.registrationData as StringData).data.toString().split(":")
+                contentView.hour = time[0].toInt()
+                contentView.minute = time[1].toInt()
+            } else {
+                contentView.hour = 0
+                contentView.minute = 0
+            }
+
+            this.name.text = name
+
+            var gwatcher = object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {}
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    Log.d("LISTENER", s.toString())
+
+                    try {
+                        item.registrationData.data = s.toString()
+                        Log.d("LISTENER", "updated data to ${item.registrationData.data}")
+                    } catch(e: Exception) {
+                        Log.d("EXCEPTION", "${e.message}")
+                    }
+
+                }
+            }
+
+            var watcher = TimePicker.OnTimeChangedListener { _, hour, minute ->
+                item.registrationData.data = "$hour:$minute"
+                Log.d("LISTENER", "updated data to ${item.registrationData.data}")
+            }
+
+            listeners.add(watcher)
+            contentView.setOnTimeChangedListener(watcher)
+        }
+
+        override fun removeListeners() {
+            for(l in listeners) {
+                Log.d("LISTENER", "REMOVING OLD LISTENER!!!")
+                //contentView.removeTextChangedListener(l)
+                // TODO check if it is not needed to remove listeners because setOnDateChangedListener already makes the substitution(?)
+            }
+        }
 
         @RequiresApi(Build.VERSION_CODES.M)
         override fun toString(): String {
