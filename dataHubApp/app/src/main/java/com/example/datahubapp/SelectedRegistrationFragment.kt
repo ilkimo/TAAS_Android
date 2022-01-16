@@ -2,7 +2,6 @@ package com.example.datahubapp
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +16,6 @@ import com.example.datahubapp.data.model.Registration
 import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
-import com.example.datahubapp.placeholder.PlaceholderContent
 
 /**
  * A fragment representing a list of Items.

@@ -16,7 +16,6 @@ import com.example.datahubapp.data.model.Registration
 import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
-import com.example.datahubapp.placeholder.PlaceholderContent
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.LocalDate
 
