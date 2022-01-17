@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Switch
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,10 @@ import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import com.example.datahubapp.placeholder.PlaceholderContent
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import android.widget.CompoundButton
+
+
+
 
 /**
  * A fragment representing a list of Items.
@@ -84,6 +89,13 @@ class SelectedTopicFragment : Fragment() {
             }, 4000)
              */
         }
+
+        val shareTopic = root.findViewById<Switch>(R.id.shareTopic)
+        shareTopic.isChecked = selectedTopic.shared
+        shareTopic.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            Log.d("Toggle Share Topic", shareTopic.isChecked.toString())
+            //TODO: make query -> condividere il topic corrente
+        })
 
         // Set the adapter
         if(view is RecyclerView) {

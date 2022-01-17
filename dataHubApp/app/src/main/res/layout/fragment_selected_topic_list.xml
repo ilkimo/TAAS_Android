@@ -20,7 +20,7 @@
         android:layout_marginTop="15sp"/>
 
     <Switch
-        android:id="@+id/switch1"
+        android:id="@+id/shareTopic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10sp"
@@ -37,7 +37,7 @@
         app:layout_constraintBottom_toTopOf="@+id/swipeRefreshTopicsRegistrations"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/switch1" />
+        app:layout_constraintTop_toBottomOf="@id/shareTopic" />
 
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
