@@ -1,6 +1,7 @@
 package com.example.datahubapp.ui.login
 
 import android.content.Intent
+import android.content.Intent.getIntent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.annotation.StringRes
@@ -17,8 +18,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
+import com.example.datahubapp.MainActivity
 import com.example.datahubapp.databinding.FragmentLoginBinding
 
 import com.example.datahubapp.R
@@ -29,6 +32,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class LoginFragment : Fragment() {
 
@@ -49,6 +53,8 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        (activity as AppCompatActivity?)?.supportActionBar?.title = getString(R.string.login)
 
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
@@ -211,6 +217,8 @@ class LoginFragment : Fragment() {
             Log.i("Google ID Token", googleIdToken)
 
             //TODO: loggare nell'app
+            val bottomNavigationView = view?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
+            bottomNavigationView?.menu?.findItem(R.id.settingsFragment)?.isVisible = false
 
         } catch (e: ApiException) {
             // Sign in was unsuccessful

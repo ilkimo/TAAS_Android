@@ -98,6 +98,8 @@ class CreateAccountFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d("Create account page", "Vista creata!")
 
+        (activity as AppCompatActivity?)?.supportActionBar?.title = getString(com.example.datahubapp.R.string.create_account)
+
         val logIn = binding.goToLogin
 
         logIn.setOnClickListener {
