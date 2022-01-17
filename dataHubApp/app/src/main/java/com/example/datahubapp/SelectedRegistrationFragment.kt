@@ -34,7 +34,7 @@ class SelectedRegistrationFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         var viewModelFactory = AppViewModelFactory(requireContext())
-        model = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AppViewModel::class.java)
+        model = ViewModelProviders.of(requireParentFragment(), viewModelFactory).get(AppViewModel::class.java)
 
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)

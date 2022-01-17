@@ -18,3 +18,10 @@ fun parseUserData(jsonBody: String): UserData {
 
     return mapper.readValue(jsonBody, UserData::class.java)
 }
+
+fun parseUserAndData(jsonBody: String): UserAndData {
+    val mapper = ObjectMapper()
+    mapper.configure(SerializationFeature.INDENT_OUTPUT, true)
+
+    return mapper.readValue(jsonBody, UserAndData::class.java)
+}

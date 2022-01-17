@@ -54,7 +54,7 @@ class TopicsRecyclerViewAdapter(
 
         init {
             var viewModelFactory = AppViewModelFactory(fragment.requireContext())
-            model = ViewModelProviders.of(fragment.requireActivity(), viewModelFactory).get(AppViewModel::class.java)
+            model = ViewModelProviders.of(fragment.requireParentFragment(), viewModelFactory).get(AppViewModel::class.java)
 
             binding.root.setOnClickListener(this)
         }

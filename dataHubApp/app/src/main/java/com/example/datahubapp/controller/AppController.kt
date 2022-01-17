@@ -39,8 +39,8 @@ fun login(fragment: Fragment, context: Context, username: String, password: Stri
        when(result) {
            is Result.Success<*> -> {
                viewModel.setUser((result.data as UserAndData).userInformation)
-               viewModel.setUserData(result.data.dataInformation)
-               Log.d("LOGIN", "SUCCESS")
+               viewModel.setUserData((result.data as UserAndData).dataInformation)
+               Log.d("LOGIN", "SUCCESS=${viewModel.getUserData().value?.topicList}")
            }
            else -> {
                Log.d("LOGIN", "FAILURE")

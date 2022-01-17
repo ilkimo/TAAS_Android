@@ -1,16 +1,19 @@
 package com.example.datahubapp.data.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UserAndData {
 
     private User userInformation;
     private UserData dataInformation;
 
-    public UserAndData(User user, UserData userData){
+    @JsonCreator
+    public UserAndData(@JsonProperty("user") User user,
+                       @JsonProperty("userData")UserData userData) {
         this.dataInformation = userData;
         this.userInformation = user;
     }
-
-
 
     public void setDataInformation(UserData dataInformation) {
         this.dataInformation = dataInformation;

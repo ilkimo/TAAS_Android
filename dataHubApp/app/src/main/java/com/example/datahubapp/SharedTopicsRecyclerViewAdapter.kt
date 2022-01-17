@@ -57,7 +57,7 @@ class SharedTopicsRecyclerViewAdapter(
 
         init {
             var viewModelFactory = AppViewModelFactory(fragment.requireContext())
-            model = ViewModelProviders.of(fragment.requireActivity(), viewModelFactory).get(
+            model = ViewModelProviders.of(fragment.requireParentFragment(), viewModelFactory).get(
                 AppViewModel::class.java
             )
 

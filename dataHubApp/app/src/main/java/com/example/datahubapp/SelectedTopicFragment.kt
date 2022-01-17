@@ -36,7 +36,7 @@ class SelectedTopicFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         var viewModelFactory = AppViewModelFactory(requireContext())
-        model = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AppViewModel::class.java)
+        model = ViewModelProviders.of(requireParentFragment(), viewModelFactory).get(AppViewModel::class.java)
         Log.d("TEST_TOPIC", "${arguments?.getString(TOPIC_NAME)}")
 
         //TODO assert business rule topic.name unique for each user

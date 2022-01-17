@@ -43,7 +43,7 @@ class TopicsFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         var viewModelFactory = AppViewModelFactory(requireContext())
-        model = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AppViewModel::class.java)
+        model = ViewModelProviders.of(requireParentFragment(), viewModelFactory).get(AppViewModel::class.java)
 
         arguments?.let {
             columnCount = it.getInt(SelectedTopicFragment.ARG_COLUMN_COUNT)
@@ -56,6 +56,7 @@ class TopicsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentTopicsBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 

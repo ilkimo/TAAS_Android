@@ -43,7 +43,9 @@ class AppViewModel(context: Context) : ViewModel() {
     }
 
     fun setUserData(userData: UserData) {
+        Log.d("LOGIN", "uno=${userData.topicList}")
         this.userData.postValue(userData)
+        Log.d("LOGIN", "due=${this.userData.value?.topicList}")
     }
 
     fun getSharedTopics(): LiveData<ArrayList<Topic>> {
