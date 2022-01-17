@@ -12,9 +12,9 @@ fun convertToJSON(user: User): String {
     return mapper.writeValueAsString(user)
 }
 
-fun parseUserData(stream: InputStream): UserData {
+fun parseUserData(jsonBody: String): UserData {
     val mapper = ObjectMapper()
     mapper.configure(SerializationFeature.INDENT_OUTPUT, true)
 
-    return mapper.readValue(stream.toString(), UserData::class.java)
+    return mapper.readValue(jsonBody, UserData::class.java)
 }

@@ -11,13 +11,16 @@ import com.example.datahubapp.util.convertToJSON
 import com.example.datahubapp.util.parseUserData
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.OutputStream
+import java.io.OutputStreamWriter
 import java.lang.Exception
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
-import java.net.URL
+import java.net.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.FutureTask
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.HttpsURLConnection
 
 sealed class Result<out R> {
     data class Success<out T>(val data: T) : Result<T>()
@@ -29,32 +32,90 @@ sealed class Result<out R> {
  */
 class Repository(context: Context) {
     private var exec: ExecutorService? = null
-    private var url: URL
-    private var loginUrl: URL
+    private var url: String
+    private var loginUrl: String
     private var context: Context? = context
 
     init {
         //exec = Executors.newSingleThreadExecutor()
         try {
             //url = URL("http://localhost:8080/gateway/")
-            url = URL("http://10.0.2.2:8080/gateway/")
+            url = "http://10.0.2.2:8080/gateway/"
 
-            loginUrl = URL("${url}login")
+            loginUrl = "${url}login"
         } catch (e: MalformedURLException) {
             throw Error(e.message)
         }
     }
 
-    fun makeLoginRequest(jsonBody: String): Result<*> {
-        (loginUrl.openConnection() as? HttpURLConnection)?.run {
-            requestMethod = "POST"
-            setRequestProperty("Content-Type", "application/json; utf-8")
-            setRequestProperty("Accept", "application/json")
-            doOutput = true
-            outputStream.write(jsonBody.toByteArray())
-            return Result.Success(parseUserData(inputStream))
-        }
+    fun makeLoginRequest_new(jsonBody: String): Result<*> {
+        var sh: HttpHandler = HttpHandler()
+
+        var jsonResponse = sh.makeServiceCall("http://10.0.2.2:8080/gateway/all")
+        Log.d("LOGIN", "Response=${jsonResponse}")
+
         return Result.Error(Exception("Cannot open HttpURLConnection"))
+    }
+    fun makeLoginRequest_old2(jsonBody: String): Result<*> {
+        val httpConnection: HttpURLConnection = URL("http://www.google.com").openConnection() as HttpURLConnection
+        httpConnection.requestMethod = "POST"
+        httpConnection.doInput = true
+        httpConnection.doOutput = true
+        httpConnection.connectTimeout = 200
+        httpConnection.useCaches = false
+        Log.d("LOGIN", "0.0")
+        //val out: OutputStream = httpConnection.outputStream
+
+        Log.d("LOGIN", "0.1")
+
+        return Result.Error(Exception("Cannot open HttpURLConnection"))
+    }
+
+    fun makeLoginRequest(jsonBody: String): Result<*> {
+        TODO()
+        //return Result.Success(responseParser.parse(inputStream))
+        //return Result.Error(Exception("Cannot open HttpURLConnection"))
+    }
+
+    fun makeLoginRequest_original(jsonBody: String): Result<*> {
+        Log.d("LOGIN", "TRYING LOGIN AT:$loginUrl")
+        try {
+            CookieHandler.setDefault(CookieManager(null, CookiePolicy.ACCEPT_ALL))
+            (URL(loginUrl).openConnection() as? HttpURLConnection)?.run {
+            //(URL("http://stackoverflow.com") as? HttpURLConnection)?.run {
+                requestMethod = "POST"
+                setRequestProperty("Content-Type", "application/json; utf-8")
+                setRequestProperty("Accept", "application/json")
+                //connectTimeout = 200
+                //doInput = true
+                doOutput = true
+                Log.d("LOGIN", "0")
+                try {
+                    if(outputStream == null) {
+                        Log.d("LOGIN", "null")
+                    } else {
+                        Log.d("LOGIN", "VALID")
+                    }
+                } catch(e: Exception) {
+                    Log.d("LOGIN", "eccolo il problema${e.message}")
+                }
+                var writer = BufferedWriter(OutputStreamWriter(outputStream, "UTF-8"))
+                Log.d("LOGIN", "1")
+                writer.write(jsonBody)
+                //outputStream.write(jsonBody.toByteArray())
+                Log.d("LOGIN", "2")
+                writer.flush()
+                Log.d("LOGIN", "3")
+                writer.close()
+                outputStream.close()
+                Log.d("LOGIN", "4")
+                connect()
+                return Result.Success(parseUserData(inputStream.toString()))
+            }
+            return Result.Error(Exception("Cannot open HttpURLConnection"))
+        } catch(e: Exception) {
+            throw Error(e.message)
+        }
     }
 
     fun getUserData(user: User?): UserData? {
