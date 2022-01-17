@@ -10,7 +10,7 @@ import java.io.InputStream
 val TAG: String = "JSONMapper"
 
 fun parseJSON(jsonBody: String, type: REQUEST): Any {
-    Log.d("TAG", "parseData")
+    Log.d("$TAG", "parseData")
 
     val mapper = ObjectMapper()
     mapper.configure(SerializationFeature.INDENT_OUTPUT, true)
@@ -21,7 +21,7 @@ fun parseJSON(jsonBody: String, type: REQUEST): Any {
         REQUEST.CHANGE_PASSWORD -> TODO()
         REQUEST.LOGIN -> UserAndData::class.java
         REQUEST.GET_TOPICS_USER -> TODO()
-        REQUEST.NEW_TOPIC -> TODO()
+        REQUEST.NEW_TOPIC -> NewTopic::class.java
         REQUEST.NEW_REGISTRATION -> TODO()
         REQUEST.DELETE_TOPIC -> TODO()
         REQUEST.DELETE_REGISTRATION -> TODO()
@@ -44,9 +44,9 @@ fun <T> convertToJSON(obj: Any, type: Class<T>): String {
         User::class.java -> mapper.writeValueAsString(obj as User)
         UserAndData::class.java -> mapper.writeValueAsString(obj as UserAndData)
         UserData::class.java -> mapper.writeValueAsString(obj as UserData)
+        NewTopic::class.java -> mapper.writeValueAsString(obj as NewTopic)
         else -> TODO()
     }
-
 }
 
 /*fun convertToJSON(user: User): String {

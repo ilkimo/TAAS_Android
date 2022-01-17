@@ -1,28 +1,21 @@
 package com.example.datahubapp
 
-import android.os.AsyncTask
 import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
-import androidx.loader.content.AsyncTaskLoader
 import com.example.datahubapp.data.model.*
 import com.example.datahubapp.data.model.classicData.*
 import com.example.datahubapp.databinding.*
-
 import com.example.datahubapp.placeholder.PlaceholderContent.PlaceholderItem
 import com.example.datahubapp.util.BindableViewHolder
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import javax.xml.transform.Source
 
 /**
  * [RecyclerView.Adapter] that can display a [PlaceholderItem].
@@ -31,6 +24,7 @@ import javax.xml.transform.Source
 class AddRegistrationRecyclerViewAdapter(
     var topic: Topic
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val TAG = "AddRegistrationAdapter"
     private val registration_rows: ArrayList<RegistrationViewData<Any?>> = ArrayList()
 
     enum class DATA_TYPES(val value: Int) {
@@ -532,7 +526,7 @@ class AddRegistrationRecyclerViewAdapter(
             var watcher = DatePicker.OnDateChangedListener {
                     _, year: Int, month: Int, day: Int ->
                 try {
-                    (item.registrationData).data = "$year-$month-$day"
+                    (item.registrationData).data = LocalDate.parse("$year-$month-$day", DateTimeFormatter.ISO_DATE_TIME).toString()
                     Log.d("loggino", "updated data to ${item.registrationData.data}")
                 } catch(e: Exception) {
                     Log.d("EXCEPTION", "${e.message}")
@@ -543,30 +537,24 @@ class AddRegistrationRecyclerViewAdapter(
             contentView.setOnDateChangedListener(watcher)
 
             if((item.registrationData.data as String) == "") {
-                Log.d("Loggino", "nessun valore, metto data odierna")
-                date = LocalDate.now().apply {  }
+                date = LocalDate.parse(LocalDate.now().toString(), DateTimeFormatter.ISO_DATE_TIME)
+                Log.d("$TAG", " nessun valore, metto data=$date")
             } else {
-                var dateArr = ((item.registrationData as StringData).data.toString()).split("-")
+                date = LocalDate.parse((item.registrationData as StringData).data.toString(), DateTimeFormatter.ISO_DATE_TIME)
+                Log.d("$TAG", "data precedente recuperata=$date")
 
-                try {
-                    //add 1 to month because of different indexing system of DatePicker
-                    date = LocalDate.of(dateArr[0].toInt(), dateArr[1].toInt()+1, dateArr[2].toInt())
-                    Log.d("Loggino", "valore precedente trovato=${dateArr[0]}-${dateArr[1]}-${dateArr[2]}")
-                } catch(e: Exception) {
-                    throw Error("${e.message}: parsed data=${dateArr[0]}-${dateArr[1].toInt()+1}-${dateArr[2]}")
-                }
+                //add 1 to month because of different indexing system of DatePicker
+                date.plusMonths(1L)
             }
 
             this.name.text = name
-            Log.d("Loggino", "aggiorno vista con ${date.year}-${date.monthValue-1}-${date.dayOfMonth}")
+            Log.d("$TAG", "       aggiorno vista con =${date.year}-${date.monthValue-1}-${date.dayOfMonth}")
             contentView.updateDate(date.year, date.monthValue-1, date.dayOfMonth)
         }
 
         override fun removeListeners() {
             for(l in listeners) {
-                Log.d("LISTENER", "REMOVING OLD LISTENER!!!")
-                //contentView.removeTextChangedListener(l)
-                //TODO check if it is not needed to remove listeners because setOnDateChangedListener already makes the substitution(?)
+                Log.d("$TAG", "REMOVING OLD LISTENER!!!")
             }
         }
 

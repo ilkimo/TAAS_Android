@@ -15,6 +15,7 @@ import com.example.datahubapp.databinding.*
 
 import com.example.datahubapp.placeholder.PlaceholderContent.PlaceholderItem
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 /**
  * [RecyclerView.Adapter] that can display a [PlaceholderItem].
@@ -173,8 +174,8 @@ class SelectedRegistrationRecyclerViewAdapter(
                 var data: StringData = item.registrationData as StringData
                 (holder as DateViewHolder).name.text = nameTypes[position].name
                 if((data.data as String).length > 0) {
-                    var date: LocalDate = LocalDate.parse(data.data as CharSequence?)
-                    holder.contentView.text = "${date.year}-${date.monthValue}-${date.dayOfMonth}"//data.data as String
+                    var date: LocalDate = LocalDate.parse(data.data as CharSequence?, DateTimeFormatter.ISO_DATE_TIME)
+                    holder.contentView.text = "${date.year}-${date.monthValue}-${date.dayOfMonth}"
                 } else {
                     holder.contentView.isVisible = false
                 }

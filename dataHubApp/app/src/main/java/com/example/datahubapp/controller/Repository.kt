@@ -19,7 +19,7 @@ sealed class Result<out R> {
 
 private val TAG: String = "Repository"
 
-fun makeRequest(urlStr: String, type: REQUEST, jsonBody: String): Result<*> {
+fun makeRequest(urlStr: String, receiveType: REQUEST, jsonBody: String): Result<*> {
     Log.d("$TAG", "makeRequest")
 
     val url = getURL(urlStr)
@@ -36,7 +36,7 @@ fun makeRequest(urlStr: String, type: REQUEST, jsonBody: String): Result<*> {
         } catch(e: Exception) {
             throw Error(e.message)
         }
-        return Result.Success(parseJSON(inputStream.bufferedReader().use(BufferedReader::readText), type))
+        return Result.Success(parseJSON(inputStream.bufferedReader().use(BufferedReader::readText), receiveType))
     }
     return Result.Error(Exception("Cannot open HttpURLConnection"))
 }

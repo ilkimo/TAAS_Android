@@ -18,10 +18,13 @@ import android.widget.*
 import android.widget.TextView
 import android.app.Activity
 import android.graphics.Color
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.text.toLowerCase
 import androidx.core.view.marginBottom
+import com.example.datahubapp.controller.addTopic
 import com.example.datahubapp.data.model.DataInfoPair
 import com.example.datahubapp.data.model.NewTopic
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -54,6 +57,7 @@ class AddTopicFragment : Fragment() {
     private var colorSelected = "#f44336"
     private var topicNameString = ""
     private var topicDescriptionString = ""
+    private val TAG = "AddTopicFragment"
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -102,6 +106,7 @@ class AddTopicFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -182,7 +187,7 @@ class AddTopicFragment : Fragment() {
         val doneButton = binding.doneButton
 
         doneButton.setOnClickListener {
-            //Log.d("DoneButton", pairList.toString())
+            Log.d("$TAG", pairList.toString())
 
             var formOk = true
 
@@ -204,8 +209,7 @@ class AddTopicFragment : Fragment() {
             }
 
             if(formOk) {
-                //TODO: costruire oggetto da mandare al server
-                Log.d("Form ok!", "OK")
+                Log.d("$TAG", "form OK")
 
                 val arrayDataInfoPair = arrayListOf<DataInfoPair>()
                 val arrayColor = arrayListOf<String>()
@@ -241,20 +245,17 @@ class AddTopicFragment : Fragment() {
                 val mapper = ObjectMapper()
                 mapper.configure(SerializationFeature.INDENT_OUTPUT, true)
 
-
                 //TODO: change id with the correct userID
                 val topic = NewTopic("2", topicNameString, topicDescriptionString, arrayDataInfoPair, arrayColor, false)
 
                 val jsonString = mapper.writeValueAsString(topic)
 
-                Log.d("New Topic", jsonString)
+                Log.d("$TAG", "new Topic=$jsonString")
 
-
-                //TODO: make query to server
-
+                addTopic(requireParentFragment(), requireContext(), topic)
 
                 //If ok
-                val toast = Toast.makeText(context, "Topic Added", Toast.LENGTH_LONG)
+                val toast = Toast.makeText(context, "Topic Added", Toast.LENGTH_SHORT)
                 toast.show()
 
                 //If there is an error

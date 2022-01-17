@@ -67,24 +67,31 @@ fun getViewModel(fragment: Fragment, context: Context): AppViewModel {
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
+fun addTopic(fragment: Fragment, context: Context, newTopic: NewTopic) {
+    val jsonObject = convertToJSON(newTopic, NewTopic::class.java)
+
+    asyncRequest(fragment, context, jsonObject, REQUEST.NEW_TOPIC, REQUEST.LOGIN)
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
 fun login(fragment: Fragment, context: Context, username: String, password: String) {
     val jsonObject = convertToJSON(
         User("", "", username, password),
         User::class.java
     )
 
-    asyncRequest(fragment, context, jsonObject, REQUEST.LOGIN)
+    asyncRequest(fragment, context, jsonObject, REQUEST.LOGIN, REQUEST.LOGIN)
     //Log.d("TEST_COROUTINE", "main thread") //TODO CANCELLAMI
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-private fun asyncRequest(fragment: Fragment, context: Context, jsonObject: String, requestType: REQUEST) {
+private fun asyncRequest(fragment: Fragment, context: Context, jsonObject: String, requestType: REQUEST, receiveType: REQUEST) {
     var viewModel = getViewModel(fragment, context)
 
     //viewModel.viewModelScope
     viewModel.viewModelScope.launch(Dispatchers.IO) {
         val result = try {
-            makeRequest(getUrlString(requestType), REQUEST.LOGIN, jsonObject)
+            makeRequest(getUrlString(requestType), receiveType, jsonObject)
         } catch(e: Exception) {
             Result.Error(Exception("Network request failed: ${e.message}"))
         }
@@ -114,6 +121,14 @@ private fun processResult(requestType: REQUEST, result: Result<*>, viewModel: Ap
             when(result) {
                 is Result.Success -> {
                     viewModel.setUser((result.data as UserAndData).userInformation)
+                    viewModel.setUserData((result.data as UserAndData).dataInformation)
+                }
+                else -> TODO()
+            }
+        }
+        REQUEST.NEW_TOPIC -> {
+            when(result) {
+                is Result.Success -> {
                     viewModel.setUserData((result.data as UserAndData).dataInformation)
                 }
                 else -> TODO()
