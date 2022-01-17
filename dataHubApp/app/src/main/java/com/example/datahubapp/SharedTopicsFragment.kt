@@ -103,6 +103,9 @@ class SharedTopicsFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun addOnClickListeners(root: View, context: Context?) {
+
+        //TODO: remove me
+        /*
         var addTopic: ImageButton = root.findViewById(R.id.addTopicButton)
 
         addTopic.setOnClickListener { root ->
@@ -113,6 +116,7 @@ class SharedTopicsFragment : Fragment() {
                 throw Error("Error: No context for this event")
             }
         }
+         */
     }
 
     companion object {
