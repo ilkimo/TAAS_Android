@@ -1,10 +1,12 @@
 package com.example.datahubapp
 
+import android.graphics.Color
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -43,6 +45,7 @@ class TopicsRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = topicList[holder.bindingAdapterPosition]
         holder.topicName.text = item.name
+        holder.topicColor.setBackgroundColor(Color.parseColor(item.color[1]))
     }
 
     override fun getItemCount(): Int = topicList.size
@@ -56,6 +59,8 @@ class TopicsRecyclerViewAdapter(
 
     inner class ViewHolder(binding: TopicItemBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         val topicName: TextView = binding.topicName
+        val topicColor: LinearLayout = binding.cardColor
+
         var model: AppViewModel
 
         init {

@@ -1,10 +1,12 @@
 package com.example.datahubapp
 
+import android.graphics.Color
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
@@ -40,6 +42,7 @@ class SelectedTopicRecyclerViewAdapter(
         val item = registrationsList[position]
         holder.idView.text = item.id.toString()
         holder.contentView.text = item.creationDate.toString()
+        holder.registrationColor.setBackgroundColor(Color.parseColor(selectedTopic.color[1]))
     }
 
     override fun getItemCount(): Int = registrationsList.size
@@ -48,6 +51,8 @@ class SelectedTopicRecyclerViewAdapter(
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         val idView: TextView = binding.registrationName
         val contentView: TextView = binding.registrationDate
+        val registrationColor: LinearLayout = binding.registrationColor
+
         private lateinit var selectedTopic: Topic
 
         init {
