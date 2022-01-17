@@ -9,9 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +22,10 @@ import com.example.datahubapp.data.model.UserData
 import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import com.example.datahubapp.databinding.FragmentTopicsBinding
+import com.example.datahubapp.R
+import android.view.*
+import com.example.datahubapp.data.TAG
+
 
 /**
  * A fragment representing a list of Items.

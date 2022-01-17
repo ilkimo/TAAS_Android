@@ -3,13 +3,11 @@ package com.example.datahubapp
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -23,8 +21,7 @@ import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.widget.CompoundButton
-
-
+import com.example.datahubapp.data.TAG
 
 
 /**
@@ -40,6 +37,7 @@ class SelectedTopicFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true);
 
         var viewModelFactory = AppViewModelFactory(requireContext())
         model = ViewModelProviders.of(requireParentFragment(), viewModelFactory).get(AppViewModel::class.java)
@@ -60,6 +58,23 @@ class SelectedTopicFragment : Fragment() {
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        inflater.inflate(R.menu.menu_topic_selected, menu);
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        return if (id == R.id.delete_topic) {
+            Log.d(TAG, "DELETE TOPIC MENU ITEM CLICKED!")
+
+            //TODO: make query -> delete topic and navigate back to homepage
+            
+            true
+        } else super.onOptionsItemSelected(item)
     }
 
     override fun onCreateView(
