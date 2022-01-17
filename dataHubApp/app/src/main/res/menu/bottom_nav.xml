@@ -5,20 +5,24 @@
         android:id="@+id/topicsFragment"
         android:title="@string/Topics"
         android:icon="@drawable/ic_baseline_folder_24"
+        android:visible="true"
         />
     <item
         android:id="@+id/sharedTopicsFragment"
         android:title="@string/sharedTopics"
         android:icon="@drawable/ic_baseline_topics_shared_24"
+        android:visible="true"
     />
     <item
         android:id="@+id/profileFragment"
         android:title="@string/profile"
         android:icon="@drawable/ic_baseline_account_box_24"
+        android:visible="true"
     />
     <item
         android:id="@+id/settingsFragment"
         android:title="@string/settings"
         android:icon="@drawable/ic_baseline_settings_24"
+        android:visible="true"
     />
 </menu>
