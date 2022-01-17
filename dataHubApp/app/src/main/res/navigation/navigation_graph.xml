@@ -34,11 +34,10 @@
     <fragment
         android:id="@+id/selectedTopicFragment"
         android:name="com.example.datahubapp.SelectedTopicFragment"
-        android:label="fragment_selected_topic_list"
-        tools:layout="@layout/fragment_selected_topic_list" >
+        android:label="fragment_selected_topic_list">
         <argument
             android:name="topicName"
-            app:nullable="false"/>
+            app:nullable="false" />
         <action
             android:id="@+id/action_selectedTopicFragment_to_selectedRegistrationFragment"
             app:destination="@id/selectedRegistrationFragment" />

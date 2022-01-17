@@ -109,6 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:gravity="center"
+            android:layout_marginTop="15sp"
             android:text="@string/already_have_an_account_login"
             android:textSize="16sp" />
 

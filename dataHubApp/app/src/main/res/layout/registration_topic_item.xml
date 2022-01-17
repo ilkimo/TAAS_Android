@@ -18,7 +18,7 @@
         >
 
         <LinearLayout
-            android:id="@+id/left_layout"
+            android:id="@+id/registrationColor"
             android:layout_width="0dp"
             android:layout_weight="0.25"
             android:layout_height="match_parent"
