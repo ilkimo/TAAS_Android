@@ -227,9 +227,14 @@ class AppController(val model: AppViewModel, val repository: Repository) {
             registrazioni_peso.add(registration_peso8)
             registrazioni_peso.add(registration_peso9)
 
+            val colors1 = ArrayList<String>()
+            colors1.add("#00ff00")
+            colors1.add("#00ff00")
+            colors1.add("#00ff00")
+
             val topic_box = Topic(
                 1L, "Allenamenti box",  "topic description", LocalDate.now(),
-                colors, registrazioni_box, nameType, 5L, false
+                colors1, registrazioni_box, nameType, 5L, false
             )
             val topic2 = Topic(2L, "Peso Corporeo", "topic description", LocalDate.now(), colors, registrazioni_peso, nameType_peso, 9L, false)
             val topic3 = Topic(3L, "Spese vacanze", "topic description", LocalDate.now(), colors, registrazioni_spese, dataInfoPairList_spese, 1L, false)
