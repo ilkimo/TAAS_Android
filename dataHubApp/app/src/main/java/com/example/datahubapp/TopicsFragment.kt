@@ -71,25 +71,15 @@ class TopicsFragment : Fragment() {
         (activity as AppCompatActivity?)?.getSupportActionBar()?.setDisplayHomeAsUpEnabled(false)
         (activity as AppCompatActivity?)?.getSupportActionBar()?.setDisplayShowHomeEnabled(false)
 
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun addOnClickListeners(root: View, context: Context?) {
         val addTopicButton = binding.addTopicButton
 
         addTopicButton.setOnClickListener {
             var navigationDirection: NavDirections = TopicsFragmentDirections.actionTopicsFragmentToAddTopicFragment();
             NavHostFragment.findNavController(this).navigate(navigationDirection)
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun addOnClickListeners(root: View, context: Context?) {
-        var addTopic: ImageButton = root.findViewById(R.id.addTopicButton)
-
-        addTopic.setOnClickListener { root ->
-            if (context != null) {
-                addTopic(Topic("new_topic", "description", null, null, false), requireParentFragment(), context)
-            } else {
-                Log.d("ERROR", "TopicsFragment.addClickListeners")
-                throw Error("Error: No context for this event")
-            }
         }
     }
 

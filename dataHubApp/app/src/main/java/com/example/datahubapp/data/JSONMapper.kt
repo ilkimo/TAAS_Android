@@ -2,6 +2,7 @@ package com.example.datahubapp.data
 
 import android.util.Log
 import com.example.datahubapp.controller.REQUEST
+import com.example.datahubapp.controller.RETURNTYPE
 import com.example.datahubapp.data.model.*
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
@@ -9,26 +10,17 @@ import java.io.InputStream
 
 val TAG: String = "JSONMapper"
 
-fun parseJSON(jsonBody: String, type: REQUEST): Any {
-    Log.d("$TAG", "parseData")
+fun parseJSON(jsonBody: String, type: RETURNTYPE): Any {
+    Log.d("$TAG", "parseJSON, object to parse=$jsonBody")
 
     val mapper = ObjectMapper()
     mapper.configure(SerializationFeature.INDENT_OUTPUT, true)
 
     val mappedClass = when(type) {
-        REQUEST.ALL_USERS -> TODO()
-        REQUEST.CREATE_ACCOUNT -> TODO()
-        REQUEST.CHANGE_PASSWORD -> TODO()
-        REQUEST.LOGIN -> UserAndData::class.java
-        REQUEST.GET_TOPICS_USER -> TODO()
-        REQUEST.NEW_TOPIC -> NewTopic::class.java
-        REQUEST.NEW_REGISTRATION -> TODO()
-        REQUEST.DELETE_TOPIC -> TODO()
-        REQUEST.DELETE_REGISTRATION -> TODO()
-        REQUEST.GET_SHARED_TOPICS -> TODO()
-        REQUEST.CHANGE_TOPIC_SHARED_STATUS -> TODO()
-        REQUEST.CHANGE_NAME_TOPIC -> TODO()
-        REQUEST.DELETE_USER -> TODO()
+        RETURNTYPE.USERANDDATA -> UserAndData::class.java
+        RETURNTYPE.USER -> User::class.java
+        RETURNTYPE.USERDATA -> UserData::class.java
+        RETURNTYPE.TOPIC_LIST -> ArrayList::class.java
     }
 
     return mapper.readValue(jsonBody, mappedClass) as Any

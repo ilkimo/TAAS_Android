@@ -2,23 +2,24 @@ package com.example.datahubapp.controller
 
 import android.content.Context
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.viewModelScope
 import com.example.datahubapp.data.convertToJSON
 import com.example.datahubapp.data.model.*
+import com.example.datahubapp.data.parseJSON
 import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import kotlinx.coroutines.*
-import java.util.concurrent.Executors
-import kotlin.coroutines.suspendCoroutine
-import kotlin.system.measureTimeMillis
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.lang.Thread.*
+
+
+
 
 private const val url = "http://10.0.2.2:8080/gateway/"
 private const val TAG = "AppController"
@@ -37,6 +38,13 @@ enum class REQUEST {
     CHANGE_TOPIC_SHARED_STATUS,
     CHANGE_NAME_TOPIC,
     DELETE_USER
+}
+
+enum class RETURNTYPE {
+    USERANDDATA,
+    USER,
+    USERDATA,
+    TOPIC_LIST
 }
 
 private fun getUrlString(type: REQUEST): String {
@@ -70,7 +78,7 @@ fun getViewModel(fragment: Fragment, context: Context): AppViewModel {
 fun addTopic(fragment: Fragment, context: Context, newTopic: NewTopic) {
     val jsonObject = convertToJSON(newTopic, NewTopic::class.java)
 
-    asyncRequest(fragment, context, jsonObject, REQUEST.NEW_TOPIC, REQUEST.LOGIN)
+    asyncRequest(fragment, context, jsonObject, REQUEST.NEW_TOPIC, RETURNTYPE.USERDATA)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -80,48 +88,46 @@ fun login(fragment: Fragment, context: Context, username: String, password: Stri
         User::class.java
     )
 
-    asyncRequest(fragment, context, jsonObject, REQUEST.LOGIN, REQUEST.LOGIN)
-    //Log.d("TEST_COROUTINE", "main thread") //TODO CANCELLAMI
+    asyncRequest(fragment, context, jsonObject, REQUEST.LOGIN, RETURNTYPE.USERANDDATA)
+    Log.d("TEST_COROUTINE", "main thread") //TODO CANCELLAMI
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-private fun asyncRequest(fragment: Fragment, context: Context, jsonObject: String, requestType: REQUEST, receiveType: REQUEST) {
+private fun asyncRequest(fragment: Fragment, context: Context,
+                         jsonObject: String, requestType: REQUEST,
+                         returnType: RETURNTYPE) {
     var viewModel = getViewModel(fragment, context)
 
     //viewModel.viewModelScope
     viewModel.viewModelScope.launch(Dispatchers.IO) {
         val result = try {
-            makeRequest(getUrlString(requestType), receiveType, jsonObject)
+            makeRequest(getUrlString(requestType), jsonObject)
         } catch(e: Exception) {
             Result.Error(Exception("Network request failed: ${e.message}"))
         }
 
-        when(result) {
-            is Result.Success<*> -> {
-                Log.d("$TAG", "SUCCESS")
-                processResult(requestType, result, viewModel)
-            }
-            else -> {
-                Log.d("$TAG", "FAILURE")
-                throw (result as Result.Error).exception
-            } // Show error in UI
-        }
-        //Log.d("TEST_COROUTINE", "ViewModelScope coroutine") //TODO CANCELLAMI
+        processResult(returnType, requestType, result, viewModel, context)
     }
-
-    //Log.d("TEST_COROUTINE", "I wanna get out asyncRequest") //TODO CANCELLAMI
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-private fun processResult(requestType: REQUEST, result: Result<*>, viewModel: AppViewModel) {
+private fun processResult(returnType: RETURNTYPE, requestType: REQUEST,
+                          result: Result<*>, viewModel: AppViewModel, context: Context) {
     Log.d("$TAG", "processResult")
+    lateinit var obj: Any
+
+    /*
+    val toast = Toast.makeText(context, "Topic Added", Toast.LENGTH_SHORT)
+                toast.show()
+     */
 
     when(requestType) {
         REQUEST.LOGIN -> {
             when(result) {
                 is Result.Success -> {
-                    viewModel.setUser((result.data as UserAndData).userInformation)
-                    viewModel.setUserData((result.data as UserAndData).dataInformation)
+                    obj = parseJSON((result.data as String), returnType)
+                    viewModel.setUser((obj as UserAndData).userInformation)
+                    viewModel.setUserData((obj as UserAndData).dataInformation)
                 }
                 else -> TODO()
             }
@@ -129,9 +135,20 @@ private fun processResult(requestType: REQUEST, result: Result<*>, viewModel: Ap
         REQUEST.NEW_TOPIC -> {
             when(result) {
                 is Result.Success -> {
-                    viewModel.setUserData((result.data as UserAndData).dataInformation)
+                    obj = parseJSON((result.data as String), returnType)
+                    viewModel.setUserData(obj as UserData)
+
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Topic added", Toast.LENGTH_SHORT).show()
+                    }
+
+                    //TODO navigate to topic fragment
                 }
-                else -> TODO()
+                else -> {
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Error adding topic!", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
         else -> TODO()

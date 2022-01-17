@@ -24,9 +24,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.text.toLowerCase
 import androidx.core.view.marginBottom
+import androidx.lifecycle.ViewModelProviders
 import com.example.datahubapp.controller.addTopic
 import com.example.datahubapp.data.model.DataInfoPair
 import com.example.datahubapp.data.model.NewTopic
+import com.example.datahubapp.data.viewmodel.AppViewModel
+import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.google.android.material.snackbar.Snackbar
@@ -58,6 +61,7 @@ class AddTopicFragment : Fragment() {
     private var topicNameString = ""
     private var topicDescriptionString = ""
     private val TAG = "AddTopicFragment"
+    lateinit var model: AppViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -90,6 +94,9 @@ class AddTopicFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+        var viewModelFactory = AppViewModelFactory(requireContext())
+        model = ViewModelProviders.of(requireParentFragment(), viewModelFactory).get(AppViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -245,24 +252,13 @@ class AddTopicFragment : Fragment() {
                 val mapper = ObjectMapper()
                 mapper.configure(SerializationFeature.INDENT_OUTPUT, true)
 
-                //TODO: change id with the correct userID
-                val topic = NewTopic("2", topicNameString, topicDescriptionString, arrayDataInfoPair, arrayColor, false)
+                val topic = NewTopic(model.getUser().value?.id.toString(), topicNameString, topicDescriptionString, arrayDataInfoPair, arrayColor, false)
 
                 val jsonString = mapper.writeValueAsString(topic)
 
                 Log.d("$TAG", "new Topic=$jsonString")
 
                 addTopic(requireParentFragment(), requireContext(), topic)
-
-                //If ok
-                val toast = Toast.makeText(context, "Topic Added", Toast.LENGTH_SHORT)
-                toast.show()
-
-                //If there is an error
-                /*
-                val toast = Toast.makeText(context, "Error", Toast.LENGTH_LONG)
-                toast.show()
-                 */
             } else {
                 val builder = context?.let { it1 -> AlertDialog.Builder(it1) }
                 builder?.setTitle("Ouchhhh!")

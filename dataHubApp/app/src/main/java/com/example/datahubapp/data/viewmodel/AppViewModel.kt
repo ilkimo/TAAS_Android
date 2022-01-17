@@ -15,6 +15,8 @@ import java.lang.Exception
 
 @RequiresApi(Build.VERSION_CODES.O)
 class AppViewModel(context: Context) : ViewModel() {
+    private val TAG = "AppViewModel"
+
     /**
      * Contains User data of the logged user
      */
@@ -43,9 +45,8 @@ class AppViewModel(context: Context) : ViewModel() {
     }
 
     fun setUserData(userData: UserData) {
-        Log.d("LOGIN", "uno=${userData.topicList}")
+        Log.d("$TAG", "uno=${userData.topicList}")
         this.userData.postValue(userData)
-        Log.d("LOGIN", "due=${this.userData.value?.topicList}")
     }
 
     fun getSharedTopics(): LiveData<ArrayList<Topic>> {
