@@ -3,7 +3,6 @@ package com.example.datahubapp.controller
 import android.content.Context
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -12,8 +11,14 @@ import com.example.datahubapp.data.convertToJSON
 import com.example.datahubapp.data.model.*
 import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
+import kotlinx.coroutines.*
+import java.util.concurrent.Executors
+import kotlin.coroutines.suspendCoroutine
+import kotlin.system.measureTimeMillis
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.net.URL
+import kotlinx.coroutines.withContext
+import java.lang.Thread.*
 
 private const val url = "http://10.0.2.2:8080/gateway/"
 private const val TAG = "AppController"
@@ -69,13 +74,15 @@ fun login(fragment: Fragment, context: Context, username: String, password: Stri
     )
 
     asyncRequest(fragment, context, jsonObject, REQUEST.LOGIN)
+    //Log.d("TEST_COROUTINE", "main thread") //TODO CANCELLAMI
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 private fun asyncRequest(fragment: Fragment, context: Context, jsonObject: String, requestType: REQUEST) {
     var viewModel = getViewModel(fragment, context)
 
-    viewModel.viewModelScope.launch {
+    //viewModel.viewModelScope
+    viewModel.viewModelScope.launch(Dispatchers.IO) {
         val result = try {
             makeRequest(getUrlString(requestType), REQUEST.LOGIN, jsonObject)
         } catch(e: Exception) {
@@ -92,7 +99,10 @@ private fun asyncRequest(fragment: Fragment, context: Context, jsonObject: Strin
                 throw (result as Result.Error).exception
             } // Show error in UI
         }
+        //Log.d("TEST_COROUTINE", "ViewModelScope coroutine") //TODO CANCELLAMI
     }
+
+    //Log.d("TEST_COROUTINE", "I wanna get out asyncRequest") //TODO CANCELLAMI
 }
 
 @RequiresApi(Build.VERSION_CODES.O)

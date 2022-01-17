@@ -22,9 +22,6 @@ private val TAG: String = "Repository"
 fun makeRequest(urlStr: String, type: REQUEST, jsonBody: String): Result<*> {
     Log.d("$TAG", "makeRequest")
 
-    val policy = ThreadPolicy.Builder().permitAll().build()
-    StrictMode.setThreadPolicy(policy)
-
     val url = getURL(urlStr)
 
     (url.openConnection() as? HttpURLConnection)?.run {
