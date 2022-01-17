@@ -20,14 +20,22 @@ import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.model.UserData
 import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
+import com.example.datahubapp.databinding.FragmentSharedTopicsBinding
+import com.example.datahubapp.databinding.FragmentSharedTopicsListBinding
+import com.example.datahubapp.databinding.FragmentTopicsBinding
 
 /**
  * A fragment representing a list of Items.
  */
 class SharedTopicsFragment : Fragment() {
 
+    private var _binding: FragmentSharedTopicsListBinding? = null
     private var columnCount = 1
     lateinit var model: AppViewModel
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,22 +54,8 @@ class SharedTopicsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_shared_topics_list, container, false)
-
-        // Set the adapter
-        /*
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = SharedTopicsRecyclerViewAdapter(PlaceholderContent.ITEMS)
-            }
-        }
-
-         */
-        return view
+        _binding = FragmentSharedTopicsListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -74,7 +68,19 @@ class SharedTopicsFragment : Fragment() {
         //Set back arrow visible and enabled
         (activity as AppCompatActivity?)?.getSupportActionBar()?.setDisplayHomeAsUpEnabled(false)
         (activity as AppCompatActivity?)?.getSupportActionBar()?.setDisplayShowHomeEnabled(false)
+        (activity as AppCompatActivity?)?.supportActionBar?.title = getString(R.string.sharedTopics)
 
+        val swipeRefreshLayout = binding.swipeRefreshSharedTopicList
+        swipeRefreshLayout.setOnRefreshListener {
+            Log.d("Shared Topics", "Refresh!!")
+            //TODO: make query -> aggiornare la lista di topics condivisi
+            /*
+            Handler().postDelayed(Runnable {
+
+                swipeRefreshLayout.isRefreshing = false
+            }, 4000)
+             */
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

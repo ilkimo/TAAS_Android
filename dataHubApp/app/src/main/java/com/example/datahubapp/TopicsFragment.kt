@@ -3,6 +3,7 @@ package com.example.datahubapp
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -72,12 +73,25 @@ class TopicsFragment : Fragment() {
         //Set back arrow visible and enabled
         (activity as AppCompatActivity?)?.getSupportActionBar()?.setDisplayHomeAsUpEnabled(false)
         (activity as AppCompatActivity?)?.getSupportActionBar()?.setDisplayShowHomeEnabled(false)
+        (activity as AppCompatActivity?)?.supportActionBar?.title = getString(R.string.Topics)
 
         val addTopicButton = binding.addTopicButton
 
         addTopicButton.setOnClickListener {
             var navigationDirection: NavDirections = TopicsFragmentDirections.actionTopicsFragmentToAddTopicFragment();
             NavHostFragment.findNavController(this).navigate(navigationDirection)
+        }
+
+        val swipeRefreshLayout = binding.swipeRefreshTopicList
+        swipeRefreshLayout.setOnRefreshListener {
+            //TODO: make query -> aggiornare la lista di topics
+            Log.d("Topics", "Refresh!!")
+            /*
+            Handler().postDelayed(Runnable {
+
+                swipeRefreshLayout.isRefreshing = false
+            }, 4000)
+             */
         }
     }
 

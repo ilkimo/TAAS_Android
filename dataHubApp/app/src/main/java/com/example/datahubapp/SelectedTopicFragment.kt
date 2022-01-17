@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
@@ -69,6 +70,20 @@ class SelectedTopicFragment : Fragment() {
         //Set back arrow visible and enabled
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        val swipeRefreshLayout = root.findViewById<SwipeRefreshLayout>(R.id.swipeRefreshTopicsRegistrations)
+
+        swipeRefreshLayout.setOnRefreshListener {
+            Log.d("Topic's registrations", "Refresh!!")
+
+            //TODO: make query -> aggiornare la lista di registrazioni del topic corrente
+            /*
+            Handler().postDelayed(Runnable {
+
+                swipeRefreshLayout.isRefreshing = false
+            }, 4000)
+             */
+        }
 
         // Set the adapter
         if(view is RecyclerView) {
