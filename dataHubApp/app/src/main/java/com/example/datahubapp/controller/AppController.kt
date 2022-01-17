@@ -8,46 +8,109 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.viewModelScope
+import com.example.datahubapp.data.convertToJSON
 import com.example.datahubapp.data.model.*
 import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
-import com.example.datahubapp.util.convertToJSON
 import kotlinx.coroutines.launch
+import java.net.URL
+
+private const val url = "http://10.0.2.2:8080/gateway/"
+private const val TAG = "AppController"
+
+enum class REQUEST {
+    ALL_USERS,
+    CREATE_ACCOUNT,
+    CHANGE_PASSWORD,
+    LOGIN,
+    GET_TOPICS_USER,
+    NEW_TOPIC,
+    NEW_REGISTRATION,
+    DELETE_TOPIC,
+    DELETE_REGISTRATION,
+    GET_SHARED_TOPICS,
+    CHANGE_TOPIC_SHARED_STATUS,
+    CHANGE_NAME_TOPIC,
+    DELETE_USER
+}
+
+private fun getUrlString(type: REQUEST): String {
+    val str: String = url + when(type) {
+        REQUEST.ALL_USERS -> "all"
+        REQUEST.CREATE_ACCOUNT -> "create"
+        REQUEST.CHANGE_PASSWORD -> "changePassword"
+        REQUEST.LOGIN -> "login"
+        REQUEST.GET_TOPICS_USER -> "topicUser"
+        REQUEST.NEW_TOPIC -> "newTopic"
+        REQUEST.NEW_REGISTRATION -> "newReg"
+        REQUEST.DELETE_TOPIC -> "delTopic"
+        REQUEST.DELETE_REGISTRATION -> "delReg"
+        REQUEST.GET_SHARED_TOPICS -> "sharedTopic"
+        REQUEST.CHANGE_TOPIC_SHARED_STATUS -> "changSharedTopic"
+        REQUEST.CHANGE_NAME_TOPIC -> "changeNameTopic"
+        REQUEST.DELETE_USER -> "deleteUser"
+    }
+
+    Log.d("$TAG", "getUrlString for REQUEST $type=$str")
+
+    return str
+}
 
 fun getViewModel(fragment: Fragment, context: Context): AppViewModel {
     var viewModelFactory = AppViewModelFactory(context)
     return ViewModelProviders.of(fragment, viewModelFactory).get(AppViewModel::class.java)
 }
 
-fun getRepository(context: Context): Repository {
-    return Repository(context)
+@RequiresApi(Build.VERSION_CODES.O)
+fun login(fragment: Fragment, context: Context, username: String, password: String) {
+    val jsonObject = convertToJSON(
+        User("", "", username, password),
+        User::class.java
+    )
+
+    asyncRequest(fragment, context, jsonObject, REQUEST.LOGIN)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun login(fragment: Fragment, context: Context, username: String, password: String) {
+private fun asyncRequest(fragment: Fragment, context: Context, jsonObject: String, requestType: REQUEST) {
     var viewModel = getViewModel(fragment, context)
 
     viewModel.viewModelScope.launch {
-       val jsonBody = convertToJSON(User("", "", username, password))
+        val result = try {
+            makeRequest(getUrlString(requestType), REQUEST.LOGIN, jsonObject)
+        } catch(e: Exception) {
+            Result.Error(Exception("Network request failed: ${e.message}"))
+        }
 
-       val result = try {
-           getRepository(context).makeLoginRequest(jsonBody)
-       } catch(e: Exception) {
-           Result.Error(Exception("Network request failed: ${e.message}"))
-       }
+        when(result) {
+            is Result.Success<*> -> {
+                Log.d("$TAG", "SUCCESS")
+                processResult(requestType, result, viewModel)
+            }
+            else -> {
+                Log.d("$TAG", "FAILURE")
+                throw (result as Result.Error).exception
+            } // Show error in UI
+        }
+    }
+}
 
-       when(result) {
-           is Result.Success<*> -> {
-               viewModel.setUser((result.data as UserAndData).userInformation)
-               viewModel.setUserData((result.data as UserAndData).dataInformation)
-               Log.d("LOGIN", "SUCCESS=${viewModel.getUserData().value?.topicList}")
-           }
-           else -> {
-               Log.d("LOGIN", "FAILURE")
-               throw (result as Result.Error).exception
-           } // Show error in UI
-       }
-   }
+@RequiresApi(Build.VERSION_CODES.O)
+private fun processResult(requestType: REQUEST, result: Result<*>, viewModel: AppViewModel) {
+    Log.d("$TAG", "processResult")
+
+    when(requestType) {
+        REQUEST.LOGIN -> {
+            when(result) {
+                is Result.Success -> {
+                    viewModel.setUser((result.data as UserAndData).userInformation)
+                    viewModel.setUserData((result.data as UserAndData).dataInformation)
+                }
+                else -> TODO()
+            }
+        }
+        else -> TODO()
+    }
 }
 
 fun addTopic(topic: Topic, fragment: Fragment, context: Context) {

@@ -1,119 +1,77 @@
 package com.example.datahubapp.controller
 
-import android.content.Context
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.util.Log
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.viewModelScope
 import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.model.User
 import com.example.datahubapp.data.model.UserData
-import com.example.datahubapp.util.convertToJSON
-import com.example.datahubapp.util.parseUserAndData
-import com.example.datahubapp.util.parseUserData
-import kotlinx.coroutines.launch
+import com.example.datahubapp.data.parseJSON
 import java.io.BufferedReader
-import java.io.BufferedWriter
-import java.io.OutputStream
-import java.io.OutputStreamWriter
 import java.lang.Exception
 import java.lang.RuntimeException
 import java.net.*
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.FutureTask
-import javax.net.ssl.HostnameVerifier
-import javax.net.ssl.HttpsURLConnection
 
 sealed class Result<out R> {
     data class Success<out T>(val data: T) : Result<T>()
     data class Error(val exception: Exception) : Result<Nothing>()
 }
 
-/**
- * This class is responsible for querying data from the application's backend
- */
-class Repository(context: Context) {
-    private var exec: ExecutorService? = null
-    private var url: String
-    private var loginUrl: String
-    private var context: Context? = context
+private val TAG: String = "Repository"
 
-    init {
-        //exec = Executors.newSingleThreadExecutor()
+fun makeRequest(urlStr: String, type: REQUEST, jsonBody: String): Result<*> {
+    Log.d("$TAG", "makeRequest")
+
+    val policy = ThreadPolicy.Builder().permitAll().build()
+    StrictMode.setThreadPolicy(policy)
+
+    val url = getURL(urlStr)
+
+    (url.openConnection() as? HttpURLConnection)?.run {
+        requestMethod = "POST"
+        setRequestProperty("Content-Type", "application/json; utf-8")
+        setRequestProperty("Accept", "application/json")
+        doOutput = true
         try {
-            //url = URL("http://localhost:8080/gateway/")
-            url = "http://10.0.2.2:8080/gateway/"
-
-            loginUrl = "${url}login"
-        } catch (e: MalformedURLException) {
+            outputStream.write(jsonBody.toByteArray())
+        } catch(e: RuntimeException) {
+            throw Error("RuntimeException: ${e.message}")
+        } catch(e: Exception) {
             throw Error(e.message)
         }
+        return Result.Success(parseJSON(inputStream.bufferedReader().use(BufferedReader::readText), type))
     }
-
-    fun makeLoginRequest_new(jsonBody: String): Result<*> {
-        var sh: HttpHandler = HttpHandler()
-
-        var jsonResponse = sh.makeServiceCall("http://10.0.2.2:8080/gateway/all")
-        Log.d("LOGIN", "Response=${jsonResponse}")
-
-        return Result.Error(Exception("Cannot open HttpURLConnection"))
-    }
-    fun makeLoginRequest_old2(jsonBody: String): Result<*> {
-        val httpConnection: HttpURLConnection = URL("http://www.google.com").openConnection() as HttpURLConnection
-        httpConnection.requestMethod = "POST"
-        httpConnection.doInput = true
-        httpConnection.doOutput = true
-        httpConnection.connectTimeout = 200
-        httpConnection.useCaches = false
-        Log.d("LOGIN", "0.0")
-        //val out: OutputStream = httpConnection.outputStream
-
-        Log.d("LOGIN", "0.1")
-
-        return Result.Error(Exception("Cannot open HttpURLConnection"))
-    }
-
-    fun makeLoginRequest(jsonBody: String): Result<*> {
-        Log.d("LOGIN", "TRYING LOGIN AT:$loginUrl")
-
-        val policy = ThreadPolicy.Builder().permitAll().build()
-        StrictMode.setThreadPolicy(policy)
-
-        val url = URL(loginUrl)
-        (url.openConnection() as? HttpURLConnection)?.run {
-            requestMethod = "POST"
-            setRequestProperty("Content-Type", "application/json; utf-8")
-            setRequestProperty("Accept", "application/json")
-            doOutput = true
-            try {
-                outputStream.write(jsonBody.toByteArray())
-            } catch(e: RuntimeException) {
-                throw Error("RuntimeException: ${e.message}")
-            } catch(e: Exception) {
-                throw Error(e.message)
-            }
-            return Result.Success(parseUserAndData(inputStream.bufferedReader().use(BufferedReader::readText)))
-        }
-        return Result.Error(Exception("Cannot open HttpURLConnection"))
-    }
-
-    fun getUserData(user: User?): UserData? {
-        val userData: UserData? = null
-
-        if(user != null) {
-            //user is logged in, contact backed to fetch data!
-            TODO()
-        }
-
-        return userData
-    }
-
-    fun addTopic(userData: UserData?, topic: Topic): Boolean {
-        return false; //TODO CHANGE ME
-    }
+    return Result.Error(Exception("Cannot open HttpURLConnection"))
 }
+
+private fun getURL(str: String): URL {
+    lateinit var url: URL
+    Log.d("$TAG", "getUrl=$str")
+
+    try {
+        url = URL(str)
+    } catch(e: MalformedURLException) {
+        TODO()
+    }
+
+    return url
+}
+
+
+fun getUserData(user: User?): UserData? {
+    val userData: UserData? = null
+
+    if(user != null) {
+        //user is logged in, contact backed to fetch data! TODO()
+    }
+
+    return userData
+}
+
+fun addTopic(userData: UserData?, topic: Topic): Boolean {
+    return false; //TODO CHANGE ME
+}
+
 
 
 
