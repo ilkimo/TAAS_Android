@@ -2,6 +2,7 @@ package com.example.datahubapp.ui.login
 
 import android.content.Intent
 import android.content.Intent.getIntent
+import android.os.Build
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.annotation.StringRes
@@ -19,6 +20,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.annotation.RequiresApi
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
 import com.example.datahubapp.MainActivity
@@ -26,6 +28,7 @@ import com.example.datahubapp.databinding.FragmentLoginBinding
 
 import com.example.datahubapp.R
 import com.example.datahubapp.TopicsFragmentDirections
+import com.example.datahubapp.controller.login
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -61,6 +64,7 @@ class LoginFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
@@ -128,10 +132,16 @@ class LoginFragment : Fragment() {
 
         loginButton.setOnClickListener {
             loadingProgressBar.visibility = View.VISIBLE
-            loginViewModel.login(
+            login(requireParentFragment(),
+                requireContext(),
+                usernameEditText.text.toString(),
+                passwordEditText.text.toString())
+
+            //TODO guardare sto loginViewModel (originale code genrato, pre-modifiche)
+            /*loginViewModel.login(
                 usernameEditText.text.toString(),
                 passwordEditText.text.toString()
-            )
+            )*/
         }
 
         //Google Login

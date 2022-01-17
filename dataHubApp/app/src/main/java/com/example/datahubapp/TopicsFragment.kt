@@ -13,21 +13,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
+import com.example.datahubapp.controller.addTopic
 import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.model.UserData
 import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
-import com.example.datahubapp.databinding.FragmentLoginBinding
 import com.example.datahubapp.databinding.FragmentTopicsBinding
-import com.example.datahubapp.ui.login.LoginFragmentDirections
 
 /**
  * A fragment representing a list of Items.
@@ -47,7 +44,7 @@ class TopicsFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         var viewModelFactory = AppViewModelFactory(requireContext())
-        model = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AppViewModel::class.java)
+        model = ViewModelProviders.of(requireParentFragment(), viewModelFactory).get(AppViewModel::class.java)
 
         arguments?.let {
             columnCount = it.getInt(SelectedTopicFragment.ARG_COLUMN_COUNT)
@@ -60,6 +57,7 @@ class TopicsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentTopicsBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
@@ -75,6 +73,10 @@ class TopicsFragment : Fragment() {
         (activity as AppCompatActivity?)?.getSupportActionBar()?.setDisplayShowHomeEnabled(false)
         (activity as AppCompatActivity?)?.supportActionBar?.title = getString(R.string.Topics)
 
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun addOnClickListeners(root: View, context: Context?) {
         val addTopicButton = binding.addTopicButton
 
         addTopicButton.setOnClickListener {
@@ -92,20 +94,6 @@ class TopicsFragment : Fragment() {
                 swipeRefreshLayout.isRefreshing = false
             }, 4000)
              */
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun addOnClickListeners(root: View, context: Context?) {
-        var addTopic: ImageButton = root.findViewById(R.id.addTopicButton)
-
-        addTopic.setOnClickListener { root ->
-            if (context != null) {
-                model.controller.addTopic(Topic("new_topic", "description", null, null, false), context)
-            } else {
-                Log.d("ERROR", "TopicsFragment.addClickListeners")
-                throw Error("Error: No context for this event")
-            }
         }
     }
 

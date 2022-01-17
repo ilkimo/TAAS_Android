@@ -16,8 +16,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.example.datahubapp.controller.addSharedTopic
 import com.example.datahubapp.data.model.Topic
-import com.example.datahubapp.data.model.UserData
 import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import com.example.datahubapp.databinding.FragmentSharedTopicsBinding
@@ -42,7 +42,7 @@ class SharedTopicsFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         var viewModelFactory = AppViewModelFactory(requireContext())
-        model = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AppViewModel::class.java)
+        model = ViewModelProviders.of(requireParentFragment(), viewModelFactory).get(AppViewModel::class.java)
 
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
@@ -110,7 +110,7 @@ class SharedTopicsFragment : Fragment() {
 
         addTopic.setOnClickListener { root ->
             if (context != null) {
-                model.controller.addSharedTopic(Topic("SHARED new_topic", "description", null, null, false), context)
+                addSharedTopic(Topic("SHARED new_topic", "description", null, null, false), requireParentFragment(), context)
             } else {
                 Log.d("ERROR", "TopicsFragment.addClickListeners")
                 throw Error("Error: No context for this event")

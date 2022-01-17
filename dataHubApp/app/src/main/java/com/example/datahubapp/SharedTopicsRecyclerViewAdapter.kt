@@ -57,7 +57,7 @@ class SharedTopicsRecyclerViewAdapter(
 
         init {
             var viewModelFactory = AppViewModelFactory(fragment.requireContext())
-            model = ViewModelProviders.of(fragment.requireActivity(), viewModelFactory).get(
+            model = ViewModelProviders.of(fragment.requireParentFragment(), viewModelFactory).get(
                 AppViewModel::class.java
             )
 
@@ -70,7 +70,8 @@ class SharedTopicsRecyclerViewAdapter(
 
         override fun onClick(view: View) {
             //Toast.makeText(view.context, "You clicked $layoutPosition", Toast.LENGTH_SHORT).show()
-            model.controller.setSelectedSharedTopic(topicName.text as String)
+            //model.controller.setSelectedSharedTopic(topicName.text as String)
+            TODO()
 
             NavHostFragment.findNavController(fragment)
                 .navigate(R.id.action_sharedTopicsFragment_to_selectedSharedTopicFragment)

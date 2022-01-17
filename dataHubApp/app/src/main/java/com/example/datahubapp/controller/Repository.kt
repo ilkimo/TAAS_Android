@@ -1,52 +1,77 @@
 package com.example.datahubapp.controller
 
-import android.content.Context
+import android.os.StrictMode
+import android.os.StrictMode.ThreadPolicy
+import android.util.Log
 import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.model.User
 import com.example.datahubapp.data.model.UserData
+import com.example.datahubapp.data.parseJSON
 import java.io.BufferedReader
 import java.lang.Exception
-import java.net.MalformedURLException
-import java.net.URL
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.FutureTask
+import java.lang.RuntimeException
+import java.net.*
 
-/**
- * This class is responsible for querying data from the application's backend
- */
-class Repository {
-    private var exec: ExecutorService? = null
-    private var url: URL? = null
-    //private var gson: Gson? = null
-    private var context: Context? = null
-    private val TAG = "Repository"
+sealed class Result<out R> {
+    data class Success<out T>(val data: T) : Result<T>()
+    data class Error(val exception: Exception) : Result<Nothing>()
+}
 
-    fun Repository(context: Context?) {
-        exec = Executors.newSingleThreadExecutor()
-        //gson = Gson()
-        this.context = context
+private val TAG: String = "Repository"
+
+fun makeRequest(urlStr: String, jsonBody: String): Result<*> {
+    Log.d("$TAG", "makeRequest")
+
+    val url = getURL(urlStr)
+
+    (url.openConnection() as? HttpURLConnection)?.run {
+        requestMethod = "POST"
+        setRequestProperty("Content-Type", "application/json; utf-8")
+        setRequestProperty("Accept", "application/json")
+        doOutput = true
         try {
-            url = URL("http://localhost:8080/gateway/")
-        } catch (e: MalformedURLException) {
-            println(e.message)
+            outputStream.write(jsonBody.toByteArray())
+        } catch(e: RuntimeException) {
+            throw Error("RuntimeException: ${e.message}")
+        } catch(e: Exception) {
+            throw Error(e.message)
         }
+        return Result.Success(inputStream.bufferedReader().use(BufferedReader::readText))
+    }
+    return Result.Error(Exception("Cannot open HttpURLConnection"))
+}
+
+private fun getURL(str: String): URL {
+    lateinit var url: URL
+    Log.d("$TAG", "getUrl=$str")
+
+    try {
+        url = URL(str)
+    } catch(e: MalformedURLException) {
+        TODO()
     }
 
-    fun getUserData(user: User?): UserData? {
-        val userData: UserData? = null
+    return url
+}
 
-        if(user != null) {
-            //user is logged in, contact backed to fetch data!
-            TODO()
-        }
 
-        return userData
+fun getUserData(user: User?): UserData? {
+    val userData: UserData? = null
+
+    if(user != null) {
+        //user is logged in, contact backed to fetch data! TODO()
     }
 
-    fun addTopicSuccessfull(userData: UserData?, topic: Topic): Boolean {
-        return true; //TODO CHANGE ME
-    }
+    return userData
+}
+
+fun addTopic(userData: UserData?, topic: Topic): Boolean {
+    return false; //TODO CHANGE ME
+}
+
+
+
+
 
 
     /*fun getCourseAvailable(year: Int): List<Course?>? {
@@ -237,4 +262,3 @@ class Repository {
         result = gson.fromJson(reader, object : TypeToken<Map<String?, String?>?>() {}.getType())
         return result["result"]
     }*/
-}

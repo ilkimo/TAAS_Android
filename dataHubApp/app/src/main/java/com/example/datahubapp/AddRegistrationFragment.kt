@@ -16,7 +16,6 @@ import com.example.datahubapp.data.model.Registration
 import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
-import com.example.datahubapp.placeholder.PlaceholderContent
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.LocalDate
 
@@ -39,7 +38,7 @@ class AddRegistrationFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         var viewModelFactory = AppViewModelFactory(requireContext())
-        model = ViewModelProviders.of(requireActivity(), viewModelFactory).get(AppViewModel::class.java)
+        model = ViewModelProviders.of(requireParentFragment(), viewModelFactory).get(AppViewModel::class.java)
 
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)

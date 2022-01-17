@@ -8,8 +8,6 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.datahubapp.controller.AppController
-import com.example.datahubapp.controller.Repository
 import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.model.User
 import com.example.datahubapp.data.model.UserData
@@ -17,88 +15,50 @@ import java.lang.Exception
 
 @RequiresApi(Build.VERSION_CODES.O)
 class AppViewModel(context: Context) : ViewModel() {
-    /*private val courseAvailable: MutableLiveData<List<Course>>
-    private val teacherAvailable: MutableLiveData<List<Teacher>>
-    private val repetitionAvailable: MutableLiveData<List<Repetition>>
-    private val activeRepetition: MutableLiveData<List<Repetition>>
-    private val pastRepetition: MutableLiveData<List<Repetition>>
-    private val isLogged: MutableLiveData<Boolean>
-    private val repository: Repository
-    var selectedCourse: Course? = null
-    private var selectedTeacher: Teacher? = null
-    private var selectedDayOfWeek: String? = null
-    private var selectedHourStart: Int? = null*/
-
-    private val repository: Repository = Repository()
-    val controller: Controller = Controller(this, repository)
+    private val TAG = "AppViewModel"
 
     /**
-     * user contains data about the logged user.
-     * If null, no login has been done
+     * Contains User data of the logged user
      */
-    private val user: MutableLiveData<User?>
+    private val user: MutableLiveData<User> = MutableLiveData<User>()
 
-    private var userData: MutableLiveData<UserData>
+    /**
+     * Contains UserData of the logged user
+     */
+    private var userData: MutableLiveData<UserData> = MutableLiveData<UserData>()
 
-    private var sharedTopics: MutableLiveData<ArrayList<Topic>>
+    /**
+     * Contains all topics that users shared
+     */
+    private var sharedTopics: MutableLiveData<ArrayList<Topic>> = MutableLiveData<ArrayList<Topic>>()
 
-    init {
-        user = MutableLiveData<User?>()
-        userData = MutableLiveData<UserData>()
-        sharedTopics = MutableLiveData<ArrayList<Topic>>()
-        loadUserData(context)
-        loadSharedTopics(context)
+    fun getUser(): LiveData<User> {
+        return user
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun loadUserData(context: Context) {
-        if(userIsLoggedIn()) {
-            // load data from backend, handle no internet exceptions (maybe TOAST message)
-            try {
-                //TODO CHANGE WITH ACTUAL LOGIN
-                //userData.postValue(repository.getUserData(user.value))
-            } catch(e: Exception) {
-                //TODO
-                Log.d("EXCEPTION", "AppViewModel.loadUserData()")
-            }
-        } else {
-            Toast.makeText(context, "Login needed", Toast.LENGTH_SHORT).show()
-            userData.postValue(AppController.fakeLogin()) //TODO REMOVE ME
-        }
-    }
-
-    //Funzione per caricare i topic condivisi
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun loadSharedTopics(context: Context) {
-        if(userIsLoggedIn()) {
-            // load data from backend, handle no internet exceptions (maybe TOAST message)
-            try {
-                //TODO CHANGE WITH ACTUAL LOGIN
-                //userData.postValue(repository.getUserData(user.value))
-            } catch(e: Exception) {
-                //TODO
-                Log.d("EXCEPTION", "AppViewModel.loadUserData()")
-            }
-        } else {
-            Toast.makeText(context, "Login needed", Toast.LENGTH_SHORT).show()
-            sharedTopics.postValue(AppController.fakeSharedTopics()) //TODO REMOVE ME
-        }
+    fun setUser(user: User) {
+        this.user.postValue(user)
     }
 
     fun getUserData(): LiveData<UserData> {
-        //loadUserData() //I think that with this, the userData refreshes every time with current backend state
-
         return userData
     }
 
-    fun getSharedTopics(): LiveData<ArrayList<Topic>> {
-        //loadUserData() //I think that with this, the userData refreshes every time with current backend state
+    fun setUserData(userData: UserData) {
+        Log.d("$TAG", "uno=${userData.topicList}")
+        this.userData.postValue(userData)
+    }
 
+    fun getSharedTopics(): LiveData<ArrayList<Topic>> {
         return sharedTopics
     }
 
+    fun setSharedTopics(sharedTopics: ArrayList<Topic>) {
+        this.sharedTopics.postValue(sharedTopics)
+    }
+
     private fun userIsLoggedIn(): Boolean {
-        return user == null;
+        return user.value != null;
     }
 
 
@@ -195,45 +155,4 @@ class AppViewModel(context: Context) : ViewModel() {
         repository = Repository(context)
         this.context = context
     }*/
-
-    inner class Controller(val model: AppViewModel, val repository: Repository) {
-        @RequiresApi(Build.VERSION_CODES.O)
-        fun addTopic(topic: Topic, context: Context) {
-            // try to push new topic to backend
-            //TODO SORROUND AYNKTASK
-            //var userData: UserData? = model.getUserData().value
-
-            if(repository.addTopicSuccessfull(userData.value, topic)) {
-                userData?.value?.topicList?.add(topic)
-                userData.postValue(userData!!.value)
-                Log.d("testino", "aggiunto: numero topic=${userData?.value?.topicList?.size}")
-            } else {
-                Toast.makeText(context, "Error in adding topic", Toast.LENGTH_LONG).show()
-            }
-        }
-
-        //TODO: remove me -> serve per testare che vada
-        @RequiresApi(Build.VERSION_CODES.O)
-        fun addSharedTopic(topic: Topic, context: Context) {
-            // try to push new topic to backend
-            //TODO SORROUND AYNKTASK
-            //var userData: UserData? = model.getUserData().value
-
-            if(repository.addTopicSuccessfull(userData.value, topic)) {
-                sharedTopics.value?.add(topic)
-                sharedTopics.postValue(sharedTopics!!.value)
-                Log.d("testino", "aggiunto: numero topic=${sharedTopics?.value?.size}")
-            } else {
-                Toast.makeText(context, "Error in adding topic", Toast.LENGTH_LONG).show()
-            }
-        }
-
-        fun setSelectedTopic(topicName: String) {
-            //TODO
-        }
-
-        fun setSelectedSharedTopic(topicName: String) {
-            //TODO
-        }
-    }
 }
