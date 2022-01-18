@@ -2,16 +2,18 @@ package com.example.datahubapp
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.NavHostFragment
+import com.example.datahubapp.controller.deleteTopic
+import com.example.datahubapp.data.TAG
 import com.example.datahubapp.data.model.Registration
 import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.viewmodel.AppViewModel
@@ -32,6 +34,8 @@ class SelectedRegistrationFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true);
+
 
         var viewModelFactory = AppViewModelFactory(requireContext())
         model = ViewModelProviders.of(requireParentFragment(), viewModelFactory).get(AppViewModel::class.java)
@@ -87,6 +91,36 @@ class SelectedRegistrationFragment : Fragment() {
 
         view.findViewById<TextView>(R.id.textViewID).text = "${getString(R.string.ID)}: ${selectedRegistration.id}"
         view.findViewById<TextView>(R.id.textViewDate).text = "${getString(R.string.Date)}: ${selectedRegistration.creationDate}"
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        inflater.inflate(R.menu.menu_registration_selected, menu);
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        return if (id == R.id.delete_registration) {
+            Log.d(TAG, "DELETE REGISTRATION MENU ITEM CLICKED!")
+
+            //TODO: make query -> delete registration
+            /*
+            deleteTopic(
+                requireParentFragment(),
+                requireContext(),
+                selectedTopic.name,
+                model.getUser().value?.id!!
+            )
+             */
+
+            //TODO move this backstackpop() to processResult
+            Log.d("$TAG", "popping back stack")
+            NavHostFragment.findNavController(this).popBackStack()
+
+            true
+        } else super.onOptionsItemSelected(item)
     }
 
     companion object {

@@ -47,5 +47,6 @@
     <string name="change_password">Chane Password</string>
     <string name="delete_topic">Delete Topic</string>
     <string name="change_topic_name">Change Topic Name</string>
+    <string name="delete_registration">Delete Registration</string>
 
 </resources>
