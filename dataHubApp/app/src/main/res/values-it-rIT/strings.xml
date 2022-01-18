@@ -35,5 +35,10 @@
     <string name="delete_topic">Elimina argomento</string>
     <string name="change_topic_name">Rinomina argomento</string>
     <string name="delete_registration">Elimina registrazione</string>
+    <string name="theme">Tema</string>
+    <string name="light_theme">Tema Chiaro</string>
+    <string name="dark_theme">Thema Scuro</string>
+    <string name="app_version">Versione dell\'app</string>
+    <string name="search">Ricerca</string>
 
 </resources>

@@ -30,9 +30,10 @@
         <entry key="app/src/main/res/layout/fragment_selected_shared_topic_list.xml" value="0.21302083333333333" />
         <entry key="app/src/main/res/layout/fragment_selected_topic.xml" value="0.14766970618034447" />
         <entry key="app/src/main/res/layout/fragment_selected_topic_list.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.23505434782608695" />
         <entry key="app/src/main/res/layout/fragment_shared_topics.xml" value="0.37092391304347827" />
         <entry key="app/src/main/res/layout/fragment_shared_topics_list.xml" value="0.266304347826087" />
-        <entry key="app/src/main/res/layout/fragment_topics.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_topics.xml" value="0.125" />
         <entry key="app/src/main/res/layout/fragment_topics_list.xml" value="0.5432291666666667" />
         <entry key="app/src/main/res/layout/item_topic.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/layout/registrationItem_int.xml" value="0.35597826086956524" />
@@ -48,6 +49,7 @@
         <entry key="app/src/main/res/menu/bottom_nav.xml" value="0.5432291666666667" />
         <entry key="app/src/main/res/menu/menu_registration_selected.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu_topic_selected.xml" value="0.35260416666666666" />
+        <entry key="app/src/main/res/xml/root_preferences.xml" value="0.1" />
       </map>
     </option>
   </component>
