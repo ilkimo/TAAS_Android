@@ -13,31 +13,31 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class DateData implements SourceDataInterface {
+public class HourData implements SourceDataInterface {
     private LocalDateTime val;
     private static final DateTimeFormatter format = DateTimeFormatter.ISO_DATE_TIME;
 
     @JsonCreator
-    public DateData(@JsonProperty("val") String x) {
+    public HourData(@JsonProperty("val") String x) {
         val = LocalDateTime.parse(x, format);
     }
 
-    public DateData(@JsonProperty("val") LocalDateTime x) {
+    public HourData(@JsonProperty("val") LocalDateTime x) {
         this.val = x;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public DateData(int year, int month, int day) {
-        val = LocalDateTime.of(year, month, day, 0, 0, 0);
+    public HourData(int hour, int minute) {
+        val = LocalDateTime.of(2022, 1, 1, hour, minute, 0);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public static DateData createEmptyInstance() {
-        return new DateData();
+    public static HourData createEmptyInstance() {
+        return new HourData();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private DateData() {
+    private HourData() {
         val = null;
     }
 
@@ -63,7 +63,7 @@ public class DateData implements SourceDataInterface {
         boolean res = true;
 
         if((obj != null) && (obj.getClass().equals(this.getClass()))) {
-            DateData castedObj = (DateData) obj;
+            HourData castedObj = (HourData) obj;
 
             //check val
             if((val != null) && (castedObj.getData() != null)) {

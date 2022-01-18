@@ -15,6 +15,7 @@ import com.example.datahubapp.databinding.*
 
 import com.example.datahubapp.placeholder.PlaceholderContent.PlaceholderItem
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 /**
@@ -183,9 +184,10 @@ class SelectedRegistrationRecyclerViewAdapter(
             DATA_TYPES.HOURDATA.value -> {
                 var data: StringData = item.registrationData as StringData
                 (holder as HourViewHolder).name.text = nameTypes[position].name
-                var time = (data.data as String).split(":")
-                if(time.size >= 2) {
-                    holder.contentView.text = "${time[0]}:${time[1]}"
+
+                if((data.data as String).length > 0) {
+                    var time: LocalDateTime = DateData((data.data as String)).data as LocalDateTime
+                    holder.contentView.text = "${time.hour}:${time.minute}"
                 } else {
                     holder.contentView.isVisible = false
                 }

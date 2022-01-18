@@ -12,7 +12,6 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.datahubapp.controller.addRegistration
 import com.example.datahubapp.data.model.*
 import com.example.datahubapp.data.model.classicData.*
@@ -21,7 +20,6 @@ import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import com.example.datahubapp.databinding.*
 import com.example.datahubapp.placeholder.PlaceholderContent.PlaceholderItem
 import com.example.datahubapp.util.BindableViewHolder
-import com.fasterxml.jackson.databind.deser.std.DateDeserializers
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -667,12 +665,16 @@ class AddRegistrationRecyclerViewAdapter(
         private val contentView = binding.content
         var listeners: ArrayList<TimePicker.OnTimeChangedListener> = ArrayList()
 
-        @RequiresApi(Build.VERSION_CODES.M)
+        init {
+            contentView.setIs24HourView(true)
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O)
         override fun bind(item: RegistrationViewData<*>, name: String) {
             super.bind(item, name)
 
             var watcher = TimePicker.OnTimeChangedListener { _, hour, minute ->
-                item.registrationData.data = "$hour:$minute"
+                item.registrationData.data = HourData(hour, minute).toString()
                 Log.d("LISTENER", "updated data to ${item.registrationData.data}")
             }
 
@@ -680,9 +682,9 @@ class AddRegistrationRecyclerViewAdapter(
             contentView.setOnTimeChangedListener(watcher)
 
             if((item.registrationData.data as String).length > 0) {
-                var time = (item.registrationData as StringData).data.toString().split(":")
-                contentView.hour = time[0].toInt()
-                contentView.minute = time[1].toInt()
+                var time: LocalDateTime = HourData((item.registrationData.data as String)).data as LocalDateTime
+                contentView.hour = time.hour
+                contentView.minute = time.minute
             } else {
                 contentView.hour = 0
                 contentView.minute = 0
@@ -694,8 +696,6 @@ class AddRegistrationRecyclerViewAdapter(
         override fun removeListeners() {
             for(l in listeners) {
                 Log.d("LISTENER", "REMOVING OLD LISTENER!!!")
-                //contentView.removeTextChangedListener(l)
-                // TODO check if it is not needed to remove listeners because setOnDateChangedListener already makes the substitution(?)
             }
         }
 
