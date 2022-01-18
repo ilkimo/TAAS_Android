@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.NavHostFragment
 import com.example.datahubapp.data.convertToJSON
 import com.example.datahubapp.data.model.*
 import com.example.datahubapp.data.parseJSON
@@ -47,6 +48,28 @@ enum class RETURNTYPE {
     TOPIC_LIST
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
+fun addRegistration(fragment: Fragment, context: Context, newRegistration: NewRegistration) {
+    val jsonObject = convertToJSON(newRegistration, NewRegistration::class.java)
+
+    asyncRequest(fragment, context, jsonObject, REQUEST.NEW_REGISTRATION, RETURNTYPE.USERDATA)
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun addTopic(fragment: Fragment, context: Context, newTopic: NewTopic) {
+    val jsonObject = convertToJSON(newTopic, NewTopic::class.java)
+
+    asyncRequest(fragment, context, jsonObject, REQUEST.NEW_TOPIC, RETURNTYPE.USERDATA)
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun deleteTopic(fragment: Fragment, context: Context, topicName: String, userID: Long) {
+    val delTopic = DeleteTopic(userID.toString(), topicName)
+    val jsonObject = convertToJSON(delTopic, DeleteTopic::class.java)
+
+    asyncRequest(fragment, context, jsonObject, REQUEST.DELETE_TOPIC, RETURNTYPE.USERDATA)
+}
+
 private fun getUrlString(type: REQUEST): String {
     val str: String = url + when(type) {
         REQUEST.ALL_USERS -> "all"
@@ -75,21 +98,6 @@ fun getViewModel(fragment: Fragment, context: Context): AppViewModel {
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun addTopic(fragment: Fragment, context: Context, newTopic: NewTopic) {
-    val jsonObject = convertToJSON(newTopic, NewTopic::class.java)
-
-    asyncRequest(fragment, context, jsonObject, REQUEST.NEW_TOPIC, RETURNTYPE.USERDATA)
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-fun deleteTopic(fragment: Fragment, context: Context, topicName: String, userID: Long) {
-    val delTopic = DeleteTopic(userID.toString(), topicName)
-    val jsonObject = convertToJSON(delTopic, DeleteTopic::class.java)
-
-    asyncRequest(fragment, context, jsonObject, REQUEST.DELETE_TOPIC, RETURNTYPE.USERDATA)
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
 fun login(fragment: Fragment, context: Context, username: String, password: String) {
     val jsonObject = convertToJSON(
         User("", "", username, password),
@@ -114,12 +122,12 @@ private fun asyncRequest(fragment: Fragment, context: Context,
             Result.Error(Exception("Network request failed: ${e.message}"))
         }
 
-        processResult(returnType, requestType, result, viewModel, context)
+        processResult(fragment, returnType, requestType, result, viewModel, context)
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-private fun processResult(returnType: RETURNTYPE, requestType: REQUEST,
+private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestType: REQUEST,
                           result: Result<*>, viewModel: AppViewModel, context: Context) {
     Log.d("$TAG", "processResult")
     lateinit var obj: Any
@@ -164,6 +172,20 @@ private fun processResult(returnType: RETURNTYPE, requestType: REQUEST,
                 is Result.Success -> {
                     obj = parseJSON((result.data as String), returnType)
                     viewModel.setUserData(obj as UserData)
+                }
+                else -> TODO()
+            }
+        }
+        REQUEST.NEW_REGISTRATION -> {
+            when(result) {
+                is Result.Success -> {
+                    obj = parseJSON((result.data as String), returnType)
+                    viewModel.setUserData(obj as UserData)
+                    //make main Thread show Toast and navigate backwards
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Registration added", Toast.LENGTH_SHORT).show()
+                        NavHostFragment.findNavController(fragment).popBackStack()
+                    }
                 }
                 else -> TODO()
             }

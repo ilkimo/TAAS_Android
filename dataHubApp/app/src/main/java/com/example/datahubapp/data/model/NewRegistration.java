@@ -8,12 +8,17 @@ public class NewRegistration {
 
     private String topic;
 
-    ArrayList<String> dataList;
+    private ArrayList<String> dataList;
 
     public NewRegistration(){
         dataList = new ArrayList<>();
     }
 
+    public NewRegistration(String userId, String topicName, ArrayList<String> dataList) {
+        this.userId = userId;
+        topic = topicName;
+        this.dataList = dataList;
+    }
 
     public String getTopic() {
         return topic;
@@ -21,6 +26,14 @@ public class NewRegistration {
 
     public ArrayList<String> getDataList() {
         return dataList;
+    }
+
+    public void setDataList(ArrayList<String> dataList) {
+        this.dataList = dataList;
+    }
+
+    public void addDataListElement(String elem) {
+        dataList.add(elem);
     }
 
     public String getUserId() {

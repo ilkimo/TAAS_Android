@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     tools:context=".TopicsFragment"
-    android:name="com.example.datahubapp.TopicsFragment">
+    android:name="com.example.datahubapp.AddRegistrationFragment">
 
     <TextView
         android:id="@+id/textView2"
@@ -59,7 +59,7 @@
         app:layout_constraintTop_toBottomOf="@id/textViewDate" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addTopicButton"
+        android:id="@+id/floatingActionButton"
         android:contentDescription="add a new registration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

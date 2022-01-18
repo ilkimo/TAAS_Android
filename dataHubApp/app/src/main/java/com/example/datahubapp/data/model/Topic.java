@@ -39,6 +39,14 @@ public class Topic {
 
     private Boolean shared;
 
+    public Topic clone() {
+        return new Topic(
+                id, name, description,
+                creationDate, color, listRegistrazioni,
+                nameType, numberRecords, shared
+        );
+    }
+
     @JsonCreator
     public Topic(@JsonProperty("id")Long id,
                  @JsonProperty("name")String name,

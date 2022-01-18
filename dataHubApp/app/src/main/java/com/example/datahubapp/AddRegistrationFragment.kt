@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProviders
 import com.example.datahubapp.data.model.Registration
@@ -70,7 +71,7 @@ class AddRegistrationFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = AddRegistrationRecyclerViewAdapter(selectedTopic)
+                adapter = AddRegistrationRecyclerViewAdapter(selectedTopic, requireParentFragment(), requireContext())
             }
         }
         return root
@@ -83,7 +84,16 @@ class AddRegistrationFragment : Fragment() {
         view.findViewById<TextView>(R.id.textViewID).text = "${getString(R.string.ID)}: ${selectedTopic.numberRecords+1}"
         view.findViewById<TextView>(R.id.textViewDate).text = "${getString(R.string.Date)}: ${creationDate}"
 
-        view.findViewById<FloatingActionButton>(R.id.addTopicButton).setOnClickListener { ((view.findViewById<RecyclerView>(R.id.list)).adapter as AddRegistrationRecyclerViewAdapter).printAll() }
+        view.findViewById<FloatingActionButton>(R.id.addTopicButton).setOnClickListener {
+            var adapter = (view.findViewById<RecyclerView>(R.id.list).adapter as AddRegistrationRecyclerViewAdapter)
+            if(adapter.formOk()) {
+                //Start transaction
+                adapter.createNewRegistration(requireParentFragment(), requireContext())
+            } else {
+                //Show Error Toast
+                Toast.makeText(requireContext(), "Error: form incomplete", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     companion object {

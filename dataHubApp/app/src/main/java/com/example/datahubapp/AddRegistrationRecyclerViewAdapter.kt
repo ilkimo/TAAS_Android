@@ -1,5 +1,6 @@
 package com.example.datahubapp
 
+import android.content.Context
 import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,11 +10,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.datahubapp.controller.addRegistration
 import com.example.datahubapp.data.model.*
 import com.example.datahubapp.data.model.classicData.*
+import com.example.datahubapp.data.viewmodel.AppViewModel
+import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import com.example.datahubapp.databinding.*
 import com.example.datahubapp.placeholder.PlaceholderContent.PlaceholderItem
 import com.example.datahubapp.util.BindableViewHolder
+import com.fasterxml.jackson.databind.deser.std.DateDeserializers
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -22,10 +30,13 @@ import java.time.format.DateTimeFormatter
  * TODO: Replace the implementation with code for your data type.
  */
 class AddRegistrationRecyclerViewAdapter(
-    var topic: Topic
+    var topic: Topic,
+    var fragment: Fragment,
+    var context: Context
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val TAG = "AddRegistrationAdapter"
     private val registration_rows: ArrayList<RegistrationViewData<Any?>> = ArrayList()
+    private lateinit var model: AppViewModel
 
     enum class DATA_TYPES(val value: Int) {
         BOOLEANDATA(0),
@@ -44,6 +55,9 @@ class AddRegistrationRecyclerViewAdapter(
     init {
         var itemViewType: Int
         var emptyRegistration: SourceDataInterface<*>
+
+        var viewModelFactory = AppViewModelFactory(context)
+        model = ViewModelProviders.of(fragment, viewModelFactory).get(AppViewModel::class.java)
 
         for(i in topic.nameType.indices) {
             itemViewType = getItemViewType(topic.nameType[i].data)
@@ -159,19 +173,89 @@ class AddRegistrationRecyclerViewAdapter(
         return registration_rows[position].viewType
     }
 
-    fun getNewRegistration(): NewRegistration {
-        val newRegistration = createNewRegistration()
+    fun formOk(): Boolean {
+        var res = true
 
-        return newRegistration
+        registration_rows.forEachIndexed{ i, elem ->
+            when(getItemViewType(topic.nameType[i].data)) {
+                DATA_TYPES.BOOLEANDATA.value -> {
+                    if((elem.registrationData as BooleanData).data == null) {
+                        res = false
+                    }
+                }
+                DATA_TYPES.BYTEDATA.value -> {
+                    if((elem.registrationData as ByteData).data == null) {
+                        res = false
+                    }
+                }
+                DATA_TYPES.CHARDATA.value -> {
+                    if((elem.registrationData as CharData).data == null) {
+                        res = false
+                    }
+                }
+                DATA_TYPES.DOUBLEDATA.value -> {
+                    if((elem.registrationData as DoubleData).data == null) {
+                        res = false
+                    }
+                }
+                DATA_TYPES.FLOATDATA.value -> {
+                    if((elem.registrationData as FloatData).data == null) {
+                        res = false
+                    }
+                }
+                DATA_TYPES.INTEGERDATA.value -> {
+                    if((elem.registrationData as IntegerData).data == null) {
+                        res = false
+                    }
+                }
+                DATA_TYPES.LONGDATA.value -> {
+                    if((elem.registrationData as LongData).data == null) {
+                        res = false
+                    }
+                }
+                DATA_TYPES.SHORTDATA.value -> {
+                    if((elem.registrationData as ShortData).data == null) {
+                        res = false
+                    }
+                }
+                DATA_TYPES.STRINGDATA.value -> {
+                    if(((elem.registrationData as StringData).data == null) ||
+                        (elem.registrationData as StringData).data.equals("")) {
+                        res = false
+                    }
+                }
+                DATA_TYPES.DATEDATA.value -> {
+                    if(((elem.registrationData as StringData).data == null) ||
+                        (elem.registrationData as StringData).data.equals("")) {
+                        res = false
+                    }
+                }
+                DATA_TYPES.HOURDATA.value -> {
+                    if(((elem.registrationData as StringData).data == null) ||
+                        (elem.registrationData as StringData).data.equals("")) {
+                        res = false
+                    }
+                }
+                else -> TODO()
+            }
+        }
+
+        return res
     }
 
-    private fun createNewRegistration(): NewRegistration {
-        val reg = NewRegistration()
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun createNewRegistration(fragment: Fragment, context: Context) {
+        val list = ArrayList<String>()
+        val userId = model.getUser().value!!.id.toString()
 
-        TODO() //loop registration_rows for data
+        registration_rows.forEach{ elem ->
+            list.add(elem.registrationData.toString())
+        }
 
-        return reg
+        val newRegistration = NewRegistration(userId, topic.name, list)
+        addRegistration(fragment, context, newRegistration)
     }
+
     //TODO!!!!
     inner class BooleanViewHolder(binding: RegistrationitemBooleanBinding) :
         BindableViewHolder(binding.root) {

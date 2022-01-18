@@ -48,6 +48,7 @@ class TopicsRecyclerViewAdapter(
         //this.topicList.clear()
         this.topicList = topicList.clone() as ArrayList<Topic>
         notifyDataSetChanged()
+
         Log.d("testina", "updateTopicList")
     }
 

@@ -21,10 +21,11 @@ import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.widget.CompoundButton
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
 import com.example.datahubapp.controller.deleteTopic
 import com.example.datahubapp.data.TAG
+import com.example.datahubapp.data.model.UserData
 
 
 /**
@@ -90,6 +91,7 @@ class SelectedTopicFragment : Fragment() {
         } else super.onOptionsItemSelected(item)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -132,6 +134,14 @@ class SelectedTopicFragment : Fragment() {
                     else -> GridLayoutManager(context, columnCount)
                 }
                 adapter = SelectedTopicRecyclerViewAdapter(selectedTopic, this@SelectedTopicFragment)
+                model.getUserData().observe(viewLifecycleOwner, Observer<UserData>{
+                    // update UI
+                    with(adapter as SelectedTopicRecyclerViewAdapter) {
+                        updateTopicList(model.getUserData().value?.topicList?.filter{
+                            it.name.equals(selectedTopic.name)
+                        }!![0])
+                    }
+                })
             }
         }
         return root

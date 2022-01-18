@@ -26,6 +26,7 @@ class SelectedTopicRecyclerViewAdapter(
     var fragment: SelectedTopicFragment
 ) : RecyclerView.Adapter<SelectedTopicRecyclerViewAdapter.ViewHolder>() {
     var registrationsList: ArrayList<Registration> = selectedTopic.listRegistrazioni
+    val TAG = "SelectedTopicAdapter"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -36,6 +37,16 @@ class SelectedTopicRecyclerViewAdapter(
                 false
             ), selectedTopic
         )
+    }
+
+    fun updateTopicList(topic: Topic) {
+        //this.topicList.clear()
+        selectedTopic = topic.clone()
+        registrationsList = selectedTopic.listRegistrazioni
+        
+        notifyDataSetChanged()
+        
+        Log.d("$TAG", "updateTopicList")
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
