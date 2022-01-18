@@ -4,14 +4,14 @@
 
     <item
         android:id="@+id/delete_topic"
-        android:title="Delete Topic"
+        android:title="@string/delete_topic"
         android:orderInCategory="10"
         android:icon="@drawable/ic_baseline_more_vert_24"
         android:iconTint="@color/white"/>
 
     <item
         android:id="@+id/change_topic_name"
-        android:title="Change Topic Name"
+        android:title="@string/change_topic_name"
         android:orderInCategory="10"
         android:icon="@drawable/ic_baseline_more_vert_24"
         android:iconTint="@color/white"/>

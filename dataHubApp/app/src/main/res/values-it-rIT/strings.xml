@@ -32,4 +32,6 @@
     <string name="Date">Data</string>
     <string name="topic_name">Nome_argomento</string>
     <string name="change_password">Cambio Password</string>
+    <string name="delete_topic">Elimina argomento</string>
+    <string name="change_topic_name">Rinomina argomento</string>
 </resources>
