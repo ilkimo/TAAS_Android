@@ -40,6 +40,7 @@ fun <T> convertToJSON(obj: Any, type: Class<T>): String {
         NewRegistration::class.java -> mapper.writeValueAsString(obj as NewRegistration)
         DeleteTopic::class.java -> mapper.writeValueAsString(obj as DeleteTopic)
         DeleteReg::class.java -> mapper.writeValueAsString(obj as DeleteReg)
+        ChangeTopicSharedStatus::class.java -> mapper.writeValueAsString(obj as ChangeTopicSharedStatus)
         else -> TODO()
     }
 }

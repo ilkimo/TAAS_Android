@@ -64,6 +64,16 @@ fun addTopic(fragment: Fragment, context: Context, newTopic: NewTopic) {
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
+fun changeSharedTopicStatus(fragment: Fragment, context: Context,
+                            idUser: String, topicName: String, newName: String?) {
+    var obj = ChangeTopicSharedStatus(idUser, topicName, newName)
+    val jsonObject = convertToJSON(obj, ChangeTopicSharedStatus::class.java)
+
+    Log.d("$TAG", "object-->${jsonObject}")
+    asyncRequest(fragment, context, jsonObject, REQUEST.CHANGE_TOPIC_SHARED_STATUS, RETURNTYPE.USERDATA)
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
 fun deleteRegistration(fragment: Fragment, context: Context, idUser: String,
                        idRegistration: Long, topicName: String) {
     val delRegistration = DeleteReg(idUser, idRegistration, topicName)
@@ -211,6 +221,15 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                         Toast.makeText(context, "Registration deleted", Toast.LENGTH_SHORT).show()
                         NavHostFragment.findNavController(fragment).popBackStack()
                     }
+                }
+                else -> TODO()
+            }
+        }
+        REQUEST.CHANGE_TOPIC_SHARED_STATUS -> {
+            when(result) {
+                is Result.Success -> {
+                    obj = parseJSON((result.data as String), returnType)
+                    viewModel.setUserData(obj as UserData)
                 }
                 else -> TODO()
             }

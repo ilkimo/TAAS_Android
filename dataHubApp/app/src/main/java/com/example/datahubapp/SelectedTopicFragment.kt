@@ -32,6 +32,7 @@ import android.text.TextWatcher
 
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import com.example.datahubapp.controller.changeSharedTopicStatus
 
 import com.google.android.material.textfield.TextInputLayout
 import java.lang.NullPointerException
@@ -195,9 +196,16 @@ class SelectedTopicFragment : Fragment() {
 
         val shareTopic = root.findViewById<Switch>(R.id.shareTopic)
         shareTopic.isChecked = selectedTopic.shared
+
         shareTopic.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-            Log.d("Toggle Share Topic", shareTopic.isChecked.toString())
-            //TODO: make query -> condividere il topic corrente
+            Log.d("$TAG", "shareTopic switch switched to ${shareTopic.isChecked}")
+            changeSharedTopicStatus(
+                requireParentFragment(),
+                requireContext(),
+                model.getUser().value!!.id.toString(),
+                selectedTopic.name,
+                null
+            )
         })
 
         // Set the adapter
@@ -215,6 +223,10 @@ class SelectedTopicFragment : Fragment() {
                             it.name.equals(selectedTopic.name)
                         }!![0])
                     }
+
+                    selectedTopic = model.getUserData().value?.topicList?.filter{
+                        it.name.equals(selectedTopic.name)
+                    }!![0]
                 })
             }
         }
