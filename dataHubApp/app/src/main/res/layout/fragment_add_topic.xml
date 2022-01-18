@@ -269,8 +269,6 @@
             android:backgroundTint="@color/carriedOutReservation"
             app:borderWidth="0dp"
             app:layout_anchorGravity="top" />
-
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 

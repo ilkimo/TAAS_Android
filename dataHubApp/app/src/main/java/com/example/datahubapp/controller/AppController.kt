@@ -156,6 +156,7 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
 
                     Handler(Looper.getMainLooper()).post {
                         Toast.makeText(context, "Topic added", Toast.LENGTH_SHORT).show()
+                        NavHostFragment.findNavController(fragment).popBackStack()
                     }
 
                     //TODO navigate to topic fragment
