@@ -7,6 +7,7 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.viewModelScope
@@ -60,6 +61,15 @@ fun addTopic(fragment: Fragment, context: Context, newTopic: NewTopic) {
     val jsonObject = convertToJSON(newTopic, NewTopic::class.java)
 
     asyncRequest(fragment, context, jsonObject, REQUEST.NEW_TOPIC, RETURNTYPE.USERDATA)
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun deleteRegistration(fragment: Fragment, context: Context, idUser: String,
+                       idRegistration: Long, topicName: String) {
+    val delRegistration = DeleteReg(idUser, idRegistration, topicName)
+    val jsonObject = convertToJSON(delRegistration, DeleteReg::class.java)
+
+    asyncRequest(fragment, context, jsonObject, REQUEST.DELETE_REGISTRATION, RETURNTYPE.USERDATA)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -185,6 +195,20 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                     //make main Thread show Toast and navigate backwards
                     Handler(Looper.getMainLooper()).post {
                         Toast.makeText(context, "Registration added", Toast.LENGTH_SHORT).show()
+                        NavHostFragment.findNavController(fragment).popBackStack()
+                    }
+                }
+                else -> TODO()
+            }
+        }
+        REQUEST.DELETE_REGISTRATION -> {
+            when(result) {
+                is Result.Success -> {
+                    obj = parseJSON((result.data as String), returnType)
+                    viewModel.setUserData(obj as UserData)
+                    //make main Thread show Toast and navigate backwards
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Registration deleted", Toast.LENGTH_SHORT).show()
                         NavHostFragment.findNavController(fragment).popBackStack()
                     }
                 }

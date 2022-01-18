@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment
+import com.example.datahubapp.controller.deleteRegistration
 import com.example.datahubapp.controller.deleteTopic
 import com.example.datahubapp.data.TAG
 import com.example.datahubapp.data.model.Registration
@@ -105,19 +106,9 @@ class SelectedRegistrationFragment : Fragment() {
         return if (id == R.id.delete_registration) {
             Log.d(TAG, "DELETE REGISTRATION MENU ITEM CLICKED!")
 
-            //TODO: make query -> delete registration
-            /*
-            deleteTopic(
-                requireParentFragment(),
-                requireContext(),
-                selectedTopic.name,
-                model.getUser().value?.id!!
-            )
-             */
-
-            //TODO move this backstackpop() to processResult
-            Log.d("$TAG", "popping back stack")
-            NavHostFragment.findNavController(this).popBackStack()
+            deleteRegistration(requireParentFragment(), requireContext(),
+                model.getUser().value?.id.toString(), selectedRegistration.id,
+                selectedTopic.name)
 
             true
         } else super.onOptionsItemSelected(item)

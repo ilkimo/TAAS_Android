@@ -8,6 +8,11 @@ public class DeleteReg {
 
     private String topic;
 
+    public DeleteReg(String idUser, Long idReg, String topic) {
+        this.idUser = idUser;
+        this.idReg = idReg;
+        this.topic = topic;
+    }
 
     public String getIdUser() {
         return idUser;
