@@ -16,6 +16,9 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.example.datahubapp.controller.refresh
+import com.example.datahubapp.controller.refreshSharedTopics
+import com.example.datahubapp.data.TAG
 import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
@@ -71,14 +74,10 @@ class SharedTopicsFragment : Fragment() {
 
         val swipeRefreshLayout = binding.swipeRefreshSharedTopicList
         swipeRefreshLayout.setOnRefreshListener {
-            Log.d("Shared Topics", "Refresh!!")
-            //TODO: make query -> aggiornare la lista di topics condivisi
-            /*
-            Handler().postDelayed(Runnable {
+            Log.d("$TAG", "Refresh!!")
 
-                swipeRefreshLayout.isRefreshing = false
-            }, 4000)
-             */
+            refreshSharedTopics(requireParentFragment(), requireContext(), model.getUser().value?.id.toString())
+            swipeRefreshLayout.isRefreshing = false
         }
     }
 

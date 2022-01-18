@@ -71,7 +71,8 @@ class SharedTopicsRecyclerViewAdapter(
         override fun onClick(view: View) {
             //Toast.makeText(view.context, "You clicked $layoutPosition", Toast.LENGTH_SHORT).show()
             //model.controller.setSelectedSharedTopic(topicName.text as String)
-            TODO()
+
+            //TODO IMPLEMENTA
 
             NavHostFragment.findNavController(fragment)
                 .navigate(R.id.action_sharedTopicsFragment_to_selectedSharedTopicFragment)

@@ -25,6 +25,7 @@ import com.example.datahubapp.databinding.FragmentTopicsBinding
 import com.example.datahubapp.R
 import android.view.*
 import androidx.navigation.navOptions
+import com.example.datahubapp.controller.refresh
 import com.example.datahubapp.data.TAG
 
 
@@ -88,14 +89,10 @@ class TopicsFragment : Fragment() {
 
         val swipeRefreshLayout = binding.swipeRefreshTopicList
         swipeRefreshLayout.setOnRefreshListener {
-            //TODO: make query -> aggiornare la lista di topics
-            Log.d("Topics", "Refresh!!")
-            /*
-            Handler().postDelayed(Runnable {
+            Log.d("$TAG", "Refresh!!")
 
-                swipeRefreshLayout.isRefreshing = false
-            }, 4000)
-             */
+            refresh(requireParentFragment(), requireContext(), model.getUser().value?.id.toString())
+            swipeRefreshLayout.isRefreshing = false
         }
     }
 

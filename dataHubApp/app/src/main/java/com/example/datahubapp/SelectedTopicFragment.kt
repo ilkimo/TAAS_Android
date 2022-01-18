@@ -33,6 +33,7 @@ import android.text.TextWatcher
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import com.example.datahubapp.controller.changeSharedTopicStatus
+import com.example.datahubapp.controller.refresh
 
 import com.google.android.material.textfield.TextInputLayout
 import java.lang.NullPointerException
@@ -183,15 +184,10 @@ class SelectedTopicFragment : Fragment() {
         val swipeRefreshLayout = root.findViewById<SwipeRefreshLayout>(R.id.swipeRefreshTopicsRegistrations)
 
         swipeRefreshLayout.setOnRefreshListener {
-            Log.d("Topic's registrations", "Refresh!!")
+            Log.d("$TAG", "Refresh!!")
 
-            //TODO: make query -> aggiornare la lista di registrazioni del topic corrente
-            /*
-            Handler().postDelayed(Runnable {
-
-                swipeRefreshLayout.isRefreshing = false
-            }, 4000)
-             */
+            refresh(requireParentFragment(), requireContext(), model.getUser().value?.id.toString())
+            swipeRefreshLayout.isRefreshing = false
         }
 
         val shareTopic = root.findViewById<Switch>(R.id.shareTopic)

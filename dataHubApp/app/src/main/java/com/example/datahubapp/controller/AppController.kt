@@ -39,14 +39,17 @@ enum class REQUEST {
     GET_SHARED_TOPICS,
     CHANGE_TOPIC_SHARED_STATUS,
     CHANGE_NAME_TOPIC,
-    DELETE_USER
+    DELETE_USER,
+    REFRESH,
+    REFRESH_SHARED_TOPICS
 }
 
 enum class RETURNTYPE {
     USERANDDATA,
     USER,
     USERDATA,
-    TOPIC_LIST
+    TOPIC_LIST,
+    SHARED_TOPICS
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -69,7 +72,6 @@ fun changeSharedTopicStatus(fragment: Fragment, context: Context,
     var obj = ChangeTopicSharedStatus(idUser, topicName, newName)
     val jsonObject = convertToJSON(obj, ChangeTopicSharedStatus::class.java)
 
-    Log.d("$TAG", "object-->${jsonObject}")
     asyncRequest(fragment, context, jsonObject, REQUEST.CHANGE_TOPIC_SHARED_STATUS, RETURNTYPE.USERDATA)
 }
 
@@ -90,6 +92,22 @@ fun deleteTopic(fragment: Fragment, context: Context, topicName: String, userID:
     asyncRequest(fragment, context, jsonObject, REQUEST.DELETE_TOPIC, RETURNTYPE.USERDATA)
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
+fun refresh(fragment: Fragment, context: Context, idUser: String) {
+    val userData = UserData(null, idUser, null)
+    val jsonObject = convertToJSON(userData, UserData::class.java)
+
+    asyncRequest(fragment, context, jsonObject, REQUEST.REFRESH, RETURNTYPE.USERDATA)
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun refreshSharedTopics(fragment: Fragment, context: Context, idUser: String) {
+    val userData = UserData(null, idUser, null)
+    val jsonObject = convertToJSON(userData, UserData::class.java)
+
+    asyncRequest(fragment, context, jsonObject, REQUEST.REFRESH_SHARED_TOPICS, RETURNTYPE.SHARED_TOPICS)
+}
+
 private fun getUrlString(type: REQUEST): String {
     val str: String = url + when(type) {
         REQUEST.ALL_USERS -> "all"
@@ -97,6 +115,8 @@ private fun getUrlString(type: REQUEST): String {
         REQUEST.CHANGE_PASSWORD -> "changePassword"
         REQUEST.LOGIN -> "login"
         REQUEST.GET_TOPICS_USER -> "topicUser"
+        REQUEST.REFRESH -> "topicUser"
+        REQUEST.REFRESH_SHARED_TOPICS -> "sharedTopic"
         REQUEST.NEW_TOPIC -> "newTopic"
         REQUEST.NEW_REGISTRATION -> "newReg"
         REQUEST.DELETE_TOPIC -> "delTopic"
@@ -151,11 +171,6 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                           result: Result<*>, viewModel: AppViewModel, context: Context) {
     Log.d("$TAG", "processResult")
     lateinit var obj: Any
-
-    /*
-    val toast = Toast.makeText(context, "Topic Added", Toast.LENGTH_SHORT)
-                toast.show()
-     */
 
     when(requestType) {
         REQUEST.LOGIN -> {
@@ -230,6 +245,30 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                 is Result.Success -> {
                     obj = parseJSON((result.data as String), returnType)
                     viewModel.setUserData(obj as UserData)
+                }
+                else -> TODO()
+            }
+        }
+        REQUEST.REFRESH -> {
+            when(result) {
+                is Result.Success -> {
+                    obj = parseJSON((result.data as String), returnType)
+                    viewModel.setUserData(obj as UserData)
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Data refreshed!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else -> TODO()
+            }
+        }
+        REQUEST.REFRESH_SHARED_TOPICS -> {
+            when(result) {
+                is Result.Success -> {
+                    obj = parseJSON((result.data as String), returnType)
+                    viewModel.setSharedTopics((obj as TopicList).sharedTopicList)
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Shared topics refreshed!", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 else -> TODO()
             }

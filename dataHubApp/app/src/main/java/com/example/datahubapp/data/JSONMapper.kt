@@ -21,6 +21,7 @@ fun parseJSON(jsonBody: String, type: RETURNTYPE): Any {
         RETURNTYPE.USER -> User::class.java
         RETURNTYPE.USERDATA -> UserData::class.java
         RETURNTYPE.TOPIC_LIST -> ArrayList::class.java
+        RETURNTYPE.SHARED_TOPICS -> TopicList::class.java
     }
 
     return mapper.readValue(jsonBody, mappedClass) as Any
