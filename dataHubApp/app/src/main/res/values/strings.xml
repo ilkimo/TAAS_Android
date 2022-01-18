@@ -48,5 +48,14 @@
     <string name="delete_topic">Delete Topic</string>
     <string name="change_topic_name">Change Topic Name</string>
     <string name="delete_registration">Delete Registration</string>
+    <string name="theme">Theme</string>
+    <string name="light_theme">Light Theme</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="app_version">App Version</string>
+    <string name="version_name" translatable="false">v. 1.0.0</string>
+    <string name="dipartimento_di_informatica_anno_2021_2022" translatable="false">Dipartimento di informatica - Anno 2021-2022</string>
+    <string name="project_team" translatable="false">Naretto Gabriele, Scarpinati Livio e Kim Marco Viberti</string>
+    <string name="taass_project" translatable="false">TAASS Project</string>
+    <string name="search">Search</string>
 
 </resources>
