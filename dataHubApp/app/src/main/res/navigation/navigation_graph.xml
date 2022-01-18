@@ -105,5 +105,9 @@
         android:name="com.example.datahubapp.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/profileLoggedFragment"
+        android:name="com.example.datahubapp.ProfileLoggedFragment"
+        android:label="fragment_profile_logged" />
 
 </navigation>
