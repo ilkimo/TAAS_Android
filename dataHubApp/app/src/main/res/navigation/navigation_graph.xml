@@ -108,6 +108,10 @@
     <fragment
         android:id="@+id/profileLoggedFragment"
         android:name="com.example.datahubapp.ProfileLoggedFragment"
-        android:label="fragment_profile_logged" />
+        android:label="fragment_profile_logged" >
+        <action
+            android:id="@+id/action_profileLoggedFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
 
 </navigation>

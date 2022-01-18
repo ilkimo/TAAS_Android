@@ -5,6 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import com.example.datahubapp.controller.login
+import com.example.datahubapp.databinding.FragmentLoginBinding
+import com.example.datahubapp.databinding.FragmentProfileLoggedBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +27,12 @@ class ProfileLoggedFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private var _binding: FragmentProfileLoggedBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -33,8 +45,26 @@ class ProfileLoggedFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile_logged, container, false)
+        (activity as AppCompatActivity?)?.supportActionBar?.title = getString(R.string.profile)
+
+        _binding = FragmentProfileLoggedBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val logoutButton = binding.logoutButton
+
+        logoutButton.setOnClickListener {
+            //SE IL LOGOUT VA A BUON FINE
+            val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
+            bottomNavigationView?.menu?.findItem(R.id.profileFragment)?.isVisible = true
+            bottomNavigationView?.menu?.findItem(R.id.profileLoggedFragment)?.isVisible = false
+
+            NavHostFragment.findNavController(this)
+                .navigate(R.id.action_profileLoggedFragment_to_profileFragment)
+        }
     }
 
     companion object {
