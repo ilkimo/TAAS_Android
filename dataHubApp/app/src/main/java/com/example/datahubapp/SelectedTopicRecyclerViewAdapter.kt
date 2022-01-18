@@ -43,7 +43,7 @@ class SelectedTopicRecyclerViewAdapter(
         //this.topicList.clear()
         selectedTopic = topic.clone()
         registrationsList = selectedTopic.listRegistrazioni
-        
+
         notifyDataSetChanged()
         
         Log.d("$TAG", "updateTopicList")
@@ -64,7 +64,7 @@ class SelectedTopicRecyclerViewAdapter(
         val contentView: TextView = binding.registrationDate
         val registrationColor: LinearLayout = binding.registrationColor
 
-        private lateinit var selectedTopic: Topic
+        private var selectedTopic: Topic
 
         init {
             binding.root.setOnClickListener(this)
@@ -81,12 +81,6 @@ class SelectedTopicRecyclerViewAdapter(
                     view.findViewById<TextView>(R.id.registrationName).text.toString().toLong(),
                     selectedTopic.name)
             NavHostFragment.findNavController(fragment).navigate(navigationDirection)
-
-            /*
-            NavDirections navi = TopicsFragmentDirections.action_topicsFragment_to_selectedTopicFragment("prova");
-            NavHostFragment.findNavController(this).navigate(navi);
-             */
         }
     }
-
 }
