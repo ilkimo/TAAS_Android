@@ -8,4 +8,11 @@
         android:orderInCategory="10"
         android:icon="@drawable/ic_baseline_more_vert_24"
         android:iconTint="@color/white"/>
+
+    <item
+        android:id="@+id/change_topic_name"
+        android:title="Change Topic Name"
+        android:orderInCategory="10"
+        android:icon="@drawable/ic_baseline_more_vert_24"
+        android:iconTint="@color/white"/>
 </menu>

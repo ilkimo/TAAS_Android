@@ -26,6 +26,15 @@ import androidx.lifecycle.Observer
 import com.example.datahubapp.controller.deleteTopic
 import com.example.datahubapp.data.TAG
 import com.example.datahubapp.data.model.UserData
+import android.text.Editable
+
+import android.text.TextWatcher
+
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
+
+import com.google.android.material.textfield.TextInputLayout
+import java.lang.NullPointerException
 
 
 /**
@@ -88,7 +97,72 @@ class SelectedTopicFragment : Fragment() {
             NavHostFragment.findNavController(this).popBackStack()
 
             true
+        } else if(id == R.id.change_topic_name) {
+            changeTopicNameDialog()
+            //ChangeTopicNameDialog().show(parentFragmentManager, "MyCustomFragment")
+            true
         } else super.onOptionsItemSelected(item)
+
+
+
+    }
+
+    fun changeTopicNameDialog() {
+        // create an alert builder
+        // create an alert builder
+        val customDialog: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        customDialog.setTitle("Change Topic Name")
+        // set the custom layout
+        // set the custom layout
+        val customLayout: View = layoutInflater.inflate(R.layout.change_topic_name_dialog, null)
+        customDialog.setView(customLayout)
+
+        // add a button
+
+        // add a button
+        customDialog.setPositiveButton("Change Topic Name") { dialog, which -> }
+
+        // create and show the alert dialog
+
+        // create and show the alert dialog
+        val dialog: AlertDialog = customDialog.create()
+        dialog.show()
+        dialog.setCancelable(true)
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener { v ->
+            val newTopicNameTIL: TextInputLayout =
+                customLayout.findViewById(R.id.new_topic_name_til)
+            val newTopicName: EditText = customLayout.findViewById(R.id.new_topic_name)
+            val newTopicNameString = newTopicName.text.toString()
+
+            newTopicName.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {}
+                override fun beforeTextChanged(
+                    s: CharSequence, start: Int,
+                    count: Int, after: Int
+                ) {
+                }
+
+                override fun onTextChanged(
+                    s: CharSequence, start: Int,
+                    before: Int, count: Int
+                ) {
+                    newTopicNameTIL.error = null
+                }
+            })
+
+            if (newTopicNameString.isEmpty()) {
+                newTopicNameTIL.error = "Please insert a new topic name"
+            } else {
+                //TODO: make query -> change topic name
+                Log.d("Change Topic Name", "New topic name $newTopicNameString")
+
+                //TODO: formire feedback tramite toast se va a buon fine o meno la modifica!
+
+                //after query dismiss dialog
+                dialog.dismiss()
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
