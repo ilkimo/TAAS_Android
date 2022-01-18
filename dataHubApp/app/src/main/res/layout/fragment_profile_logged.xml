@@ -113,6 +113,7 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
 
+                        <!--
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/changePwdButton"
                             android:layout_width="wrap_content"
@@ -122,9 +123,20 @@
                             android:layout_marginEnd="15dp"
                             android:layout_marginBottom="15dp"
                             android:text="@string/change_password" />
+                            -->
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/logoutButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="@string/logout" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/logoutFromGoogleButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"

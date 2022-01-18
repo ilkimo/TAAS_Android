@@ -11,6 +11,13 @@ import com.example.datahubapp.controller.login
 import com.example.datahubapp.databinding.FragmentLoginBinding
 import com.example.datahubapp.databinding.FragmentProfileLoggedBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.annotation.NonNull
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,6 +33,12 @@ class ProfileLoggedFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    private val googleToken: String = "282646887193-mj946se9m6a7qgmkl2npmrjfksbcht6r.apps.googleusercontent.com"
+
+    //Google Login
+    lateinit var mGoogleSignInClient: GoogleSignInClient
+    private val RC_SIGN_IN = 9001
 
     private var _binding: FragmentProfileLoggedBinding? = null
 
@@ -54,9 +67,30 @@ class ProfileLoggedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //Google Login
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(googleToken)
+            .requestEmail()
+            .build()
+        mGoogleSignInClient = activity?.let { GoogleSignIn.getClient(it, gso) }!!
+
         val logoutButton = binding.logoutButton
 
         logoutButton.setOnClickListener {
+            //SE IL LOGOUT VA A BUON FINE
+            val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
+            bottomNavigationView?.menu?.findItem(R.id.profileFragment)?.isVisible = true
+            bottomNavigationView?.menu?.findItem(R.id.profileLoggedFragment)?.isVisible = false
+
+            NavHostFragment.findNavController(this)
+                .navigate(R.id.action_profileLoggedFragment_to_profileFragment)
+        }
+
+        val logoutFromGoogleButton = binding.logoutFromGoogleButton
+
+        logoutFromGoogleButton.setOnClickListener {
+            mGoogleSignInClient.signOut()
+
             //SE IL LOGOUT VA A BUON FINE
             val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
             bottomNavigationView?.menu?.findItem(R.id.profileFragment)?.isVisible = true
