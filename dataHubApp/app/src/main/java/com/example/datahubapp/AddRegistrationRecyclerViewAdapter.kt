@@ -22,7 +22,7 @@ import com.example.datahubapp.databinding.*
 import com.example.datahubapp.placeholder.PlaceholderContent.PlaceholderItem
 import com.example.datahubapp.util.BindableViewHolder
 import com.fasterxml.jackson.databind.deser.std.DateDeserializers
-import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 /**
@@ -181,59 +181,70 @@ class AddRegistrationRecyclerViewAdapter(
                 DATA_TYPES.BOOLEANDATA.value -> {
                     if((elem.registrationData as BooleanData).data == null) {
                         res = false
+                        Log.d("$TAG", "ERROR formOk:index=$i data type=BooleanData")
                     }
                 }
                 DATA_TYPES.BYTEDATA.value -> {
                     if((elem.registrationData as ByteData).data == null) {
                         res = false
+                        Log.d("$TAG", "ERROR formOk:index=$i data type=ByteData")
                     }
                 }
                 DATA_TYPES.CHARDATA.value -> {
                     if((elem.registrationData as CharData).data == null) {
                         res = false
+                        Log.d("$TAG", "ERROR formOk:index=$i data type=CharData")
                     }
                 }
                 DATA_TYPES.DOUBLEDATA.value -> {
                     if((elem.registrationData as DoubleData).data == null) {
                         res = false
+                        Log.d("$TAG", "ERROR formOk:index=$i data type=DoubleData")
                     }
                 }
                 DATA_TYPES.FLOATDATA.value -> {
                     if((elem.registrationData as FloatData).data == null) {
                         res = false
+                        Log.d("$TAG", "ERROR formOk:index=$i data type=FloatData")
                     }
                 }
                 DATA_TYPES.INTEGERDATA.value -> {
                     if((elem.registrationData as IntegerData).data == null) {
                         res = false
+                        Log.d("$TAG", "ERROR formOk:index=$i data type=IntegerData")
                     }
                 }
                 DATA_TYPES.LONGDATA.value -> {
                     if((elem.registrationData as LongData).data == null) {
                         res = false
+                        Log.d("$TAG", "ERROR formOk:index=$i data type=LongData")
                     }
                 }
                 DATA_TYPES.SHORTDATA.value -> {
                     if((elem.registrationData as ShortData).data == null) {
                         res = false
+                        Log.d("$TAG", "ERROR formOk:index=$i data type=ShortData")
                     }
                 }
                 DATA_TYPES.STRINGDATA.value -> {
                     if(((elem.registrationData as StringData).data == null) ||
                         (elem.registrationData as StringData).data.equals("")) {
                         res = false
+                        Log.d("$TAG", "ERROR formOk:index=$i data type=StringData")
                     }
                 }
                 DATA_TYPES.DATEDATA.value -> {
                     if(((elem.registrationData as StringData).data == null) ||
                         (elem.registrationData as StringData).data.equals("")) {
                         res = false
+                        Log.d("$TAG", "ERROR formOk:index=$i data type=DateData equals(\"\")=" + (elem.registrationData as StringData).data.equals(""))
                     }
                 }
                 DATA_TYPES.HOURDATA.value -> {
                     if(((elem.registrationData as StringData).data == null) ||
                         (elem.registrationData as StringData).data.equals("")) {
                         res = false
+                        Log.d("$TAG", "ERROR formOk:index=$i data type=HourData")
                     }
                 }
                 else -> TODO()
@@ -605,15 +616,17 @@ class AddRegistrationRecyclerViewAdapter(
         override fun bind(item: RegistrationViewData<*>, name: String) {
             super.bind(item, name)
 
-            lateinit var date: LocalDate
+            lateinit var date: LocalDateTime
 
             var watcher = DatePicker.OnDateChangedListener {
                     _, year: Int, month: Int, day: Int ->
                 try {
-                    (item.registrationData).data = LocalDate.parse("$year-$month-$day", DateTimeFormatter.ISO_DATE_TIME).toString()
-                    Log.d("loggino", "updated data to ${item.registrationData.data}")
+                    Log.d("$TAG", "about to parse data $year-$month-${day}T00:00:00.000Z")
+
+                    (item.registrationData).data = DateData(year, month+1, day).toString()
+                    Log.d("$TAG", "updated data to ${item.registrationData.data}")
                 } catch(e: Exception) {
-                    Log.d("EXCEPTION", "${e.message}")
+                    throw Error(e.message)
                 }
             }
 
@@ -621,10 +634,10 @@ class AddRegistrationRecyclerViewAdapter(
             contentView.setOnDateChangedListener(watcher)
 
             if((item.registrationData.data as String) == "") {
-                date = LocalDate.parse(LocalDate.now().toString(), DateTimeFormatter.ISO_DATE_TIME)
+                date = LocalDateTime.now()
                 Log.d("$TAG", " nessun valore, metto data=$date")
             } else {
-                date = LocalDate.parse((item.registrationData as StringData).data.toString(), DateTimeFormatter.ISO_DATE_TIME)
+                date = LocalDateTime.parse((item.registrationData as StringData).data.toString(), DateTimeFormatter.ISO_DATE_TIME)
                 Log.d("$TAG", "data precedente recuperata=$date")
 
                 //add 1 to month because of different indexing system of DatePicker
@@ -632,6 +645,7 @@ class AddRegistrationRecyclerViewAdapter(
             }
 
             this.name.text = name
+
             Log.d("$TAG", "       aggiorno vista con =${date.year}-${date.monthValue-1}-${date.dayOfMonth}")
             contentView.updateDate(date.year, date.monthValue-1, date.dayOfMonth)
         }

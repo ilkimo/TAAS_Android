@@ -9,26 +9,35 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class StringData implements SourceDataInterface {
-
+public class DateData implements SourceDataInterface {
     // in questo caso non abbiamo un wrapper ma direttamente la classe String
-    private String val;
+    private LocalDateTime val;
 
     @JsonCreator
-    public StringData(@JsonProperty("val")String x) {
+    public DateData(@JsonProperty("val") String x) {
+        throw new Error("DateData constructor TODO!");
+    }
+
+    public DateData(@JsonProperty("val") LocalDateTime x) {
         this.val = x;
     }
 
-    public static StringData createEmptyInstance() {
-        return new StringData();
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public DateData(int year, int month, int day) {
+        val = LocalDateTime.of(year, month, day, 0, 0, 0);
     }
 
-    private StringData() {
-        val = "";
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static DateData createEmptyInstance() {
+        return new DateData();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private DateData() {
+        val = null;
     }
 
     @Override
@@ -36,14 +45,16 @@ public class StringData implements SourceDataInterface {
         return val;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void setData(Object val) {
-        this.val = (String)val;
+        this.val = (LocalDateTime) val;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public String toString() {
-        return val;
+        return val.format(DateTimeFormatter.ISO_DATE_TIME);
     }
 
     @Override
@@ -66,5 +77,10 @@ public class StringData implements SourceDataInterface {
         }
 
         return res;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static String convertDateToString(LocalDate d) {
+        return "" + d.getYear() + d.getMonthValue() + d.getDayOfMonth() + "T00:00:00.000Z";
     }
 }

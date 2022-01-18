@@ -81,35 +81,4 @@ class TopicsRecyclerViewAdapter(
              */
         }
     }
-
-    //----------------------------------------------------------------------------------------------
-    /*override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
-        return ViewHolder(
-            ItemTopicBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
-
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = values[position]
-        holder.idView.text = "Topic ${item.id}"
-        //holder.contentView.text = item.content
-    }
-
-    override fun getItemCount(): Int = values.size
-
-    inner class ViewHolder(binding: ItemTopicBinding) : RecyclerView.ViewHolder(binding.root) {
-        val idView: TextView = binding.itemNumber
-        //val contentView: TextView = binding.content
-
-        override fun toString(): String {
-            return super.toString() + " '" + idView.text + "'"
-        }
-    }*/
-
 }
