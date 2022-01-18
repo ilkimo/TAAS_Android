@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:context=".TopicsFragment"
-    android:name="com.example.datahubapp.TopicsFragment">
+    tools:context=".SelectedRegistrationFragment"
+    android:name="com.example.datahubapp.SelectedRegistrationFragment">
 
     <TextView
         android:id="@+id/textView2"
@@ -58,7 +58,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewDate" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addTopicButton"
         android:contentDescription="add a new registration"
         android:layout_width="wrap_content"
@@ -70,6 +70,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:backgroundTint="@color/purple_200"
-        app:borderWidth="0dp"/>
+        app:borderWidth="0dp"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

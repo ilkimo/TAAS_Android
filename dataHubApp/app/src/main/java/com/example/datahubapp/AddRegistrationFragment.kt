@@ -61,7 +61,7 @@ class AddRegistrationFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_selected_registration_list, container, false)
+        val root = inflater.inflate(R.layout.fragment_add_registration_list, container, false)
         val view = root.findViewById<RecyclerView>(R.id.list)
 
         // Set the adapter
@@ -84,7 +84,7 @@ class AddRegistrationFragment : Fragment() {
         view.findViewById<TextView>(R.id.textViewID).text = "${getString(R.string.ID)}: ${selectedTopic.numberRecords+1}"
         view.findViewById<TextView>(R.id.textViewDate).text = "${getString(R.string.Date)}: ${creationDate}"
 
-        view.findViewById<FloatingActionButton>(R.id.addTopicButton).setOnClickListener {
+        view.findViewById<FloatingActionButton>(R.id.enterNewRegistrationButton).setOnClickListener {
             var adapter = (view.findViewById<RecyclerView>(R.id.list).adapter as AddRegistrationRecyclerViewAdapter)
             if(adapter.formOk()) {
                 //Start transaction
