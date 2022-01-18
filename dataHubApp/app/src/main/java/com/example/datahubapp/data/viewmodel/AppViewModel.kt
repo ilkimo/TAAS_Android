@@ -61,6 +61,11 @@ class AppViewModel(context: Context) : ViewModel() {
         return user.value != null;
     }
 
+    fun deletAll() {
+        //TODO: implementare questa funzione
+        //da chiamare dpo il logout
+    }
+
 
 
     /*public fun getUserData(): LiveData<UserData?> {

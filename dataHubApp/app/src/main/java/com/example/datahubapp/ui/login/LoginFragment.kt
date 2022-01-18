@@ -142,6 +142,12 @@ class LoginFragment : Fragment() {
                 usernameEditText.text.toString(),
                 passwordEditText.text.toString()
             )*/
+
+            //TODO: DA SPOSTARE -> SE IL LOGIN VA A BUON FINE
+            val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
+            bottomNavigationView?.menu?.findItem(R.id.profileFragment)?.isVisible = false
+            bottomNavigationView?.menu?.findItem(R.id.profileLoggedFragment)?.isVisible = true
+
         }
 
         //Google Login
@@ -226,9 +232,13 @@ class LoginFragment : Fragment() {
             val googleIdToken = account?.idToken ?: ""
             Log.i("Google ID Token", googleIdToken)
 
-            //TODO: loggare nell'app
+            //TODO: fare il login con google
+
+            //TODO: da spostare -> se il login con google va a buon fine
             val bottomNavigationView = view?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
-            bottomNavigationView?.menu?.findItem(R.id.settingsFragment)?.isVisible = false
+            bottomNavigationView?.menu?.findItem(R.id.profileFragment)?.isVisible = false
+            bottomNavigationView?.menu?.findItem(R.id.profileLoggedFragment)?.isVisible = true
+
 
         } catch (e: ApiException) {
             // Sign in was unsuccessful
