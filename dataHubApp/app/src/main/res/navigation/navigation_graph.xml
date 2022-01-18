@@ -25,7 +25,8 @@
         tools:layout="@layout/fragment_topics" >
         <action
             android:id="@+id/action_topicsFragment_to_selectedTopicFragment"
-            app:destination="@id/selectedTopicFragment" />
+            app:destination="@id/selectedTopicFragment"
+            app:popUpTo="@id/topicsFragment" />
         <action
             android:id="@+id/action_topicsFragment_to_addTopicFragment"
             app:destination="@id/addTopicFragment" />

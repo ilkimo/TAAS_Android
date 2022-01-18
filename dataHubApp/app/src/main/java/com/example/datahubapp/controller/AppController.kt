@@ -82,6 +82,14 @@ fun addTopic(fragment: Fragment, context: Context, newTopic: NewTopic) {
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
+fun deleteTopic(fragment: Fragment, context: Context, topicName: String, userID: Long) {
+    val delTopic = DeleteTopic(userID.toString(), topicName)
+    val jsonObject = convertToJSON(delTopic, DeleteTopic::class.java)
+
+    asyncRequest(fragment, context, jsonObject, REQUEST.DELETE_TOPIC, RETURNTYPE.USERDATA)
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
 fun login(fragment: Fragment, context: Context, username: String, password: String) {
     val jsonObject = convertToJSON(
         User("", "", username, password),
@@ -149,6 +157,15 @@ private fun processResult(returnType: RETURNTYPE, requestType: REQUEST,
                         Toast.makeText(context, "Error adding topic!", Toast.LENGTH_SHORT).show()
                     }
                 }
+            }
+        }
+        REQUEST.DELETE_TOPIC -> {
+            when(result) {
+                is Result.Success -> {
+                    obj = parseJSON((result.data as String), returnType)
+                    viewModel.setUserData(obj as UserData)
+                }
+                else -> TODO()
             }
         }
         else -> TODO()

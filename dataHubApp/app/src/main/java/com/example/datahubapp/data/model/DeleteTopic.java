@@ -1,11 +1,16 @@
 package com.example.datahubapp.data.model;
 
 public class DeleteTopic {
-    private String id;
+    private String id; //id user
 
     private String name;
 
     private String newName;
+
+    public DeleteTopic(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public String getId() {
         return id;

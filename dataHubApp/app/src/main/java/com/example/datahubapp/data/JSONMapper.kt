@@ -37,27 +37,7 @@ fun <T> convertToJSON(obj: Any, type: Class<T>): String {
         UserAndData::class.java -> mapper.writeValueAsString(obj as UserAndData)
         UserData::class.java -> mapper.writeValueAsString(obj as UserData)
         NewTopic::class.java -> mapper.writeValueAsString(obj as NewTopic)
+        DeleteTopic::class.java -> mapper.writeValueAsString(obj as DeleteTopic)
         else -> TODO()
     }
 }
-
-/*fun convertToJSON(user: User): String {
-    val mapper = ObjectMapper()
-    mapper.configure(SerializationFeature.INDENT_OUTPUT, true)
-
-    return mapper.writeValueAsString(user)
-}
-
-fun parseUserData(jsonBody: String): UserData {
-    val mapper = ObjectMapper()
-    mapper.configure(SerializationFeature.INDENT_OUTPUT, true)
-
-    return mapper.readValue(jsonBody, UserData::class.java)
-}
-
-fun parseUserAndData(jsonBody: String): UserAndData {
-    val mapper = ObjectMapper()
-    mapper.configure(SerializationFeature.INDENT_OUTPUT, true)
-
-    return mapper.readValue(jsonBody, UserAndData::class.java)
-}*/

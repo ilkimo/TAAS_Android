@@ -21,6 +21,9 @@ import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.widget.CompoundButton
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import com.example.datahubapp.controller.deleteTopic
 import com.example.datahubapp.data.TAG
 
 
@@ -66,13 +69,23 @@ class SelectedTopicFragment : Fragment() {
         inflater.inflate(R.menu.menu_topic_selected, menu);
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         return if (id == R.id.delete_topic) {
             Log.d(TAG, "DELETE TOPIC MENU ITEM CLICKED!")
 
-            //TODO: make query -> delete topic and navigate back to homepage
-            
+            deleteTopic(
+                requireParentFragment(),
+                requireContext(),
+                selectedTopic.name,
+                model.getUser().value?.id!!
+            )
+
+            //TODO move this backstackpop() to processResult
+            Log.d("$TAG", "popping back stack")
+            NavHostFragment.findNavController(this).popBackStack()
+
             true
         } else super.onOptionsItemSelected(item)
     }
