@@ -2,6 +2,7 @@ package com.example.datahubapp
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -123,6 +124,9 @@ class ProfileLoggedFragment : Fragment() {
                 .navigate(R.id.action_profileLoggedFragment_to_profileFragment)
         }
         logoutFromGoogleButton.isVisible = model.getLoggedWithGoogle()
+
+        val emailField = binding.username
+        emailField.hint = model.getUser().value?.email.toString()
     }
 
     companion object {

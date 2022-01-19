@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 
 
 
-private const val url = "http://10.0.2.2:30000/gateway/"
+private const val url = "http://10.0.2.2:8080/gateway/"
 private const val TAG = "AppController"
 
 enum class REQUEST {
