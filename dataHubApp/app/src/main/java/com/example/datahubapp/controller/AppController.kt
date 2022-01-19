@@ -81,6 +81,15 @@ fun changeSharedTopicStatus(fragment: Fragment, context: Context,
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
+fun createAccount(fragment: Fragment, context: Context,
+                  email: String, password: String) {
+    var obj = User("", "", email, password)
+    val jsonObject = convertToJSON(obj, User::class.java)
+
+    asyncRequest(fragment, context, jsonObject, REQUEST.CREATE_ACCOUNT, RETURNTYPE.USERANDDATA)
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
 fun deleteRegistration(fragment: Fragment, context: Context, idUser: String,
                        idRegistration: Long, topicName: String) {
     val delRegistration = DeleteReg(idUser, idRegistration, topicName)
@@ -212,6 +221,26 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                     Handler(Looper.getMainLooper()).post {
                         var navigationDirection: NavDirections = LoginFragmentDirections.actionLoginFragmentToTopicsFragment();
                         NavHostFragment.findNavController(fragment).navigate(navigationDirection)
+                    }
+                }
+                else -> {
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Login error", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+        REQUEST.CREATE_ACCOUNT -> {
+            when(result) {
+                is Result.Success -> {
+                    obj = parseJSON((result.data as String), returnType)
+                    viewModel.setUser((obj as UserAndData).userInformation)
+                    viewModel.setUserData((obj as UserAndData).dataInformation)
+
+                    Handler(Looper.getMainLooper()).post {
+                        //TODO
+                        //var navigationDirection: NavDirections = LoginFragmentDirections.actionLoginFragmentToTopicsFragment();
+                        //NavHostFragment.findNavController(fragment).navigate(navigationDirection)
                     }
                 }
                 else -> {

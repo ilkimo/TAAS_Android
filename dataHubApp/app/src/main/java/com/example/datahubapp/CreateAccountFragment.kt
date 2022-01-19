@@ -25,9 +25,12 @@ import android.content.Intent
 import android.util.Patterns
 import java.lang.NullPointerException
 import android.app.ProgressDialog
+import android.os.Build
 import android.widget.Button
 
 import android.widget.EditText
+import androidx.annotation.RequiresApi
+import com.example.datahubapp.controller.createAccount
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -113,7 +116,7 @@ class CreateAccountFragment : Fragment() {
         //TODO: remove me -> aggiunto qua della roba
 
         createAccountButton  = binding.btnCreateAccount
-        createAccountButton!!.setOnClickListener { v -> createAccount() }
+        createAccountButton!!.setOnClickListener { _ -> createAccount() }
 
         emailText = binding.inputEmail
         passwordText = binding.inputPassword
@@ -245,6 +248,7 @@ class CreateAccountFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun createAccount() {
         Log.d(TAG, "Create account")
         if (!validate()) {
@@ -267,27 +271,12 @@ class CreateAccountFragment : Fragment() {
             passwordTIL!!.setError("Please insert a password")
         } else if (confirmPassword == "") {
             passwordTIL!!.setError("Please confirm password")
-        } else if (password == confirmPassword) {
-                //activityViewModel.createAccount(email, password)
-
-            /*catch (e: JsonSyntaxException) {
-                e.printStackTrace()
-
-                //val gui = GUI(requireActivity(), requireContext())
-                //gui.relogin()
-
-            } catch (e: JsonIOException) {
-                e.printStackTrace()
-                //val gui = GUI(requireActivity(), requireContext())
-                //gui.relogin()
-            } catch (e: NullPointerException) {
-                //val gui = GUI(requireActivity(), requireContext())
-                //gui.serverDownAlertDialog()
-            }
-
-             */
-        } else {
+        } else if (password != confirmPassword) {
             confirmPasswordTIL!!.setError("New password does not match")
+        } else {
+            createAccount(
+                requireParentFragment(), requireContext(),
+                emailText!!.text.toString(), passwordText!!.text.toString())
         }
     }
 
