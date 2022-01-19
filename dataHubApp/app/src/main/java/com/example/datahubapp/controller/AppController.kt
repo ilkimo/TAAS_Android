@@ -11,7 +11,9 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
+import com.example.datahubapp.TopicsFragmentDirections
 import com.example.datahubapp.data.convertToJSON
 import com.example.datahubapp.data.model.*
 import com.example.datahubapp.data.parseJSON
@@ -172,6 +174,7 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
     Log.d("$TAG", "processResult")
     lateinit var obj: Any
 
+    //TODO remove Toast with hard coded strings
     when(requestType) {
         REQUEST.LOGIN -> {
             when(result) {
@@ -180,7 +183,11 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                     viewModel.setUser((obj as UserAndData).userInformation)
                     viewModel.setUserData((obj as UserAndData).dataInformation)
                 }
-                else -> TODO()
+                else -> {
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Login error", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
         REQUEST.NEW_TOPIC -> {
@@ -193,8 +200,6 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                         Toast.makeText(context, "Topic added", Toast.LENGTH_SHORT).show()
                         NavHostFragment.findNavController(fragment).popBackStack()
                     }
-
-                    //TODO navigate to topic fragment
                 }
                 else -> {
                     Handler(Looper.getMainLooper()).post {
@@ -209,7 +214,11 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                     obj = parseJSON((result.data as String), returnType)
                     viewModel.setUserData(obj as UserData)
                 }
-                else -> TODO()
+                else -> {
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Error deleting topic!", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
         REQUEST.NEW_REGISTRATION -> {
@@ -219,11 +228,15 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                     viewModel.setUserData(obj as UserData)
                     //make main Thread show Toast and navigate backwards
                     Handler(Looper.getMainLooper()).post {
-                        Toast.makeText(context, "Registration added", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Registration added!", Toast.LENGTH_SHORT).show()
                         NavHostFragment.findNavController(fragment).popBackStack()
                     }
                 }
-                else -> TODO()
+                else -> {
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Error adding registration!", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
         REQUEST.DELETE_REGISTRATION -> {
@@ -237,7 +250,11 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                         NavHostFragment.findNavController(fragment).popBackStack()
                     }
                 }
-                else -> TODO()
+                else -> {
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Error deleting registration!", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
         REQUEST.CHANGE_TOPIC_SHARED_STATUS -> {
@@ -246,7 +263,12 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                     obj = parseJSON((result.data as String), returnType)
                     viewModel.setUserData(obj as UserData)
                 }
-                else -> TODO()
+                else -> {
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show()
+                        //TODO make switch go back to previous state
+                    }
+                }
             }
         }
         REQUEST.REFRESH -> {
@@ -258,7 +280,11 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                         Toast.makeText(context, "Data refreshed!", Toast.LENGTH_SHORT).show()
                     }
                 }
-                else -> TODO()
+                else -> {
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Error refreshing", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
         REQUEST.GET_SHARED_TOPICS -> {
@@ -267,7 +293,11 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                     obj = parseJSON((result.data as String), returnType)
                     viewModel.setSharedTopics((obj as TopicList).sharedTopicList)
                 }
-                else -> TODO()
+                else -> {
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Error fetching shared topics!", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
         REQUEST.REFRESH_SHARED_TOPICS -> {
@@ -279,7 +309,11 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                         Toast.makeText(context, "Shared topics refreshed!", Toast.LENGTH_SHORT).show()
                     }
                 }
-                else -> TODO()
+                else -> {
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Error refreshing", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
         else -> TODO()
