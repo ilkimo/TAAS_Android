@@ -13,12 +13,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
-import com.example.datahubapp.TopicsFragmentDirections
+import com.example.datahubapp.*
 import com.example.datahubapp.data.convertToJSON
 import com.example.datahubapp.data.model.*
 import com.example.datahubapp.data.parseJSON
 import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
+import com.example.datahubapp.ui.login.LoginFragment
+import com.example.datahubapp.ui.login.LoginFragmentDirections
 import kotlinx.coroutines.*
 import kotlinx.coroutines.launch
 
@@ -193,6 +195,11 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                     obj = parseJSON((result.data as String), returnType)
                     viewModel.setUser((obj as UserAndData).userInformation)
                     viewModel.setUserData((obj as UserAndData).dataInformation)
+
+                    Handler(Looper.getMainLooper()).post {
+                        var navigationDirection: NavDirections = LoginFragmentDirections.actionLoginFragmentToTopicsFragment();
+                        NavHostFragment.findNavController(fragment).navigate(navigationDirection)
+                    }
                 }
                 else -> {
                     Handler(Looper.getMainLooper()).post {

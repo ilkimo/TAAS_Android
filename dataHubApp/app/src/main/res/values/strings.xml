@@ -57,5 +57,6 @@
     <string name="project_team" translatable="false">Naretto Gabriele, Scarpinati Livio e Kim Marco Viberti</string>
     <string name="taass_project" translatable="false">TAASS Project</string>
     <string name="search">Search</string>
+    <string name="logoutGoogle" translatable="false">Logout Google</string>
 
 </resources>

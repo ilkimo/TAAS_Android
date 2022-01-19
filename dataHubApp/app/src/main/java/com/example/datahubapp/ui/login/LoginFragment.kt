@@ -139,16 +139,11 @@ class LoginFragment : Fragment() {
                 usernameEditText.text.toString(),
                 passwordEditText.text.toString())
 
-            //TODO guardare sto loginViewModel (originale code genrato, pre-modifiche)
-            /*loginViewModel.login(
-                usernameEditText.text.toString(),
-                passwordEditText.text.toString()
-            )*/
 
             //TODO: DA SPOSTARE -> SE IL LOGIN VA A BUON FINE
-            val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
-            bottomNavigationView?.menu?.findItem(R.id.profileFragment)?.isVisible = false
-            bottomNavigationView?.menu?.findItem(R.id.profileLoggedFragment)?.isVisible = true
+            //val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
+            //bottomNavigationView?.menu?.findItem(R.id.profileFragment)?.isVisible = false
+            //bottomNavigationView?.menu?.findItem(R.id.profileLoggedFragment)?.isVisible = true
 
         }
 
@@ -171,7 +166,7 @@ class LoginFragment : Fragment() {
         val createAccount = binding.linkSignup
 
         createAccount.setOnClickListener {
-            var navigationDirection: NavDirections = LoginFragmentDirections.actionProfileFragmentToCreateAccountFragment();
+            var navigationDirection: NavDirections = LoginFragmentDirections.actionLoginFragmentToCreateAccountFragment();
             NavHostFragment.findNavController(this).navigate(navigationDirection)
         }
 

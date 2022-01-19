@@ -3,20 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/profileFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.datahubapp.SettingsFragment"
         android:label="SettingsFragment" />
     <fragment
-        android:id="@+id/profileFragment"
+        android:id="@+id/loginFragment"
         android:name="com.example.datahubapp.ui.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_profileFragment_to_createAccountFragment"
+            android:id="@+id/action_LoginFragment_to_createAccountFragment"
             app:destination="@id/createAccountFragment" />
+        <action
+            android:id="@+id/action_LoginFragment_to_TopicsFragment"
+            app:destination="@id/topicsFragment" />
     </fragment>
     <fragment
         android:id="@+id/topicsFragment"
@@ -100,11 +103,6 @@
             android:name="topic-name"
             app:argType="string" />
     </fragment>
-    <fragment
-        android:id="@+id/profileFragment2"
-        android:name="com.example.datahubapp.ProfileFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/profileLoggedFragment"
         android:name="com.example.datahubapp.ProfileLoggedFragment"
