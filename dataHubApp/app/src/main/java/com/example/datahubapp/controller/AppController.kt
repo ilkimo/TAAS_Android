@@ -105,7 +105,7 @@ fun refreshSharedTopics(fragment: Fragment, context: Context, idUser: String) {
     val userData = UserData(null, idUser, null)
     val jsonObject = convertToJSON(userData, UserData::class.java)
 
-    asyncRequest(fragment, context, jsonObject, REQUEST.REFRESH_SHARED_TOPICS, RETURNTYPE.SHARED_TOPICS)
+    asyncRequest(fragment, context, jsonObject, REQUEST.GET_SHARED_TOPICS, RETURNTYPE.SHARED_TOPICS)
 }
 
 private fun getUrlString(type: REQUEST): String {
@@ -117,11 +117,11 @@ private fun getUrlString(type: REQUEST): String {
         REQUEST.GET_TOPICS_USER -> "topicUser"
         REQUEST.REFRESH -> "topicUser"
         REQUEST.REFRESH_SHARED_TOPICS -> "sharedTopic"
+        REQUEST.GET_SHARED_TOPICS -> "sharedTopic"
         REQUEST.NEW_TOPIC -> "newTopic"
         REQUEST.NEW_REGISTRATION -> "newReg"
         REQUEST.DELETE_TOPIC -> "delTopic"
         REQUEST.DELETE_REGISTRATION -> "delReg"
-        REQUEST.GET_SHARED_TOPICS -> "sharedTopic"
         REQUEST.CHANGE_TOPIC_SHARED_STATUS -> "changSharedTopic"
         REQUEST.CHANGE_NAME_TOPIC -> "changeNameTopic"
         REQUEST.DELETE_USER -> "deleteUser"
@@ -145,7 +145,7 @@ fun login(fragment: Fragment, context: Context, username: String, password: Stri
     )
 
     asyncRequest(fragment, context, jsonObject, REQUEST.LOGIN, RETURNTYPE.USERANDDATA)
-    Log.d("TEST_COROUTINE", "main thread") //TODO CANCELLAMI
+    asyncRequest(fragment, context, "", REQUEST.GET_SHARED_TOPICS, RETURNTYPE.SHARED_TOPICS)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -257,6 +257,15 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                     Handler(Looper.getMainLooper()).post {
                         Toast.makeText(context, "Data refreshed!", Toast.LENGTH_SHORT).show()
                     }
+                }
+                else -> TODO()
+            }
+        }
+        REQUEST.GET_SHARED_TOPICS -> {
+            when(result) {
+                is Result.Success -> {
+                    obj = parseJSON((result.data as String), returnType)
+                    viewModel.setSharedTopics((obj as TopicList).sharedTopicList)
                 }
                 else -> TODO()
             }
