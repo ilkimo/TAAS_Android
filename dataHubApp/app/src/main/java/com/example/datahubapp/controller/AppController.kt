@@ -87,6 +87,7 @@ fun createAccount(fragment: Fragment, context: Context,
     val jsonObject = convertToJSON(obj, User::class.java)
 
     asyncRequest(fragment, context, jsonObject, REQUEST.CREATE_ACCOUNT, RETURNTYPE.USERANDDATA)
+    asyncRequest(fragment, context, "", REQUEST.GET_SHARED_TOPICS, RETURNTYPE.SHARED_TOPICS)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
