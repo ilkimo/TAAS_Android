@@ -109,7 +109,7 @@
         android:label="fragment_profile_logged" >
         <action
             android:id="@+id/action_profileLoggedFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/loginFragment" />
     </fragment>
 
 </navigation>

@@ -14,6 +14,7 @@ import com.example.datahubapp.databinding.FragmentProfileLoggedBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
+import androidx.navigation.NavDirections
 import com.example.datahubapp.controller.googleLogout
 import com.example.datahubapp.controller.logout
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -84,13 +85,17 @@ class ProfileLoggedFragment : Fragment() {
         logoutButton.setOnClickListener {
             //TODO implement backend token invalidation
             logout(requireParentFragment(), requireContext())
+
             //SE IL LOGOUT VA A BUON FINE
+            var navigationDirection: NavDirections = ProfileLoggedFragmentDirections.actionProfileLoggedFragmentToProfileFragment();
+            NavHostFragment.findNavController(requireParentFragment()).navigate(navigationDirection)
+
             val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
             bottomNavigationView?.menu?.findItem(R.id.profileFragment)?.isVisible = true
             bottomNavigationView?.menu?.findItem(R.id.profileLoggedFragment)?.isVisible = false
 
-            NavHostFragment.findNavController(this)
-                .navigate(R.id.action_profileLoggedFragment_to_profileFragment)
+            //NavHostFragment.findNavController(requireParentFragment())
+                //.navigate(R.id.action_profileLoggedFragment_to_profileFragment)
         }
 
         val logoutFromGoogleButton = binding.logoutFromGoogleButton
