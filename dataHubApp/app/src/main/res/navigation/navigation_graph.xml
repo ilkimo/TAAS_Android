@@ -88,6 +88,9 @@
         <action
             android:id="@+id/action_createAccountFragment_to_profileFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_createAccountFragment_to_topicsFragment"
+            app:destination="@id/topicsFragment" />
     </fragment>
     <fragment
         android:id="@+id/addTopicFragment"

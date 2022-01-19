@@ -239,9 +239,8 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                     viewModel.setUserData((obj as UserAndData).dataInformation)
 
                     Handler(Looper.getMainLooper()).post {
-                        //TODO
-                        //var navigationDirection: NavDirections = LoginFragmentDirections.actionLoginFragmentToTopicsFragment();
-                        //NavHostFragment.findNavController(fragment).navigate(navigationDirection)
+                        var navigationDirection: NavDirections = CreateAccountFragmentDirections.actionCreateAccountFragmentToTopicsFragment();
+                        NavHostFragment.findNavController(fragment).navigate(navigationDirection)
                     }
                 }
                 else -> {
