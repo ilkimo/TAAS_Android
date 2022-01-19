@@ -107,7 +107,7 @@ fun refreshSharedTopics(fragment: Fragment, context: Context, idUser: String) {
     val userData = UserData(null, idUser, null)
     val jsonObject = convertToJSON(userData, UserData::class.java)
 
-    asyncRequest(fragment, context, jsonObject, REQUEST.GET_SHARED_TOPICS, RETURNTYPE.SHARED_TOPICS)
+    asyncRequest(fragment, context, jsonObject, REQUEST.REFRESH_SHARED_TOPICS, RETURNTYPE.SHARED_TOPICS)
 }
 
 private fun getUrlString(type: REQUEST): String {
