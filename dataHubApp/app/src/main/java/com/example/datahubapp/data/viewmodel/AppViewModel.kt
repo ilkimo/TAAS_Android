@@ -32,6 +32,8 @@ class AppViewModel(context: Context) : ViewModel() {
      */
     private var sharedTopics: MutableLiveData<ArrayList<Topic>?> = MutableLiveData<ArrayList<Topic>?>()
 
+    private var loggedWithGoogle: Boolean = false
+
     fun getUser(): LiveData<User?> {
         return user
     }
@@ -59,6 +61,14 @@ class AppViewModel(context: Context) : ViewModel() {
 
     fun userIsLoggedIn(): Boolean {
         return user.value != null
+    }
+
+    fun getLoggedWithGoogle(): Boolean {
+        return loggedWithGoogle
+    }
+
+    fun setLoggedWithGoogle(loggedWithGoogle: Boolean) {
+        this.loggedWithGoogle = loggedWithGoogle
     }
 
     fun deleteData() {

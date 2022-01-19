@@ -14,9 +14,13 @@ import com.example.datahubapp.databinding.FragmentProfileLoggedBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavDirections
 import com.example.datahubapp.controller.googleLogout
 import com.example.datahubapp.controller.logout
+import com.example.datahubapp.data.viewmodel.AppViewModel
+import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -38,6 +42,7 @@ class ProfileLoggedFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    lateinit private var model: AppViewModel
 
     private val googleToken: String = "282646887193-mj946se9m6a7qgmkl2npmrjfksbcht6r.apps.googleusercontent.com"
 
@@ -57,6 +62,9 @@ class ProfileLoggedFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+        var viewModelFactory = AppViewModelFactory(requireContext())
+        model = ViewModelProviders.of(requireParentFragment(), viewModelFactory).get(AppViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -97,12 +105,14 @@ class ProfileLoggedFragment : Fragment() {
             //NavHostFragment.findNavController(requireParentFragment())
                 //.navigate(R.id.action_profileLoggedFragment_to_profileFragment)
         }
+        logoutButton.isVisible = !model.getLoggedWithGoogle()
 
         val logoutFromGoogleButton = binding.logoutFromGoogleButton
 
         logoutFromGoogleButton.setOnClickListener {
             mGoogleSignInClient.signOut()
             googleLogout(requireParentFragment(), requireContext())
+            model.setLoggedWithGoogle(false)
 
             //SE IL LOGOUT VA A BUON FINE
             val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
@@ -112,6 +122,7 @@ class ProfileLoggedFragment : Fragment() {
             NavHostFragment.findNavController(this)
                 .navigate(R.id.action_profileLoggedFragment_to_profileFragment)
         }
+        logoutFromGoogleButton.isVisible = model.getLoggedWithGoogle()
     }
 
     companion object {

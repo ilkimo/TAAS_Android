@@ -21,6 +21,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
 import com.example.datahubapp.MainActivity
@@ -30,6 +31,8 @@ import com.example.datahubapp.R
 import com.example.datahubapp.TopicsFragmentDirections
 import com.example.datahubapp.controller.login
 import com.example.datahubapp.controller.loginGoogle
+import com.example.datahubapp.data.viewmodel.AppViewModel
+import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -45,6 +48,7 @@ class LoginFragment : Fragment() {
     private val googleToken: String = "282646887193-mj946se9m6a7qgmkl2npmrjfksbcht6r.apps.googleusercontent.com" //Livio
     //private val googleToken: String = "282646887193-t4fcd7ap43efnkjnfhlhp72utl9v178o.apps.googleusercontent.com" //Kimo
     private val TAG = "LoginFragment"
+    lateinit private var model: AppViewModel
 
     //Google Login
     lateinit var mGoogleSignInClient: GoogleSignInClient
@@ -53,6 +57,13 @@ class LoginFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        var viewModelFactory = AppViewModelFactory(requireContext())
+        model = ViewModelProviders.of(requireParentFragment(), viewModelFactory).get(AppViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -234,6 +245,7 @@ class LoginFragment : Fragment() {
 
             //TODO: fare il login con google
             loginGoogle(requireParentFragment(), requireContext(), googleEmail)
+            model.setLoggedWithGoogle(true)
 
             //TODO: da spostare -> se il login con google va a buon fine
             val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
