@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:name="com.example.datahubapp.TopicsFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TopicsFragment">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15sp"
+        android:text="@string/topic_name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--TODO: qua mostrare i dettagli del topic-->
+
+    <!--TODO: rimuovere questa recycler view -> non dovrebbe servire-->
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
         android:name="com.example.datahubapp.SelectedSharedTopicFragment"
         android:layout_width="match_parent"
@@ -11,4 +31,20 @@
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:context=".SelectedSharedTopicFragment"
-        tools:listitem="@layout/fragment_selected_shared_topic"/>
+        tools:listitem="@layout/fragment_selected_shared_topic" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/cloneTopicButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/carriedOutReservation"
+        android:contentDescription="@string/add_a_new_registration"
+        android:src="@drawable/ic_baseline_folder_copy_24"
+        app:borderWidth="0dp"
+        app:layout_anchor="@id/list"
+        app:layout_anchorGravity="bottom|right|end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
