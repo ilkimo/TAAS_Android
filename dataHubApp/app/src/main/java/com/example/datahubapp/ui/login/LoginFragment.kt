@@ -29,6 +29,7 @@ import com.example.datahubapp.databinding.FragmentLoginBinding
 import com.example.datahubapp.R
 import com.example.datahubapp.TopicsFragmentDirections
 import com.example.datahubapp.controller.login
+import com.example.datahubapp.controller.loginGoogle
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -205,6 +206,7 @@ class LoginFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(
@@ -230,6 +232,7 @@ class LoginFragment : Fragment() {
             Log.i("Google ID Token", googleIdToken)
 
             //TODO: fare il login con google
+            loginGoogle(requireParentFragment(), requireContext(), googleEmail)
 
             //TODO: da spostare -> se il login con google va a buon fine
             val bottomNavigationView = view?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)

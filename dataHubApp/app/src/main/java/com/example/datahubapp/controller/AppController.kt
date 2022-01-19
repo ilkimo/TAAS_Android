@@ -35,6 +35,7 @@ enum class REQUEST {
     CREATE_ACCOUNT,
     CHANGE_PASSWORD,
     LOGIN,
+    LOGIN_GOOGLE,
     GET_TOPICS_USER,
     NEW_TOPIC,
     NEW_REGISTRATION,
@@ -129,6 +130,7 @@ private fun getUrlString(type: REQUEST): String {
         REQUEST.CREATE_ACCOUNT -> "create"
         REQUEST.CHANGE_PASSWORD -> "changePassword"
         REQUEST.LOGIN -> "login"
+        REQUEST.LOGIN_GOOGLE -> "loginGoogle"
         REQUEST.GET_TOPICS_USER -> "topicUser"
         REQUEST.REFRESH -> "topicUser"
         REQUEST.REFRESH_SHARED_TOPICS -> "sharedTopic"
@@ -164,6 +166,17 @@ fun login(fragment: Fragment, context: Context, username: String, password: Stri
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
+fun loginGoogle(fragment: Fragment, context: Context, username: String) {
+    val jsonObject = convertToJSON(
+        User("", "", username, ""),
+        User::class.java
+    )
+
+    asyncRequest(fragment, context, jsonObject, REQUEST.LOGIN_GOOGLE, RETURNTYPE.USERANDDATA)
+    asyncRequest(fragment, context, "", REQUEST.GET_SHARED_TOPICS, RETURNTYPE.SHARED_TOPICS)
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
 private fun asyncRequest(fragment: Fragment, context: Context,
                          jsonObject: String, requestType: REQUEST,
                          returnType: RETURNTYPE) {
@@ -190,6 +203,25 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
     //TODO remove Toast with hard coded strings
     when(requestType) {
         REQUEST.LOGIN -> {
+            when(result) {
+                is Result.Success -> {
+                    obj = parseJSON((result.data as String), returnType)
+                    viewModel.setUser((obj as UserAndData).userInformation)
+                    viewModel.setUserData((obj as UserAndData).dataInformation)
+
+                    Handler(Looper.getMainLooper()).post {
+                        var navigationDirection: NavDirections = LoginFragmentDirections.actionLoginFragmentToTopicsFragment();
+                        NavHostFragment.findNavController(fragment).navigate(navigationDirection)
+                    }
+                }
+                else -> {
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Login error", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+        REQUEST.LOGIN_GOOGLE -> {
             when(result) {
                 is Result.Success -> {
                     obj = parseJSON((result.data as String), returnType)
