@@ -24,8 +24,10 @@ import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import com.example.datahubapp.databinding.FragmentTopicsBinding
 import com.example.datahubapp.R
 import android.view.*
+import android.widget.Toast
 import androidx.navigation.navOptions
 import com.example.datahubapp.controller.refresh
+import com.example.datahubapp.controller.refreshSharedTopics
 import com.example.datahubapp.data.TAG
 
 
@@ -91,7 +93,12 @@ class TopicsFragment : Fragment() {
         swipeRefreshLayout.setOnRefreshListener {
             Log.d("$TAG", "Refresh!!")
 
-            refresh(requireParentFragment(), requireContext(), model.getUser().value?.id.toString())
+            if(model.userIsLoggedIn()) {
+                refresh(requireParentFragment(), requireContext(), model.getUser().value?.id.toString())
+            } else {
+                Toast.makeText(requireContext(), "You need to login first!", Toast.LENGTH_LONG).show()
+            }
+
             swipeRefreshLayout.isRefreshing = false
         }
     }

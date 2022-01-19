@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -76,7 +77,12 @@ class SharedTopicsFragment : Fragment() {
         swipeRefreshLayout.setOnRefreshListener {
             Log.d("$TAG", "Refresh!!")
 
-            refreshSharedTopics(requireParentFragment(), requireContext(), model.getUser().value?.id.toString())
+            if(model.userIsLoggedIn()) {
+                refreshSharedTopics(requireParentFragment(), requireContext(), model.getUser().value?.id.toString())
+            } else {
+                Toast.makeText(requireContext(), "You need to login first!", Toast.LENGTH_LONG).show()
+            }
+
             swipeRefreshLayout.isRefreshing = false
         }
     }

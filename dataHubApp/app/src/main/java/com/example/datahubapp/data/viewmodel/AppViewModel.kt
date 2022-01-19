@@ -57,8 +57,8 @@ class AppViewModel(context: Context) : ViewModel() {
         this.sharedTopics.postValue(sharedTopics)
     }
 
-    private fun userIsLoggedIn(): Boolean {
-        return user.value != null;
+    fun userIsLoggedIn(): Boolean {
+        return user.value != null
     }
 
     fun deleteData() {

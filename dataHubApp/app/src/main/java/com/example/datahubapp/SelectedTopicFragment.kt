@@ -8,8 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.widget.Switch
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
@@ -20,7 +18,6 @@ import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import android.widget.CompoundButton
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.example.datahubapp.controller.deleteTopic
@@ -29,8 +26,8 @@ import com.example.datahubapp.data.model.UserData
 import android.text.Editable
 
 import android.text.TextWatcher
+import android.widget.*
 
-import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import com.example.datahubapp.controller.changeSharedTopicStatus
 import com.example.datahubapp.controller.refresh
