@@ -141,9 +141,9 @@ class LoginFragment : Fragment() {
 
 
             //TODO: DA SPOSTARE -> SE IL LOGIN VA A BUON FINE
-            //val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
-            //bottomNavigationView?.menu?.findItem(R.id.profileFragment)?.isVisible = false
-            //bottomNavigationView?.menu?.findItem(R.id.profileLoggedFragment)?.isVisible = true
+            val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
+            bottomNavigationView?.menu?.findItem(R.id.profileFragment)?.isVisible = false
+            bottomNavigationView?.menu?.findItem(R.id.profileLoggedFragment)?.isVisible = true
 
         }
 
