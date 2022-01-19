@@ -91,7 +91,7 @@ class ProfileLoggedFragment : Fragment() {
             NavHostFragment.findNavController(requireParentFragment()).navigate(navigationDirection)
 
             val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
-            bottomNavigationView?.menu?.findItem(R.id.profileFragment)?.isVisible = true
+            bottomNavigationView?.menu?.findItem(R.id.loginFragment)?.isVisible = true
             bottomNavigationView?.menu?.findItem(R.id.profileLoggedFragment)?.isVisible = false
 
             //NavHostFragment.findNavController(requireParentFragment())
@@ -106,7 +106,7 @@ class ProfileLoggedFragment : Fragment() {
 
             //SE IL LOGOUT VA A BUON FINE
             val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
-            bottomNavigationView?.menu?.findItem(R.id.profileFragment)?.isVisible = true
+            bottomNavigationView?.menu?.findItem(R.id.loginFragment)?.isVisible = true
             bottomNavigationView?.menu?.findItem(R.id.profileLoggedFragment)?.isVisible = false
 
             NavHostFragment.findNavController(this)

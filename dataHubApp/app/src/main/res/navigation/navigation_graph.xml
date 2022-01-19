@@ -87,7 +87,7 @@
         tools:layout="@layout/fragment_create_account" >
         <action
             android:id="@+id/action_createAccountFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/addTopicFragment"
