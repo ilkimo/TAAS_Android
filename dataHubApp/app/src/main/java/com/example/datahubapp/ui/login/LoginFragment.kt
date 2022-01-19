@@ -236,7 +236,7 @@ class LoginFragment : Fragment() {
             loginGoogle(requireParentFragment(), requireContext(), googleEmail)
 
             //TODO: da spostare -> se il login con google va a buon fine
-            val bottomNavigationView = view?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
+            val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
             bottomNavigationView?.menu?.findItem(R.id.loginFragment)?.isVisible = false
             bottomNavigationView?.menu?.findItem(R.id.profileLoggedFragment)?.isVisible = true
         } catch (e: ApiException) {
