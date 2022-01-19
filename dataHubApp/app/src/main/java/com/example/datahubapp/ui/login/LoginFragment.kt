@@ -41,7 +41,9 @@ class LoginFragment : Fragment() {
 
     private lateinit var loginViewModel: LoginViewModel
     private var _binding: FragmentLoginBinding? = null
-    private val googleToken: String = "282646887193-mj946se9m6a7qgmkl2npmrjfksbcht6r.apps.googleusercontent.com"
+    private val googleToken: String = "282646887193-mj946se9m6a7qgmkl2npmrjfksbcht6r.apps.googleusercontent.com" //Livio
+    //private val googleToken: String = "282646887193-t4fcd7ap43efnkjnfhlhp72utl9v178o.apps.googleusercontent.com" //Kimo
+    private val TAG = "LoginFragment"
 
     //Google Login
     lateinit var mGoogleSignInClient: GoogleSignInClient
@@ -238,8 +240,6 @@ class LoginFragment : Fragment() {
             val bottomNavigationView = view?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
             bottomNavigationView?.menu?.findItem(R.id.profileFragment)?.isVisible = false
             bottomNavigationView?.menu?.findItem(R.id.profileLoggedFragment)?.isVisible = true
-
-
         } catch (e: ApiException) {
             // Sign in was unsuccessful
             Log.e(
