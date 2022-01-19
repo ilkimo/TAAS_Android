@@ -1,5 +1,6 @@
 package com.example.datahubapp
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +13,9 @@ import com.example.datahubapp.databinding.FragmentLoginBinding
 import com.example.datahubapp.databinding.FragmentProfileLoggedBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.annotation.NonNull
+import androidx.annotation.RequiresApi
+import com.example.datahubapp.controller.googleLogout
+import com.example.datahubapp.controller.logout
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -64,6 +68,7 @@ class ProfileLoggedFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -77,6 +82,8 @@ class ProfileLoggedFragment : Fragment() {
         val logoutButton = binding.logoutButton
 
         logoutButton.setOnClickListener {
+            //TODO implement backend token invalidation
+            logout(requireParentFragment(), requireContext())
             //SE IL LOGOUT VA A BUON FINE
             val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
             bottomNavigationView?.menu?.findItem(R.id.profileFragment)?.isVisible = true
@@ -90,6 +97,7 @@ class ProfileLoggedFragment : Fragment() {
 
         logoutFromGoogleButton.setOnClickListener {
             mGoogleSignInClient.signOut()
+            googleLogout(requireParentFragment(), requireContext())
 
             //SE IL LOGOUT VA A BUON FINE
             val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)

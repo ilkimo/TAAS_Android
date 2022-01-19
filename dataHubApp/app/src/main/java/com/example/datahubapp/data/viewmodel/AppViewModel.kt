@@ -20,40 +20,40 @@ class AppViewModel(context: Context) : ViewModel() {
     /**
      * Contains User data of the logged user
      */
-    private val user: MutableLiveData<User> = MutableLiveData<User>()
+    private val user: MutableLiveData<User?> = MutableLiveData<User?>()
 
     /**
      * Contains UserData of the logged user
      */
-    private var userData: MutableLiveData<UserData> = MutableLiveData<UserData>()
+    private var userData: MutableLiveData<UserData?> = MutableLiveData<UserData?>()
 
     /**
      * Contains all topics that users shared
      */
-    private var sharedTopics: MutableLiveData<ArrayList<Topic>> = MutableLiveData<ArrayList<Topic>>()
+    private var sharedTopics: MutableLiveData<ArrayList<Topic>?> = MutableLiveData<ArrayList<Topic>?>()
 
-    fun getUser(): LiveData<User> {
+    fun getUser(): LiveData<User?> {
         return user
     }
 
-    fun setUser(user: User) {
+    fun setUser(user: User?) {
         this.user.postValue(user)
     }
 
-    fun getUserData(): LiveData<UserData> {
+    fun getUserData(): LiveData<UserData?> {
         return userData
     }
 
-    fun setUserData(userData: UserData) {
-        Log.d("$TAG", "uno=${userData.topicList}")
+    fun setUserData(userData: UserData?) {
+        Log.d("$TAG", "uno=${userData?.topicList}")
         this.userData.postValue(userData)
     }
 
-    fun getSharedTopics(): LiveData<ArrayList<Topic>> {
+    fun getSharedTopics(): LiveData<ArrayList<Topic>?> {
         return sharedTopics
     }
 
-    fun setSharedTopics(sharedTopics: ArrayList<Topic>) {
+    fun setSharedTopics(sharedTopics: ArrayList<Topic>?) {
         this.sharedTopics.postValue(sharedTopics)
     }
 
@@ -61,10 +61,9 @@ class AppViewModel(context: Context) : ViewModel() {
         return user.value != null;
     }
 
-    fun deletAll() {
-        TODO() //da chiamare dpo il logout, ma prima bisogna sistemare i bordelli dei tipi nullable
-        //setUser(null)
-        //setUserData(null)
-        //setSharedPreferences(null)
+    fun deleteData() {
+        setUser(null)
+        setUserData(null)
+        setSharedTopics(null)
     }
 }

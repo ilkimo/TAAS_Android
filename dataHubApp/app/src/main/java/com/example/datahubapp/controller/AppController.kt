@@ -95,6 +95,17 @@ fun deleteTopic(fragment: Fragment, context: Context, topicName: String, userID:
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
+fun logout(fragment: Fragment, context: Context) {
+    //TODO invalidate backend token
+    getViewModel(fragment, context).deleteData()
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun googleLogout(fragment: Fragment, context: Context) {
+    getViewModel(fragment, context).deleteData()
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
 fun refresh(fragment: Fragment, context: Context, idUser: String) {
     val userData = UserData(null, idUser, null)
     val jsonObject = convertToJSON(userData, UserData::class.java)

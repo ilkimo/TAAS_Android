@@ -22,10 +22,10 @@ import com.example.datahubapp.databinding.RegistrationTopicItemBinding
  * TODO: Replace the implementation with code for your data type.
  */
 class SelectedTopicRecyclerViewAdapter(
-    var selectedTopic: Topic,
+    var selectedTopic: Topic?,
     var fragment: SelectedTopicFragment
 ) : RecyclerView.Adapter<SelectedTopicRecyclerViewAdapter.ViewHolder>() {
-    var registrationsList: ArrayList<Registration> = selectedTopic.listRegistrazioni
+    var registrationsList: ArrayList<Registration>? = selectedTopic?.listRegistrazioni
     val TAG = "SelectedTopicAdapter"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,14 +35,14 @@ class SelectedTopicRecyclerViewAdapter(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), selectedTopic
+            ), selectedTopic!!
         )
     }
 
-    fun updateTopicList(topic: Topic) {
+    fun updateTopic(topic: Topic?) {
         //this.topicList.clear()
-        selectedTopic = topic.clone()
-        registrationsList = selectedTopic.listRegistrazioni
+        selectedTopic = topic?.clone()
+        registrationsList = selectedTopic?.listRegistrazioni
 
         notifyDataSetChanged()
         
@@ -50,13 +50,13 @@ class SelectedTopicRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = registrationsList[position]
+        val item = registrationsList!![position]
         holder.idView.text = item.id.toString()
         holder.contentView.text = item.creationDate.toString()
-        holder.registrationColor.setBackgroundColor(Color.parseColor(selectedTopic.color[1]))
+        holder.registrationColor.setBackgroundColor(Color.parseColor(selectedTopic!!.color[1]))
     }
 
-    override fun getItemCount(): Int = registrationsList.size
+    override fun getItemCount(): Int = registrationsList?.size ?: 0
 
     inner class ViewHolder(binding: RegistrationTopicItemBinding, selectedTopic: Topic) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {

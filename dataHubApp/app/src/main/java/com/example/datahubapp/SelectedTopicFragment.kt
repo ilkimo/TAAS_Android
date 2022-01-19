@@ -212,12 +212,18 @@ class SelectedTopicFragment : Fragment() {
                     else -> GridLayoutManager(context, columnCount)
                 }
                 adapter = SelectedTopicRecyclerViewAdapter(selectedTopic, this@SelectedTopicFragment)
-                model.getUserData().observe(viewLifecycleOwner, Observer<UserData>{
+                model.getUserData().observe(viewLifecycleOwner, Observer<UserData?>{
                     // update UI
                     with(adapter as SelectedTopicRecyclerViewAdapter) {
-                        updateTopicList(model.getUserData().value?.topicList?.filter{
-                            it.name.equals(selectedTopic.name)
-                        }!![0])
+                        val topicList = model.getUserData().value?.topicList
+
+                        if((topicList == null) || topicList.isEmpty()) {
+                            updateTopic(null)
+                        } else {
+                            updateTopic(model.getUserData().value?.topicList?.filter{
+                                it.name.equals(selectedTopic!!.name)
+                            }!![0])
+                        }
                     }
 
                     selectedTopic = model.getUserData().value?.topicList?.filter{

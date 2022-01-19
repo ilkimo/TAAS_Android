@@ -105,7 +105,7 @@ class TopicsFragment : Fragment() {
             }
 
             adapter = model.getUserData().value?.topicList?.let{TopicsRecyclerViewAdapter(it, this@TopicsFragment)} ?: TopicsRecyclerViewAdapter(ArrayList(), this@TopicsFragment)
-            model.getUserData().observe(viewLifecycleOwner, Observer<UserData>{
+            model.getUserData().observe(viewLifecycleOwner, Observer<UserData?>{
                 // update UI
                 with(adapter as TopicsRecyclerViewAdapter) {
                     updateTopicList(model.getUserData().value?.topicList ?: ArrayList())

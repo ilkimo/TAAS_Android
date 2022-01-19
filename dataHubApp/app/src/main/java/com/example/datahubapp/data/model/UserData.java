@@ -29,6 +29,12 @@ public class UserData {
         this.topicList = new ArrayList<>();
     }
 
+    private UserData() {}
+
+    public static UserData emptyInstance() {
+        return new UserData();
+    }
+
     @JsonCreator
     public UserData(@JsonProperty("id")String id,
                     @JsonProperty("idUser")String idUser,

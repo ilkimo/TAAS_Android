@@ -90,7 +90,7 @@ class SharedTopicsFragment : Fragment() {
             }
 
             adapter = model.getSharedTopics().value?.let{SharedTopicsRecyclerViewAdapter(it as ArrayList<Topic>, this@SharedTopicsFragment)} ?: SharedTopicsRecyclerViewAdapter(ArrayList(), this@SharedTopicsFragment)
-            model.getSharedTopics().observe(viewLifecycleOwner, Observer<List<Topic>>{
+            model.getSharedTopics().observe(viewLifecycleOwner, Observer<List<Topic>?>{
                 // update UI
                 with(adapter as SharedTopicsRecyclerViewAdapter) {
                     updateSharedTopicList((model.getSharedTopics().value ?: ArrayList()) as ArrayList<Topic>)
