@@ -55,22 +55,20 @@ class SelectedSharedTopicFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_selected_shared_topic_list, container, false)
+        val root = inflater.inflate(R.layout.fragment_selected_shared_topic_list, container, false)
+        val view = root.findViewById<RecyclerView>(R.id.list)
 
         // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = SelectedSharedTopicRecyclerViewAdapter(PlaceholderContent.ITEMS)
+        with(view) {
+            layoutManager = when {
+                columnCount <= 1 -> LinearLayoutManager(context)
+                else -> GridLayoutManager(context, columnCount)
             }
+            adapter = SelectedSharedTopicRecyclerViewAdapter(selectedTopic)
         }
 
-        view.findViewById<TextView>(R.id.textView2).text = selectedTopic.name
-
-        return view
+        root.findViewById<TextView>(R.id.textView2).text = selectedTopic.name
+        return root
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
