@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.datahubapp.SettingsFragment"
+        android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.datahubapp.ui.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_LoginFragment_to_createAccountFragment"
+            app:destination="@id/createAccountFragment" />
+        <action
+            android:id="@+id/action_LoginFragment_to_TopicsFragment"
+            app:destination="@id/topicsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/topicsFragment"
+        android:name="com.example.datahubapp.TopicsFragment"
+        android:label="fragment_topics_list"
+        tools:layout="@layout/fragment_topics" >
+        <action
+            android:id="@+id/action_topicsFragment_to_selectedTopicFragment"
+            app:destination="@id/selectedTopicFragment"
+            app:popUpTo="@id/topicsFragment" />
+        <action
+            android:id="@+id/action_topicsFragment_to_addTopicFragment"
+            app:destination="@id/addTopicFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/selectedTopicFragment"
+        android:name="com.example.datahubapp.SelectedTopicFragment"
+        android:label="fragment_selected_topic_list">
+        <argument
+            android:name="topicName"
+            app:nullable="false" />
+        <action
+            android:id="@+id/action_selectedTopicFragment_to_selectedRegistrationFragment"
+            app:destination="@id/selectedRegistrationFragment" />
+        <action
+            android:id="@+id/action_selectedTopicFragment_to_addRegistrationFragment"
+            app:destination="@id/addRegistrationFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/sharedTopicsFragment"
+        android:name="com.example.datahubapp.SharedTopicsFragment"
+        android:label="fragment_shared_topics_list"
+        tools:layout="@layout/fragment_shared_topics_list" >
+        <action
+            android:id="@+id/action_sharedTopicsFragment_to_selectedSharedTopicFragment"
+            app:destination="@id/selectedSharedTopicFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/selectedSharedTopicFragment"
+        android:name="com.example.datahubapp.SelectedSharedTopicFragment"
+        android:label="fragment_selected_shared_topic_list"
+        tools:layout="@layout/fragment_selected_shared_topic_list" >
+        <argument android:name="topic-name"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/selectedRegistrationFragment"
+        android:name="com.example.datahubapp.SelectedRegistrationFragment"
+        android:label="fragment_selected_registration_list"
+        tools:layout="@layout/fragment_selected_registration_list" >
+        <argument
+            android:name="id"
+            app:argType="long" />
+        <argument
+            android:name="topic-name"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createAccountFragment"
+        android:name="com.example.datahubapp.CreateAccountFragment"
+        android:label="fragment_create_account"
+        tools:layout="@layout/fragment_create_account" >
+        <action
+            android:id="@+id/action_createAccountFragment_to_profileFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_createAccountFragment_to_topicsFragment"
+            app:destination="@id/topicsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTopicFragment"
+        android:name="com.example.datahubapp.AddTopicFragment"
+        android:label="fragment_add_topic"
+        tools:layout="@layout/fragment_add_topic" />
+    <fragment
+        android:id="@+id/addRegistrationFragment"
+        android:name="com.example.datahubapp.AddRegistrationFragment"
+        android:label="fragment_add_registration_list"
+        tools:layout="@layout/fragment_add_registration_list" >
+        <argument
+            android:name="topic-name"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileLoggedFragment"
+        android:name="com.example.datahubapp.ProfileLoggedFragment"
+        android:label="fragment_profile_logged" >
+        <action
+            android:id="@+id/action_profileLoggedFragment_to_profileFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+</navigation>

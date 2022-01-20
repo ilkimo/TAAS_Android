@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">dataHubApp</string>
+    <string name="hello_blank_fragment">Fragment bianco</string>
+    <string name="messages_header">Messaggi</string>
+    <string name="sync_header">Sincronizza</string>
+    <string name="signature_title">La tua firma</string>
+    <string name="reply_title">Azione default di conferma</string>
+    <string name="sync_title">Sincronizza email periodicamente</string>
+    <string name="attachment_title">Scarica allegati in arrivo</string>
+    <string name="attachment_summary_on">Scarica in automatico allegati dalle seguenti email[...]</string>
+    <string name="attachment_summary_off">Scarica allegati solo quando richiesto manualmente</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Accedi o registrati</string>
+    <string name="action_sign_in_short">Accedi</string>
+    <string name="welcome">Benvenuto!</string>
+    <string name="invalid_username">Username non valido</string>
+    <string name="invalid_password">La password deve essere >5 caratteri</string>
+    <string name="login_failed">Login fallito</string>
+    <string name="profile">Profilo</string>
+    <string name="settings">Impostazioni</string>
+    <string name="Topics">Argomenti</string>
+    <string name="sharedTopics">Argomenti condivisi</string>
+    <string name="no_account_yet_create_one">Non hai un account? Creane uno!</string>
+
+    <string name="confirm_password">Conferma Password</string>
+    <string name="create_account">Crea un nuovo account</string>
+    <string name="already_have_an_account_login">Hai già un account? Esegui il log in!</string>
+    <string name="selected_registration">Registrazione selezionata</string>
+    <string name="add_a_new_registration">Aggiungi una nuova registrazione</string>
+    <string name="Date">Data</string>
+    <string name="topic_name">Nome_argomento</string>
+    <string name="change_password">Cambio Password</string>
+    <string name="delete_topic">Elimina argomento</string>
+    <string name="change_topic_name">Rinomina argomento</string>
+    <string name="delete_registration">Elimina registrazione</string>
+    <string name="theme">Tema</string>
+    <string name="light_theme">Tema Chiaro</string>
+    <string name="dark_theme">Thema Scuro</string>
+    <string name="app_version">Versione dell\'app</string>
+    <string name="search">Ricerca</string>
+
+</resources>
