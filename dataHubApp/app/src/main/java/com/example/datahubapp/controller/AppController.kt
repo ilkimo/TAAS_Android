@@ -47,7 +47,8 @@ enum class REQUEST {
     DELETE_USER,
     REFRESH,
     REFRESH_SHARED_TOPICS,
-    CLONE_TOPIC
+    CLONE_TOPIC,
+    CREATE_ACCOUNT_GOOGLE
 }
 
 enum class RETURNTYPE {
@@ -99,6 +100,16 @@ fun createAccount(fragment: Fragment, context: Context,
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
+fun createAccountGoogle(fragment: Fragment, context: Context,
+                  googleToken: String) {
+    var obj = User("", "", googleToken, "")
+    val jsonObject = convertToJSON(obj, User::class.java)
+
+    asyncRequest(fragment, context, jsonObject, REQUEST.CREATE_ACCOUNT_GOOGLE, RETURNTYPE.USERANDDATA)
+    asyncRequest(fragment, context, "", REQUEST.GET_SHARED_TOPICS, RETURNTYPE.SHARED_TOPICS)
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
 fun deleteRegistration(fragment: Fragment, context: Context, idUser: String,
                        idRegistration: Long, topicName: String) {
     val delRegistration = DeleteReg(idUser, idRegistration, topicName)
@@ -146,6 +157,7 @@ private fun getUrlString(type: REQUEST): String {
     val str: String = url + when(type) {
         REQUEST.ALL_USERS -> "all"
         REQUEST.CREATE_ACCOUNT -> "create"
+        REQUEST.CREATE_ACCOUNT_GOOGLE -> "createGoogle"
         REQUEST.CHANGE_PASSWORD -> "changePassword"
         REQUEST.LOGIN -> "login"
         REQUEST.LOGIN_GOOGLE -> "loginGoogle"
@@ -259,7 +271,7 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                 }
             }
         }
-        REQUEST.LOGIN_GOOGLE -> {
+        REQUEST.CREATE_ACCOUNT_GOOGLE -> {
             when(result) {
                 is Result.Success -> {
                     obj = parseJSON((result.data as String), returnType)
@@ -267,7 +279,27 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                     viewModel.setUserData((obj as UserAndData).dataInformation)
 
                     Handler(Looper.getMainLooper()).post {
-                        var navigationDirection: NavDirections = LoginFragmentDirections.actionLoginFragmentToTopicsFragment();
+                        var navigationDirection: NavDirections = CreateAccountFragmentDirections.actionCreateAccountFragmentToTopicsFragment();
+                        NavHostFragment.findNavController(fragment).navigate(navigationDirection)
+                    }
+                }
+                else -> {
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Login error", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+        REQUEST.LOGIN_GOOGLE -> {
+            when(result) {
+                is Result.Success -> {
+                    obj = parseJSON((result.data as String), returnType)
+                    viewModel.setUser((obj as UserAndData).userInformation)
+                    viewModel.setUserData((obj as UserAndData).dataInformation)
+                    viewModel.setLoggedWithGoogle(true)
+
+                    Handler(Looper.getMainLooper()).post {
+                        var navigationDirection: NavDirections = LoginFragmentDirections.actionLoginFragmentToTopicsFragment()
                         NavHostFragment.findNavController(fragment).navigate(navigationDirection)
                     }
                 }

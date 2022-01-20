@@ -31,12 +31,14 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.annotation.RequiresApi
 import com.example.datahubapp.controller.createAccount
+import com.example.datahubapp.controller.createAccountGoogle
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -68,20 +70,6 @@ class CreateAccountFragment : Fragment() {
     private var emailTIL: TextInputLayout? = null
     private var passwordTIL: TextInputLayout? = null
     private var confirmPasswordTIL: TextInputLayout? = null
-    private var progressDialog: ProgressDialog? = null
-
-    /*
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-     */
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -122,12 +110,6 @@ class CreateAccountFragment : Fragment() {
         emailText = binding.inputEmail
         passwordText = binding.inputPassword
         confirmPasswordText = binding.inputConfirmPassword
-
-        /*
-        Objects.requireNonNull((requireActivity() as AppCompatActivity).supportActionBar)
-            .setDisplayHomeAsUpEnabled(false)
-
-         */
 
         emailTIL = binding.emailTextInputLayout
         passwordTIL = binding.passwordTextInputLayout
@@ -205,6 +187,7 @@ class CreateAccountFragment : Fragment() {
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
@@ -214,6 +197,7 @@ class CreateAccountFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun handleSignUpResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(
@@ -239,7 +223,10 @@ class CreateAccountFragment : Fragment() {
             Log.i("Google ID Token", googleIdToken)
 
             //TODO: loggare nell'app
-
+            createAccountGoogle(requireParentFragment(), requireContext(), googleEmail)
+            val bottomNavigationView = activity?.findViewById<BottomNavigationView>(com.example.datahubapp.R.id.bottom_navigatin_view)
+            bottomNavigationView?.menu?.findItem(com.example.datahubapp.R.id.loginFragment)?.isVisible = false
+            bottomNavigationView?.menu?.findItem(com.example.datahubapp.R.id.profileLoggedFragment)?.isVisible = true
         } catch (e: ApiException) {
             // Sign in was unsuccessful
             Log.e(
