@@ -30,6 +30,7 @@ import android.widget.*
 
 import androidx.appcompat.app.AlertDialog
 import com.example.datahubapp.controller.changeSharedTopicStatus
+import com.example.datahubapp.controller.changeTopicName
 import com.example.datahubapp.controller.refresh
 
 import com.google.android.material.textfield.TextInputLayout
@@ -106,6 +107,7 @@ class SelectedTopicFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun changeTopicNameDialog() {
         // create an alert builder
         // create an alert builder
@@ -154,9 +156,8 @@ class SelectedTopicFragment : Fragment() {
                 newTopicNameTIL.error = "Please insert a new topic name"
             } else {
                 //TODO: make query -> change topic name
+                    changeTopicName(requireParentFragment(), requireContext(), selectedTopic.name, newTopicNameString)
                 Log.d("Change Topic Name", "New topic name $newTopicNameString")
-
-                //TODO: formire feedback tramite toast se va a buon fine o meno la modifica!
 
                 //after query dismiss dialog
                 dialog.dismiss()

@@ -48,7 +48,8 @@ enum class REQUEST {
     REFRESH,
     REFRESH_SHARED_TOPICS,
     CLONE_TOPIC,
-    CREATE_ACCOUNT_GOOGLE
+    CREATE_ACCOUNT_GOOGLE,
+    CHANGE_TOPIC_NAME
 }
 
 enum class RETURNTYPE {
@@ -87,6 +88,15 @@ fun changeSharedTopicStatus(fragment: Fragment, context: Context,
     val jsonObject = convertToJSON(obj, ChangeTopicSharedStatus::class.java)
 
     asyncRequest(fragment, context, jsonObject, REQUEST.CHANGE_TOPIC_SHARED_STATUS, RETURNTYPE.USERDATA)
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun changeTopicName(fragment: Fragment, context: Context, name: String, newName: String) {
+    var model = getViewModel(fragment, context)
+    var newTopic = ChangeTopicName(model.getUser().value?.id.toString(), name, newName)
+    val jsonObject = convertToJSON(newTopic, ChangeTopicName::class.java)
+
+    asyncRequest(fragment, context, jsonObject, REQUEST.CHANGE_TOPIC_NAME, RETURNTYPE.USERDATA)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -173,6 +183,7 @@ private fun getUrlString(type: REQUEST): String {
         REQUEST.CHANGE_TOPIC_SHARED_STATUS -> "changSharedTopic"
         REQUEST.CHANGE_NAME_TOPIC -> "changeNameTopic"
         REQUEST.DELETE_USER -> "deleteUser"
+        REQUEST.CHANGE_TOPIC_NAME -> "changeNameTopic"
     }
 
     Log.d("$TAG", "getUrlString for REQUEST $type=$str")
@@ -324,6 +335,25 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                 else -> {
                     Handler(Looper.getMainLooper()).post {
                         Toast.makeText(context, "Error adding topic!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+        REQUEST.CHANGE_TOPIC_NAME -> {
+            when(result) {
+                is Result.Success -> {
+                    obj = parseJSON((result.data as String), returnType)
+
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Topic name changed", Toast.LENGTH_SHORT).show()
+                        NavHostFragment.findNavController(fragment).popBackStack()
+                        viewModel.setUserData(obj as UserData)
+                    }
+
+                }
+                else -> {
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Error changing topic name!", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
