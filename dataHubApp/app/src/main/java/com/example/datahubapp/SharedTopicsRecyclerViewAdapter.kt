@@ -1,10 +1,12 @@
 package com.example.datahubapp
 
+import android.graphics.Color
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -49,8 +51,9 @@ class SharedTopicsRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = sharedTopicList[holder.bindingAdapterPosition]
-        holder.topicName.text = "${holder.bindingAdapterPosition}: ${item.name}"
+        holder.topicName.text = "${item.name}"
         holder.justTopicName = item.name
+        holder.topicColor.setBackgroundColor(Color.parseColor(item.color[1]))
     }
 
     override fun getItemCount(): Int = sharedTopicList.size
@@ -59,6 +62,7 @@ class SharedTopicsRecyclerViewAdapter(
         val topicName: TextView = binding.topicName
         var model: AppViewModel
         lateinit var justTopicName: String
+        val topicColor: LinearLayout = binding.cardColor
 
         init {
             var viewModelFactory = AppViewModelFactory(fragment.requireContext())
