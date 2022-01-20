@@ -13,11 +13,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
+import com.example.datahubapp.data.model.Topic
+import com.example.datahubapp.data.viewmodel.AppViewModel
+import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import com.example.datahubapp.placeholder.PlaceholderContent
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
@@ -26,15 +31,26 @@ import com.google.android.material.textfield.TextInputLayout
  * A fragment representing a list of Items.
  */
 class SelectedSharedTopicFragment : Fragment() {
-
+    lateinit var model: AppViewModel
     private var columnCount = 1
+    lateinit var selectedTopic: Topic
+    private val TAG = "SelectedSharedTopic"
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        var viewModelFactory = AppViewModelFactory(requireContext())
+        model = ViewModelProviders.of(requireParentFragment(), viewModelFactory).get(AppViewModel::class.java)
 
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
+
+        selectedTopic = model.getSharedTopics().value?.filter{
+            it.name.equals(arguments?.getString("topic-name"))
+        }!![0]
+
+        Log.d("$TAG", "selectedTopic=${selectedTopic?.name}")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +67,9 @@ class SelectedSharedTopicFragment : Fragment() {
                 adapter = SelectedSharedTopicRecyclerViewAdapter(PlaceholderContent.ITEMS)
             }
         }
+
+        view.findViewById<TextView>(R.id.textView2).text = selectedTopic.name
+
         return view
     }
 
@@ -91,7 +110,7 @@ class SelectedSharedTopicFragment : Fragment() {
         dialog.show()
         dialog.setCancelable(true)
 
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener { v ->
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             val newTopicNameTIL: TextInputLayout =
                 customLayout.findViewById(R.id.new_topic_name_til)
             val newTopicName: EditText = customLayout.findViewById(R.id.new_topic_name)

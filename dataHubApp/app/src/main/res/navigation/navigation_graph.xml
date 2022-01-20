@@ -65,7 +65,10 @@
         android:id="@+id/selectedSharedTopicFragment"
         android:name="com.example.datahubapp.SelectedSharedTopicFragment"
         android:label="fragment_selected_shared_topic_list"
-        tools:layout="@layout/fragment_selected_shared_topic_list" />
+        tools:layout="@layout/fragment_selected_shared_topic_list" >
+        <argument android:name="topic-name"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/selectedRegistrationFragment"

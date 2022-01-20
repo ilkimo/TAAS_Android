@@ -6,7 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
 import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.viewmodel.AppViewModel
@@ -47,6 +50,7 @@ class SharedTopicsRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = sharedTopicList[holder.bindingAdapterPosition]
         holder.topicName.text = "${holder.bindingAdapterPosition}: ${item.name}"
+        holder.justTopicName = item.name
     }
 
     override fun getItemCount(): Int = sharedTopicList.size
@@ -54,6 +58,7 @@ class SharedTopicsRecyclerViewAdapter(
     inner class ViewHolder(binding: TopicItemBinding, fragment: SharedTopicsFragment) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         val topicName: TextView = binding.topicName
         var model: AppViewModel
+        lateinit var justTopicName: String
 
         init {
             var viewModelFactory = AppViewModelFactory(fragment.requireContext())
@@ -69,13 +74,9 @@ class SharedTopicsRecyclerViewAdapter(
         }
 
         override fun onClick(view: View) {
-            //Toast.makeText(view.context, "You clicked $layoutPosition", Toast.LENGTH_SHORT).show()
-            //model.controller.setSelectedSharedTopic(topicName.text as String)
-
-            //TODO IMPLEMENTA
-
-            NavHostFragment.findNavController(fragment)
-                .navigate(R.id.action_sharedTopicsFragment_to_selectedSharedTopicFragment)
+            //Toast.makeText(requireContext(), "Logged In", Toast.LENGTH_LONG).show()
+            var navigationDirection: NavDirections = SharedTopicsFragmentDirections.actionSharedTopicsFragmentToSelectedSharedTopicFragment(justTopicName)
+            NavHostFragment.findNavController(fragment).navigate(navigationDirection)
         }
     }
 
