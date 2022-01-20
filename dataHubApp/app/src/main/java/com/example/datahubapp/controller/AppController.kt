@@ -46,7 +46,8 @@ enum class REQUEST {
     CHANGE_NAME_TOPIC,
     DELETE_USER,
     REFRESH,
-    REFRESH_SHARED_TOPICS
+    REFRESH_SHARED_TOPICS,
+    CLONE_TOPIC
 }
 
 enum class RETURNTYPE {
@@ -69,6 +70,13 @@ fun addTopic(fragment: Fragment, context: Context, newTopic: NewTopic) {
     val jsonObject = convertToJSON(newTopic, NewTopic::class.java)
 
     asyncRequest(fragment, context, jsonObject, REQUEST.NEW_TOPIC, RETURNTYPE.USERDATA)
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun cloneTopic(fragment: Fragment, context: Context, newTopic: NewTopic) {
+    val jsonObject = convertToJSON(newTopic, NewTopic::class.java)
+
+    asyncRequest(fragment, context, jsonObject, REQUEST.CLONE_TOPIC, RETURNTYPE.USERDATA)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -146,6 +154,7 @@ private fun getUrlString(type: REQUEST): String {
         REQUEST.REFRESH_SHARED_TOPICS -> "sharedTopic"
         REQUEST.GET_SHARED_TOPICS -> "sharedTopic"
         REQUEST.NEW_TOPIC -> "newTopic"
+        REQUEST.CLONE_TOPIC -> "newTopic"
         REQUEST.NEW_REGISTRATION -> "newReg"
         REQUEST.DELETE_TOPIC -> "delTopic"
         REQUEST.DELETE_REGISTRATION -> "delReg"
@@ -283,6 +292,24 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                 else -> {
                     Handler(Looper.getMainLooper()).post {
                         Toast.makeText(context, "Error adding topic!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+        REQUEST.CLONE_TOPIC -> {
+            when(result) {
+                is Result.Success -> {
+                    obj = parseJSON((result.data as String), returnType)
+                    viewModel.setUserData(obj as UserData)
+
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Topic cloned", Toast.LENGTH_SHORT).show()
+                        NavHostFragment.findNavController(fragment).popBackStack()
+                    }
+                }
+                else -> {
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context, "Error cloning topic!", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

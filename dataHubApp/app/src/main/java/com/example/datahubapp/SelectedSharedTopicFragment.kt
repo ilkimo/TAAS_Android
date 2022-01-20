@@ -20,6 +20,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
+import com.example.datahubapp.controller.addTopic
+import com.example.datahubapp.controller.cloneTopic
+import com.example.datahubapp.data.model.NewTopic
 import com.example.datahubapp.data.model.Topic
 import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
@@ -85,6 +88,7 @@ class SelectedSharedTopicFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun cloneTopicDialog() {
         // create an alert builder
         // create an alert builder
@@ -130,15 +134,20 @@ class SelectedSharedTopicFragment : Fragment() {
                 }
             })
 
-            if (newTopicNameString.isEmpty()) {
+            if(newTopicNameString.isEmpty()) {
                 newTopicNameTIL.error = "Please insert a topic name"
             } else {
-                //TODO: make query -> clone topic
-                    //TODO: oin pratica bisogna creare un nuovo topic per l'utente con la struttura di questo selezionato e il nome che ha inserito -> contenuto in "newTopicNameString"
+                val newTopic= NewTopic(
+                    model.getUser().value?.id.toString(),
+                    newTopicNameString,
+                    selectedTopic.description,
+                    selectedTopic.nameType,
+                    selectedTopic.color,
+                    false
+                )
+                cloneTopic(requireParentFragment(), requireContext(), newTopic)
 
-                        Log.d("Change Topic Name", "New topic name $newTopicNameString")
-
-                //TODO: formire feedback tramite toast se va a buon fine o meno la clonazione!
+                Log.d("$TAG", "New topic cloned with name: $newTopicNameString")
 
                 //after query dismiss dialog
                 dialog.dismiss()
