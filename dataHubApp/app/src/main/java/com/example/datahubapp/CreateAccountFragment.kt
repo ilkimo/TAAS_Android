@@ -224,9 +224,9 @@ class CreateAccountFragment : Fragment() {
 
             //TODO: loggare nell'app
             createAccountGoogle(requireParentFragment(), requireContext(), googleEmail)
-            val bottomNavigationView = activity?.findViewById<BottomNavigationView>(com.example.datahubapp.R.id.bottom_navigatin_view)
-            bottomNavigationView?.menu?.findItem(com.example.datahubapp.R.id.loginFragment)?.isVisible = false
-            bottomNavigationView?.menu?.findItem(com.example.datahubapp.R.id.profileLoggedFragment)?.isVisible = true
+//            val bottomNavigationView = activity?.findViewById<BottomNavigationView>(com.example.datahubapp.R.id.bottom_navigatin_view)
+//            bottomNavigationView?.menu?.findItem(com.example.datahubapp.R.id.loginFragment)?.isVisible = false
+//            bottomNavigationView?.menu?.findItem(com.example.datahubapp.R.id.profileLoggedFragment)?.isVisible = true
         } catch (e: ApiException) {
             // Sign in was unsuccessful
             Log.e(

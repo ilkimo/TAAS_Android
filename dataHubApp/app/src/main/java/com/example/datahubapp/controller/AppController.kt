@@ -21,6 +21,7 @@ import com.example.datahubapp.data.viewmodel.AppViewModel
 import com.example.datahubapp.data.viewmodel.AppViewModelFactory
 import com.example.datahubapp.ui.login.LoginFragment
 import com.example.datahubapp.ui.login.LoginFragmentDirections
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.*
 import kotlinx.coroutines.launch
 
@@ -255,6 +256,10 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                     Handler(Looper.getMainLooper()).post {
                         var navigationDirection: NavDirections = LoginFragmentDirections.actionLoginFragmentToTopicsFragment();
                         NavHostFragment.findNavController(fragment).navigate(navigationDirection)
+
+                        val bottomNavigationView = fragment.activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
+                        bottomNavigationView?.menu?.findItem(R.id.loginFragment)?.isVisible = false
+                        bottomNavigationView?.menu?.findItem(R.id.profileLoggedFragment)?.isVisible = true
                     }
                 }
                 else -> {
@@ -274,6 +279,10 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                     Handler(Looper.getMainLooper()).post {
                         var navigationDirection: NavDirections = CreateAccountFragmentDirections.actionCreateAccountFragmentToTopicsFragment();
                         NavHostFragment.findNavController(fragment).navigate(navigationDirection)
+
+                        val bottomNavigationView = fragment.activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
+                        bottomNavigationView?.menu?.findItem(R.id.loginFragment)?.isVisible = false
+                        bottomNavigationView?.menu?.findItem(R.id.profileLoggedFragment)?.isVisible = true
                     }
                 }
                 else -> {
@@ -293,6 +302,10 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                     Handler(Looper.getMainLooper()).post {
                         var navigationDirection: NavDirections = CreateAccountFragmentDirections.actionCreateAccountFragmentToTopicsFragment();
                         NavHostFragment.findNavController(fragment).navigate(navigationDirection)
+
+                        val bottomNavigationView = fragment.activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
+                        bottomNavigationView?.menu?.findItem(R.id.loginFragment)?.isVisible = false
+                        bottomNavigationView?.menu?.findItem(R.id.profileLoggedFragment)?.isVisible = true
                     }
                 }
                 else -> {
