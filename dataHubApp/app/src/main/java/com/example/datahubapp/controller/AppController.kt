@@ -326,6 +326,10 @@ private fun processResult(fragment: Fragment, returnType: RETURNTYPE, requestTyp
                     Handler(Looper.getMainLooper()).post {
                         var navigationDirection: NavDirections = LoginFragmentDirections.actionLoginFragmentToTopicsFragment()
                         NavHostFragment.findNavController(fragment).navigate(navigationDirection)
+
+                        val bottomNavigationView = fragment.activity?.findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
+                        bottomNavigationView?.menu?.findItem(R.id.loginFragment)?.isVisible = false
+                        bottomNavigationView?.menu?.findItem(R.id.profileLoggedFragment)?.isVisible = true
                     }
                 }
                 else -> {
